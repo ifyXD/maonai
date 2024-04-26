@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Driver;
 use App\Models\Maintenance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,98 +16,106 @@ class MaintenanceController extends Controller
 
     public function create(Request $request)
     {
+
         $rules = [
-            'driver_name' => 'required|string',
-            'contact' => 'required|string',
-            'email' => 'required|email',
-            'driver_license' => 'required|string',
-            'address' => 'required|string',
-            'status' => 'required|in:pending,completed',
+            'evaluation' => 'required|string',
+            'condition' => 'required|string',
+            'timefinish' => 'required|date',
+            'status' => 'required|', // Assuming 'status' can only be 'pending' or 'completed'
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
+        // Check if validation fails
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => 'failed',
                 'errors' => $validator->errors(),
-            ], 422);
+            ], 422); // Unprocessable Entity status code
         }
 
-        $driver = new Driver();
-        $driver->driver_name = $request->driver_name;
-        $driver->contact = $request->contact;
-        $driver->email = $request->email;
-        $driver->driver_license = $request->driver_license;
-        $driver->address = $request->address;
-        $driver->status = $request->status;
-        $driver->save();
+    // If validation passes, create a new user
+    $maintenances = new Maintenance();
+    $maintenances->evaluation = $request->evaluation;
+    $maintenances->timefinish = $request->timefinish;
+    $maintenances->condition = $request->condition;
+    $maintenances->status = $request->status;
+    $maintenances->save();
+    // Return a success response
+    return response()->json([
+        'message' => 'success',
+        'maintenances' => $maintenances,
+    ], 201); // Created status code
+}
 
+
+public function maintenance()
+{
+    $maintenances = Maintenance::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+    ->orderBy('created_at', 'desc')
+    ->get();
+
+
+    return response()->json(['maintenances' => $maintenances]);
+
+}
+public function delete(Request $request)
+{
+    $id = $request->id;
+    Maintenance::find($id)->update([
+        'isdel' => 'deleted',
+    ]);
+    return response()->json([
+        'message' => $request->id,
+    ]);
+}
+public function edit(Request $request)
+{
+$id = $request->id;
+$timefinish = $request->timefinish;
+$evaluation = $request->evaluation;
+$condition = $request->condition;
+$status = $request->status;
+
+try {
+    // Validation rules
+    $rules = [
+        'evaluation' => 'required|string',
+        'condition' => 'required|string',
+        'timefinish' => 'required|date',
+        'status' => 'required', // Assuming 'status' can only be 'pending' or 'completed'
+    ];
+
+    // Validate the request data
+    $validator = Validator::make($request->all(), $rules);
+
+    // Check if validation fails
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'Driver created successfully',
-            'driver' => $driver,
-        ], 201);
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422); // Unprocessable Entity status code
     }
 
-    public function edit(Request $request)
-    {
-        $id = $request->id;
+    // Find the maintenance record by ID
+    $maintenance = Maintenance::findOrFail($id);
 
-        $rules = [
-            'driver_name' => 'required|string',
-            'contact' => 'required|string',
-            'email' => 'required|email',
-            'driver_license' => 'required|string',
-            'address' => 'required|string',
-            'status' => 'required|in:pending,completed',
-        ];
+    // Update the maintenance attributes
+    $maintenance->update([
+        'timefinish' => $timefinish,
+        'evaluation' => $evaluation,
+        'condition' => $condition,
+        'status' => $status,
+    ]);
 
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        try {
-            $driver = Driver::findOrFail($id);
-            $driver->update([
-                'driver_name' => $request->driver_name,
-                'contact' => $request->contact,
-                'email' => $request->email,
-                'driver_license' => $request->driver_license,
-                'address' => $request->address,
-                'status' => $request->status,
-            ]);
-
-            return response()->json([
-                'message' => 'Driver updated successfully',
-                'driver' => $driver,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to update driver: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function delete(Request $request)
-    {
-        $id = $request->id;
-
-        try {
-            $driver = Driver::findOrFail($id);
-            $driver->delete();
-
-            return response()->json([
-                'message' => 'Driver deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to delete driver: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
+    return response()->json([
+        'message' => 'Maintenance updated successfully',
+        'maintenance' => $maintenance // Optionally return the updated maintenance object
+    ]);
+} catch (\Exception $e) {
+    return response()->json([
+        'message' => 'Failed to update maintenance: ' . $e->getMessage()
+    ], 500); // Internal Server Error status code
+}
+}
 }

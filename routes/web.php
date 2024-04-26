@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\CategoryVehiclesController;
 use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FuelController;
 use App\Http\Controllers\LandingPage;
 use App\Http\Controllers\MaintenanceController;
@@ -119,6 +120,9 @@ Route::post ('/editbyid', [MechanicsController::class, 'edit']);
 Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 
 
+
+
+Route::get('/drivers', [DriverController::class, 'index']);
 
 //tripdestination
 
