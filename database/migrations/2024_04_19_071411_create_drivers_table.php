@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('driver_license');
             $table->string('address');
+            $table->string('status');
             $table->timestamps();
         });
     }

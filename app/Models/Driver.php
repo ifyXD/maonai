@@ -14,5 +14,6 @@ class Driver extends Model
         'email',
         'driver_license',
         'address',
+        'status',
     ];
 }
