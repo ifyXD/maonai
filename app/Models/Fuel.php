@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Fuel extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'date',
+        'fuel_type',
+        'fuel_quantity',
+        'fuel_cost',
+        'status',
+    ];
+
+    protected $casts = [
+        'fuel_quantity' => 'decimal:2',
+        'fuel_cost' => 'decimal:2',
+    ];
+
+    protected $dates = [
+        'date',
+    ];
 }

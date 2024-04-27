@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fuels', function (Blueprint $table) {
+        Schema::create('parkings', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date');
-            $table->string('fuel_type');
-            $table->decimal('fuel_quantity', 8, 2);
-            $table->decimal('fuel_cost', 8, 2);
-            $table->string('status')->default('unavailable');
-            $table->string('isdel')->nullable()->default('active');
+            $table->boolean('available')->default(true);
+            $table->string('vehicle_name')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fuels');
+        Schema::dropIfExists('parkings');
     }
 };
