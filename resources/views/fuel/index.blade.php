@@ -33,7 +33,7 @@
                     <button type="button" class="btn btn-transparent-dark" data-toggle="modal" data-target="#addNewfuel">
                         <div>
                             <i data-feather="plus-square"></i>
-                            Add Vehicles
+                            Add Fuel types
                         </div>
                     </button>
                     
@@ -78,8 +78,10 @@
                                                 <label for="status" class="form-label">Status</label>
                                                 <select name="status" id="status" class="form-control" required>
                                                     <option value="unavailable">Unavailable</option>
+                                                    <option value="available">Available</option>
                                                 </select>
                                             </div>
+                                            
                                 
                                             <button type="submit" id="createFuelBtn" class="btn btn-primary">Create</button>
                                         </div>
@@ -93,11 +95,11 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Plate Number</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Driver</th>
-                                    <th scope="col">Condition</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Fuel Type</th>
+                                    <th scope="col">Fuel Quantity</th>
+                                    <th scope="col">Fuel Cost</th>
+                                    <th scope="col">Fuel Cost</th>
                                     <th scope="col">Status</th>
                                     <th scope="col" class="date-header">Created at (UTC)</th>
                                     <th scope="col" class="date-header">Updated at (UTC)</th>
