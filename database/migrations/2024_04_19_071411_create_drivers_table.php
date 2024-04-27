@@ -18,14 +18,13 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('driver_license');
             $table->string('address');
-            $table->string('status');
+            $table->string('status')->default('pending');
+            $table->string('isdel')->nullable()->default('active');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+   
     public function down(): void
     {
         Schema::dropIfExists('drivers');

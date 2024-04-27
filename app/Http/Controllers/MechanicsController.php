@@ -6,7 +6,7 @@ use App\Models\Mechanics;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+    
 class MechanicsController extends Controller
 {
     public function index()

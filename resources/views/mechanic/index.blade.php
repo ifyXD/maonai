@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-hover" id="datatable" width="100%" cellspacing="1">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="1">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -123,37 +123,36 @@
 
 
                         function mechanics() {
+    // Destroy the existing DataTable
+    $('#dataTable').DataTable().destroy();
 
+    // Empty the table body
+    $('tbody').empty();
 
-                            $('#datatable').DataTable().destroy();
+    // Fetch data using AJAX
+    $.ajax({
+        type: 'get',
+        url: '/admin/mechanicsdata',
+        success: function(data) {
+            // Assuming data is an array of mechanic objects
+            $.each(data.mechanics, function(index, mechanic) {
+                var key = index + 1;
+                var ifdel = mechanic.isdel === 'deleted' ? 'is-deleted' : '';
 
-                            $('tbody').empty();
-                            $.ajax({
-                                type: 'get',
-                                url: '/admin/mechanicsdata',
-                                success: function(data) {
-                                    console.log(data.mechanics[1]['id']);
-                                    // Assuming data is an array of user objects
-                                    $.each(data.mechanics, function(index, mechanic) {
-                                        var key = index + 1;
-                                        var ifdel = mechanic.isdel === 'deleted' ? 'is-deleted' : '';
-
-                                        var action = mechanic.isdel === 'active' ?
-
-
-                                            `<a href="#" class="editMechanic" data-id="${mechanic.id}" data-bs-toggle="modal" data-bs-target="#mechanicEdit${mechanic.id}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-        </svg>
-    </a>
-    <a href="#" onclick="confirmDelete(${mechanic.id});" id="deleteMechanic">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-danger" viewBox="0 0 16 16">
-            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-        </svg>
-    </a>` :
-                                            `<span class="text-danger">Deleted</span>`;
+                var action = mechanic.isdel === 'active' ?
+                    `<a href="#" class="editMechanic" data-id="${mechanic.id}" data-bs-toggle="modal" data-bs-target="#mechanicEdit${mechanic.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </a>
+                    <a href="#" onclick="confirmDelete(${mechanic.id});" id="deleteMechanic">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-danger" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                        </svg>
+                    </a>` :
+                    `<span class="text-danger">Deleted</span>`;
                                         // Assuming user has properties like id, name, email, etc.
                                         let row = `
     <tr class="${ifdel}" id="trId${mechanic.id}">
@@ -216,7 +215,7 @@
 
                                         $('tbody').append(row);
                                     });
-                                    $('#datatable').DataTable();
+    $('#dataTable').DataTable();
 
 
                                 }
@@ -265,145 +264,145 @@
                         }
 
                         // Modify the createMechanics function to include a callback
-                      function createMechanics(mechanics_name, contact, email, description, status, callback) {
-                        $.ajax({
-    type: 'post',
-    url: '/admin/addmechanics',
-    data: {
-        'mechanics_name': mechanics_name,
-        'contact': contact,
-        'email': email,
-        'description': description,
-        'status': status,
-        '_token': '{{ csrf_token() }}' // Add the CSRF token
-    },
-    success: function(data) {
-        if (data) {
-            $('#messageflash').text('Mechanic added successfully');
-            $('#exampleModal').modal('hide'); // Close the modal
-            callback(true); // Invoke the callback with true indicating success
-        }
-    },
-    error: function(xhr, status, error) {
-        // Error handling
-        var errorMessage = xhr.responseJSON.message;
-        if (errorMessage) {
-            $('#messageflash').text('Error: ' + errorMessage);
-        } else {
-            $('#messageflash').text('An error occurred while adding the mechanic');
-        }
-        callback(false); // Invoke the callback with false indicating failure
-    }
-});
-}
+                        function createMechanics(mechanics_name, contact, email, description, status, callback) {
+                            $.ajax({
+                                type: 'post',
+                                url: '/admin/addmechanics',
+                                data: {
+                                    'mechanics_name': mechanics_name,
+                                    'contact': contact,
+                                    'email': email,
+                                    'description': description,
+                                    'status': status,
+                                    '_token': '{{ csrf_token() }}' // Add the CSRF token
+                                },
+                                success: function(data) {
+                                    if (data) {
+                                        $('#messageflash').text('Mechanic added successfully');
+                                        $('#exampleModal').modal('hide'); // Close the modal
+                                        callback(true); // Invoke the callback with true indicating success
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    // Error handling
+                                    var errorMessage = xhr.responseJSON.message;
+                                    if (errorMessage) {
+                                        $('#messageflash').text('Error: ' + errorMessage);
+                                    } else {
+                                        $('#messageflash').text('An error occurred while adding the mechanic');
+                                    }
+                                    callback(false); // Invoke the callback with false indicating failure
+                                }
+                            });
+                        }
 
-// Use the form ID to handle form submission
-$('#addMechanicForm').click(function(e) {
-    e.preventDefault(); // Prevent the default form submission behavior
+                        // Use the form ID to handle form submission
+                        
+                        $('#addMechanicForm').click(function(e) {
+                            e.preventDefault(); // Prevent the default form submission behavior
 
-    let mechanics_name = $('#mechanics_name').val();
-    let contact = $('#contact').val();
-    let email = $('#email').val();
-    let description = $('#description').val();
-    let status = $('#status').val();
+                            let mechanics_name = $('#mechanics_name').val();
+                            let contact = $('#contact').val();
+                            let email = $('#email').val();
+                            let description = $('#description').val();
+                            let status = $('#status').val();
 
-    createMechanics(mechanics_name, contact, email, description, status, function(success) {
-        if (success === true) {
-            // Display a success message and clear the form
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Mechanic added successfully.",
-                showConfirmButton: true,
-                timer: 2000, // 2 seconds
-                timerProgressBar: true,
+                            createMechanics(mechanics_name, contact, email, description, status, function(success) {
+                                if (success === true) {
+                                    // Display a success message and clear the form
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: "success",
+                                        title: "Mechanic added successfully.",
+                                        showConfirmButton: true,
+                                        timer: 2000, // 2 seconds
+                                        timerProgressBar: true,
 
-            }).then(() => {
-                $('#mechanics_name').val('');
-                $('#contact').val('');
-                $('#email').val('');
-                $('#description').val('');
-                $('#status').val('');
-                location.reload();
+                                    }).then(() => {
+                                        $('#mechanics_name').val('');
+                                        $('#contact').val('');
+                                        $('#email').val('');
+                                        $('#description').val('');
+                                        $('#status').val('');
+                                        location.reload();
 
-                // Reload the DataTable to reflect the new data
-                mechanics();
-            });
-        }
-    });
-});
+                                        // Reload the DataTable to reflect the new data
+                                        mechanics();
+                                    });
+                                }
+                            });
+                        });
 
                         // Save button click event listener
-       $('tbody').on('click', '.editMechanic', function() {
-        // Get the id of the vehicle to edit
-        let id = $(this).data('id');
+                        $('tbody').on('click', '.editMechanic', function() {
+                            // Get the id of the vehicle to edit
+                            let id = $(this).data('id');
 
-        // Show the edit modal
-        $(`#mechanicEdit${id}`).modal('show');
+                            // Show the edit modal
+                            $(`#mechanicEdit${id}`).modal('show');
 
-        // Get the current vehicle data
-        let mechanics_name = $('#mechanics_name').val();
-        let contact = $('#contact').val();
-        let email = $(`#email${id}`).text();
-        let description = $('#description').val();  
-        let status = $('#status').val();
-        // Update the modal inputs with the current vehicle data
-        $(`#editmechanics_name${id}`).val(mechanic.mechanics_name);
-        $(`#editcontact${id}`).val(mechanic.contact);
-        $(`#editemail${id}`).val(email);
-        $(`#editdescription${id}`).val(mechanic.description);
-        $(`#editstatus${id}`).val(mechanic.status);
+                            // Get the current vehicle data
+                            let mechanics_name = $('#mechanics_name').val();
+                            let contact = $('#contact').val();
+                            let email = $(`#email${id}`).text();
+                            let description = $('#description').val();
+                            let status = $('#status').val();
+                            // Update the modal inputs with the current vehicle data
+                            $(`#editmechanics_name${id}`).val(mechanic.mechanics_name);
+                            $(`#editcontact${id}`).val(mechanic.contact);
+                            $(`#editemail${id}`).val(email);
+                            $(`#editdescription${id}`).val(mechanic.description);
+                            $(`#editstatus${id}`).val(mechanic.status);
 
-    });
+                        });
 
-    // Save button click event listener
+                        // Save button click event listener
 
-    // Save button click event listener for mechanics
-    $('tbody').on('click', '#editSaveBtn', function() {
-        // Get the id of the mechanic being edited
-        let id = $(this).attr('data-id');
+                        // Save button click event listener for mechanics
+                        $('tbody').on('click', '#editSaveBtn', function() {
+                            // Get the id of the mechanic being edited
+                            let id = $(this).attr('data-id');
 
-        // Get the updated values from the modal inputs
-        let mechanics_name = $(`#editmechanics${id}`).val();
-        let contact = $(`#editcontact${id}`).val();
-        let email = $(`#editemail${id}`).val();
-        let description = $(`#editdescription${id}`).val();
-        let status = $(`#editstatus${id}`).val();
-        console.log(mechanics_name+contact+email+description+status);
+                            // Get the updated values from the modal inputs
+                            let mechanics_name = $(`#editmechanics${id}`).val();
+                            let contact = $(`#editcontact${id}`).val();
+                            let email = $(`#editemail${id}`).val();
+                            let description = $(`#editdescription${id}`).val();
+                            let status = $(`#editstatus${id}`).val();
+                            console.log(mechanics_name + contact + email + description + status);
 
-        // Send the data to the server using AJAX
-        $.ajax({
-            type: 'post',
-            url: '/admin/editbyid',
-            data: {
-                'id': id,
-                'mechanics_name': mechanics_name,
-                'contact': contact,
-                'email': email,
-                'description': description,
-                'status': status
-            },
-            success: function(response) {
-                // Handle the success response
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Mechanic updated successfully.',
-                    icon: 'success',
-                    timer: 2000, // 2 seconds
-                    timerProgressBar: true,
-                    didClose: () => {
-                        // Reload the page to reflect the changes
-                        location.reload();
-                    }
-                });
-                $(`#mechanicEdit${id}`).modal('hide');
-            },
-            error: function(xhr, status, error) {
-                // Handle the error response
-                Swal.fire("Error!", "Failed to update mechanic.", "error");
-            }
-        });
-    });
-
+                            // Send the data to the server using AJAX
+                            $.ajax({
+                                type: 'post',
+                                url: '/admin/editbyid',
+                                data: {
+                                    'id': id,
+                                    'mechanics_name': mechanics_name,
+                                    'contact': contact,
+                                    'email': email,
+                                    'description': description,
+                                    'status': status
+                                },
+                                success: function(response) {
+                                    // Handle the success response
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'Mechanic updated successfully.',
+                                        icon: 'success',
+                                        timer: 2000, // 2 seconds
+                                        timerProgressBar: true,
+                                        didClose: () => {
+                                            // Reload the page to reflect the changes
+                                            location.reload();
+                                        }
+                                    });
+                                    $(`#mechanicEdit${id}`).modal('hide');
+                                },
+                                error: function(xhr, status, error) {
+                                    // Handle the error response
+                                    Swal.fire("Error!", "Failed to update mechanic.", "error");
+                                }
+                            });
+                        });
                     </script>
                 @endpush

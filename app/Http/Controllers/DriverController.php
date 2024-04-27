@@ -14,16 +14,16 @@ class DriverController extends Controller
     }
     
 
-   
+ 
     public function create(Request $request)
     {
         $rules = [
-            'driver_name' => 'required|string',
-            'contact' => 'required|string',
-            'email' => 'required|email',
-            'driver_license' => 'required|string',
+            'driver_name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'driver_license' => 'required|string|max:255',
             'address' => 'required|string',
-            'status' => 'required',
+            'status' => 'required|string',
         ];
     
         $validator = Validator::make($request->all(), $rules);
@@ -51,14 +51,14 @@ class DriverController extends Controller
     }
     public function driverdata()
     {
-        // $drivers = Driver::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
+        $drivers = Driver::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc')
+            ->get();
 
 
-        // return response()->json([
-        //     'drivers' => $drivers,
-        // ]);
+        return response()->json([
+            'drivers' => $drivers,
+        ]);
     }
     
     public function edit(Request $request)
@@ -108,18 +108,11 @@ class DriverController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-    
-        try {
-            $driver = Driver::findOrFail($id);
-            $driver->delete();
-    
-            return response()->json([
-                'message' => 'Driver deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to delete driver: ' . $e->getMessage(),
-            ], 500);
-        }
+        Driver::find($id)->update([
+            'isdel' => 'deleted',
+        ]);
+        return response()->json([
+            'message' => $request->id,
+        ]);
     }
 }    

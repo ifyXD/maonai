@@ -86,7 +86,9 @@
                                 <a class="nav-link" href="maintenance">Maintenances</a>
                                 <a class="nav-link" href="mechanics">Mechanics</a>
                                 <a class="nav-link" href="drivers">Driver</a>
-                                <a class="nav-link" href="fuel">Fuel Types</a>
+                                <a class="nav-link" href="Fuel">Fuel</a>
+                                <a class="nav-link" href="fuel">Parking area</a>
+
 
 
 
@@ -95,10 +97,7 @@
                                 
                             </nav>
                         </div>
-                        <a class="nav-link" href="destination">
-                            <div class="nav-link-icon"><i data-feather="filter"></i></div>
-                            Trip Destination
-                        </a>
+                    
                         <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseVehicles" aria-expanded="false" aria-controls="collapseVehicles">
                             <div class="nav-link-icon"><i data-feather="activity"></i></div>
                             Request Vehicles Management
@@ -112,6 +111,10 @@
                                 <a class="nav-link" href="#">Declined <span class="badge badge-danger-soft text-danger ml-auto">Updated</span></a>
                             </nav>
                         </div>
+                        <a class="nav-link" href="destination">
+                            <div class="nav-link-icon"><i data-feather="filter"></i></div>
+                            Trip Destination
+                        </a>
                         <div class="sidenav-menu-heading">Users</div>
                         <!-- Sidenav Link (Tables)-->
                         <a class="nav-link" href="tables.html">

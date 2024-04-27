@@ -124,9 +124,9 @@ Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 //Drivers
 Route::get('/drivers', [DriverController::class, 'index']);
 Route::get('/driverve', [DriverController::class, 'driverdata']);
-Route::post('/addnnewDriver', [DriverController::class, 'create']);
+Route::post('/addnewDriver', [DriverController::class, 'create']);
 Route::post ('/editbyid', [DriverController::class, 'edit']);
-Route::post('/mechanic/deletebyid', [DriverController::class, 'delete']);
+Route::post('/driver/deletebyid', [DriverController::class, 'delete']);
 //tripdestination
 
 
