@@ -61,31 +61,34 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="evaluation">Evaluation</label>
+                        <div class="mb-1">
+                            <label for="evaluation" class="form-label">Evaluation</label>
                             <input type="text" class="form-control" id="evaluation" name="evaluation">
                         </div>
-                        <div class="form-group">
-                            <label for="condition">Condition</label>
+    
+                        <div class="mb-1">
+                            <label for="condition" class="form-label">Condition</label>
                             <input type="text" class="form-control" id="condition" name="condition">
                         </div>
-                        <div class="form-group">
-                            <label for="timefinish">Time Finish</label>
+    
+                        <div class="mb-1">
+                            <label for="timefinish" class="form-label">Time Finish</label>
                             <input type="datetime-local" class="form-control" id="timefinish" name="timefinish">
                         </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
+    
+                        <div class="mb-1">
+                            <label for="status" class="form-label">Status</label>
                             <input type="text" class="form-control" value="pending" id="status" name="status">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" id="createMaintenanceBtn" class="btn btn-primary">Submit</button>
+                        <button type="submit" id="createMaintenanceBtn" class="btn btn-primary mr-auto">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    
 @endsection
 
 @push('scripts')

@@ -1,80 +1,113 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="row mt-10 ml-1">
 
-<div class="col-xxl-3 col-lg-6">
-    <div class="card bg-primary text-white mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="mr-3">
-                    <div class="text-white-75 small">Total (Requester)</div>
-                    <div class="text-lg font-weight-bold"></div>
+<header class="page-header page-header-dark bg-blue pb-1">
+    <div class="container">
+        <div class="page-header-content pt-1">
+            <div class="row align-items-center justify-content-center -ml-6"> <!-- Changed justify-content-between to justify-content-start -->
+                <div class="col-auto mt-1">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon -mr-3"></div>
+                        Dashboard
+                    </h1>
                 </div>
-                <i class="feather-xl text-white-50" data-feather="calendar"></i>
             </div>
         </div>
-        <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="contacts_requests">View Here</a>
-            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+    </div>
+</header>
+
+<div class="row mt-2 ml-1">
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-1 text-white mb-4 mr-4 bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 1</h5>
+                <p class="card-text">Some example text for card 1.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 1</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-2 text-white mb-4 mr-4 bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 2</h5>
+                <p class="card-text">Some example text for card 2.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 2</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-3 text-white mb-4 mr-4 bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 3</h5>
+                <p class="card-text">Some example text for card 3.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 3</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-4 text-white mb-4 mr-4 bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 4</h5>
+                <p class="card-text">Some example text for card 4.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 4</a>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="col-xxl-3 col-lg-6">
-    <div class="card bg-warning text-white mb-4">
-        <div class="card-body ">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="mr-3">
-                    <div class="text-white-75 small">Pending (Request)</div>
-                    <div class="text-lg font-weight-bold"></div>
-                </div>
-                <i class="feather-xl text-white-50" data-feather="book"></i>
+<div class="row  ml-1">
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-1 text-white mb-4 mr-4 bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 1</h5>
+                <p class="card-text">Some example text for card 1.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 1</a>
             </div>
         </div>
-        <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="pending_requests">View Table</a>
-            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-        </div>
     </div>
-</div>
-
-<div class="col-xxl-3 col-lg-6">
-    <div class="card bg-success text-white mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="mr-3">
-                    <div class="text-white-75 small">Accepted</div>
-                    <div class="text-lg font-weight-bold"></div>
-                </div>
-                <i class="feather-xl text-white-50" data-feather="check-square"></i>
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-2 text-white mb-4 mr-4 bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 2</h5>
+                <p class="card-text">Some example text for card 2.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 2</a>
             </div>
         </div>
-        <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="accepted_requests">View Table</a>
-            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-        </div>
     </div>
-</div>
-
-<div class="col-xxl-3 col-lg-6">
-    <div class="card bg-danger text-white mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="mr-3">
-                    <div class="text-white-75 small">Declined</div>
-                    <div class="text-lg font-weight-bold"></div>
-                </div>
-                <i class="feather-xl text-white-50" data-feather="bell-off"></i>
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-3 text-white mb-4 mr-4 bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 3</h5>
+                <p class="card-text">Some example text for card 3.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 3</a>
             </div>
         </div>
-        <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="declined_requests">View Table</a>
-            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+    </div>
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card card-style-4 text-white mb-4 mr-4 bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Card Title 4</h5>
+                <p class="card-text">Some example text for card 4.</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-light">Button 4</a>
+            </div>
         </div>
     </div>
-</div>
-
 </div>
 
 

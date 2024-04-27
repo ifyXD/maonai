@@ -20600,3 +20600,49 @@ pre[class*=language-] {
   border-top: 5px solid #333;
   pointer-events: none;
 }
+.card.example {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right: 15px; /* Corrected margin-right */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.card-body.example {
+  
+  padding: 30px; /* Increased padding */
+  font-size: 1.2rem; /* Increased font size */
+  
+}
+
+.card-footer.example {
+  padding: 20px 30px; /* Increased padding */
+  background-color: black;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-footer.example a {
+  color: #fff;
+}
+
+.row.example {
+  margin-bottom: 0;
+}
+.bg-primary {
+  background-color: #007bff !important; /* Change the color code as needed */
+}
+
+.bg-warning {
+  background-color: #ffc107 !important; /* Change the color code as needed */
+}
+
+.bg-success {
+  background-color: #28a745 !important; /* Change the color code as needed */
+}
+
+.bg-danger {
+  background-color: #dc3545 !important; /* Change the color code as needed */
+}
+.custom-card {
+  margin-right: 0 !important;
+}

@@ -86,8 +86,8 @@
                                 <a class="nav-link" href="maintenance">Maintenances</a>
                                 <a class="nav-link" href="mechanics">Mechanics</a>
                                 <a class="nav-link" href="drivers">Driver</a>
-                                <a class="nav-link" href="Fuel">Fuel</a>
-                                <a class="nav-link" href="fuel">Parking area</a>
+                                <a class="nav-link" href="fuel">Fuel Types</a>
+                                <a class="nav-link" href="#">Parking area</a>
 
 
 

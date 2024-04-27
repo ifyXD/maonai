@@ -20,7 +20,7 @@ class FuelController extends Controller
         'fuel_type' => 'required|string',
         'fuel_quantity' => 'required|numeric',
         'fuel_cost' => 'required|numeric',
-        'status' => 'required|string|in:pending,active,inactive',
+        'status' => 'required|string|in:unavailable',
     ]);
     
     if ($validator->fails()) {
