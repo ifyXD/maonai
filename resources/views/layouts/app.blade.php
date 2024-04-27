@@ -85,7 +85,7 @@
                                 <a class="nav-link" href="vehicle">Vehicles</a>
                                 <a class="nav-link" href="maintenance">Maintenances</a>
                                 <a class="nav-link" href="mechanics">Mechanics</a>
-                                <a class="nav-link" href="#">Driver</a>
+                                <a class="nav-link" href="drivers">Driver</a>
                                 <a class="nav-link" href="fuel">Fuel Types</a>
 
 
