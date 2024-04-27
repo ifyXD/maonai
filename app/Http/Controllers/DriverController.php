@@ -13,6 +13,8 @@ class DriverController extends Controller
         return view('driver.index');
     }
     
+
+   
     public function create(Request $request)
     {
         $rules = [
@@ -21,7 +23,7 @@ class DriverController extends Controller
             'email' => 'required|email',
             'driver_license' => 'required|string',
             'address' => 'required|string',
-            'status' => 'required|in:pending,completed',
+            'status' => 'required',
         ];
     
         $validator = Validator::make($request->all(), $rules);
@@ -46,6 +48,17 @@ class DriverController extends Controller
             'message' => 'Driver created successfully',
             'driver' => $driver,
         ], 201);
+    }
+    public function driverdata()
+    {
+        // $drivers = Driver::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+
+
+        // return response()->json([
+        //     'drivers' => $drivers,
+        // ]);
     }
     
     public function edit(Request $request)
