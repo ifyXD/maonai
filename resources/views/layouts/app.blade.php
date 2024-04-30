@@ -87,7 +87,7 @@
                                 <a class="nav-link" href="mechanics">Mechanics</a>
                                 <a class="nav-link" href="drivers">Driver</a>
                                 <a class="nav-link" href="fuel">Fuel Types</a>
-                                <a class="nav-link" href="#">Parking area</a>
+                                <a class="nav-link" href="parking">Parking area</a>
 
 
 
@@ -112,6 +112,7 @@
                             </nav>
                         </div>
                         <a class="nav-link" href="destination">
+
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Trip Destination
                         </a>

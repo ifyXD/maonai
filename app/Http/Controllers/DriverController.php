@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class DriverController extends Controller
@@ -60,18 +61,28 @@ class DriverController extends Controller
             'drivers' => $drivers,
         ]);
     }
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+        Driver::find($id)->update([
+            'isdel' => 'deleted',
+        ]);
+        return response()->json([
+            'message' => $request->id,
+        ]);
+    }
     
     public function edit(Request $request)
     {
         $id = $request->id;
-    
+
         $rules = [
             'driver_name' => 'required|string',
             'contact' => 'required|string',
             'email' => 'required|email',
             'driver_license' => 'required|string',
             'address' => 'required|string',
-            'status' => 'required|in:pending,completed',
+            'status' => 'required|string',
         ];
     
         $validator = Validator::make($request->all(), $rules);
@@ -105,14 +116,5 @@ class DriverController extends Controller
         }
     }
     
-    public function delete(Request $request)
-    {
-        $id = $request->id;
-        Driver::find($id)->update([
-            'isdel' => 'deleted',
-        ]);
-        return response()->json([
-            'message' => $request->id,
-        ]);
-    }
+   
 }    

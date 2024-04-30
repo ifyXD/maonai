@@ -15,5 +15,6 @@ class Driver extends Model
         'driver_license',
         'address',
         'status',
+        'isdel'
     ];
 }

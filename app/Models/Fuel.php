@@ -16,12 +16,4 @@ class Fuel extends Model
         'status',
     ];
 
-    protected $casts = [
-        'fuel_quantity' => 'decimal:2',
-        'fuel_cost' => 'decimal:2',
-    ];
-
-    protected $dates = [
-        'date',
-    ];
 }

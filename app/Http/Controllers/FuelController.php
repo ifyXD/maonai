@@ -15,25 +15,26 @@ class FuelController extends Controller
     }
     public function create(Request $request)
 {
-    $validator = Validator::make($request->all(), [
+    $validatedData = $request->validate([
         'date' => 'required|date',
         'fuel_type' => 'required|string',
-        'fuel_quantity' => 'required|numeric',
-        'fuel_cost' => 'required|numeric',
-        'status' => 'required|string|in:unavailable',
+        'fuel_quantity' => 'required|',
+        'fuel_cost' => 'required|',
+        'status' => 'required|',
     ]);
-    
-    if ($validator->fails()) {
-        return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
-    }
-    
-    $fuel = new Fuel();
-    $fuel->fill($validator->validated());
-    $fuel->save();
-    
-    return response()->json(['success' => true, 'message' => 'Fuel record created successfully.'], 200);
-}
 
+    // Create a new Fuel record
+    $fuel = new Fuel();
+    $fuel->date = $validatedData['date'];
+    $fuel->fuel_type = $validatedData['fuel_type'];
+    $fuel->fuel_quantity = $validatedData['fuel_quantity'];
+    $fuel->fuel_cost = $validatedData['fuel_cost'];
+    $fuel->status = $validatedData['status'];
+    $fuel->save();
+
+    // Return a success response
+    return response()->json(['message' => 'success']);
+}
 public function fuels()
 {
     $fuels = Fuel::orderByRaw("CASE WHEN status = 'active' THEN 0 ELSE 1 END")

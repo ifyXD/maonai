@@ -9,6 +9,7 @@ use App\Http\Controllers\FuelController;
 use App\Http\Controllers\LandingPage;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MechanicsController;
+use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\TripDestinationController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Auth;
@@ -123,7 +124,7 @@ Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 
 //Drivers
 Route::get('/drivers', [DriverController::class, 'index']);
-Route::get('/driverve', [DriverController::class, 'driverdata']);
+Route::get('/driverdatatae', [DriverController::class, 'driverdata']);
 Route::post('/addnewDriver', [DriverController::class, 'create']);
 Route::post ('/editbyid', [DriverController::class, 'edit']);
 Route::post('/driver/deletebyid', [DriverController::class, 'delete']);
@@ -137,9 +138,13 @@ Route::post('/tripdestination', [TripDestinationController::class, 'create']);
 
 
 
-//partking
+//fuels
 
 Route::get('/fuel', [FuelController::class, 'index']);
+Route::get('/fueldata', [FuelController::class, 'fuels']);
+Route::post('/addnewfuel', [FuelController::class, 'create']);
+Route::post ('/editbyid', [FuelController::class, 'edit']);
+Route::post('/fuel/deletebyid', [FuelController::class, 'delete']);
 
 
 
@@ -150,6 +155,11 @@ Route::get('/departments', [DepartmentController::class, 'index']);
 Route::post('/admin/datausers', [DepartmentController::class, 'datausers']);
 Route::post('/admin/yawa', [DepartmentController::class, 'create']);
 Route::post('/admin/edit', [DepartmentController::class, 'edit']);
+
+
+// Parking area
+
+Route::get('/parking', [ParkingController::class, 'index']);
 
 });
 
