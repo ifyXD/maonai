@@ -25,7 +25,53 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*DO NOT TOUCH IT YET*/
+Route::get('/invoices/{contact_id}', function () {
+    return view('invoices.index');
+});
 
+
+use App\Http\Controllers\InvoiceController;
+
+// Route for generating and downloading a PDF invoice for a specific contact
+Route::get('/invoices/generate-pdf/{contact_id}', [InvoiceController::class, 'generatePDF'])->name('invoices.generatePDF');
+
+
+// Route for displaying invoices associated with a specific contact
+Route::get('/invoices/{contact_id}', [InvoiceController::class, 'index'])->name('invoices.index');
+
+// Route for displaying the form to add new labor records for a specific contact
+Route::get('/invoices/createLabors/{contact_id}', [InvoiceController::class, 'createLabors'])->name('invoices.createLabors');
+
+// Route for storing new labor records for a specific contact
+Route::post('/invoices/storeLabors/{contact_id}', [InvoiceController::class, 'storeLabors'])->name('invoices.storeLabors');
+
+// Route for displaying the form to add new material records for a specific contact
+Route::get('/invoices/createMaterials/{contact_id}', [InvoiceController::class, 'createMaterials'])->name('invoices.createMaterials');
+
+// Route for storing new material records for a specific contact
+Route::post('/invoices/storeMaterials/{contact_id}', [InvoiceController::class, 'storeMaterials'])->name('invoices.storeMaterials');
+
+use App\Http\Controllers\ContactController;
+
+
+// Route for displaying the contact creation form
+Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+
+// Route for showing all contacts
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+
+// Route for showing the create contact form
+Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+
+// Route for storing a new contact
+Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
+
+// Route for updating a contact
+Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contacts.update');
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -51,7 +97,7 @@ Route::get('/export-individual-accepted-request-pdf/{requestId}', [ContactReques
     ->name('export.individual.accepted.request.pdf');
 
 
-    
+
 // Route for updating a request
 Route::put('/update-request/{requestId}', [ContactRequestController::class, 'updateRequest'])->name('update.request');
 Route::post('/update-status', [ContactRequestController::class, 'updateStatus'])->name('update_status');
@@ -79,7 +125,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['isAdmin'])->prefix('admin')->group(function () {
 
 
-    
+
 Route::post('/contacts_requests/store', [ContactRequestController::class, 'store'])->name('contacts_requests.store');
 Route::post('/contacts_requests/update_status', [ContactRequestController::class, 'updateStatus'])->name('update_status');
 

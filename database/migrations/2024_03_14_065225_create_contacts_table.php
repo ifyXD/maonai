@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('department');
+            $table->text('content')->nullable(); // Make content nullable
             $table->timestamps();
         });
+
     }
 
     /**
