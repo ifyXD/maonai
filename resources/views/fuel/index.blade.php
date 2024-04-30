@@ -57,11 +57,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="mb-1">
-                                                    <label for="date" class="form-label">Date</label>
-                                                    <input type="date" class="form-control" id="date" name="date"
-                                                        required>
-                                                </div>
+
 
                                                 <div class="mb-1">
                                                     <label for="fuel_type" class="form-label">Fuel Type</label>
@@ -103,7 +99,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Date</th>
                                     <th scope="col">Fuel Type</th>
                                     <th scope="col">Fuel Quantity</th>
                                     <th scope="col">Fuel Cost</th>
@@ -190,7 +185,6 @@
                         let row =
                             `<tr class="${ifdel}" id="trId${fuel.id}">
         <td > ${key }</td>
-        <td id="dateId${fuel.id}"> ${fuel.date}</td>
         <td id="fuel_typeId${fuel.id}"> ${fuel.fuel_type} </td>
         <td id="fuel_quantityId${fuel.id}"> ${fuel.fuel_quantity}</td>
         <td id="fuel_costId${fuel.id}"> ${fuel.fuel_cost} </td>
@@ -209,34 +203,27 @@
 </button>
                         </div>
                         <div class="modal-body"> 
-                            <div class="mb-3">
-                                <label for="editdate${fuel.id}" class="form-label">Plate Number</label>
-                                <input type="date" value="${fuel.date}" class="form-control" id="editdate${fuel.id}" aria-describedby="emailHelp"> 
-                            </div>
-                            <div class="mb-3">
-                                <label for="editfuel_type${fuel.id}" class="form-label">Type</label>
-                                <input type="text" value="${fuel.fuel_type}" class="form-control" id="editfuel_type${fuel.id}" aria-describedby="emailHelp"> 
-                            </div>
-                            <div class="mb-3">
-                                <label for="editfuel_quantity${fuel.id}" class="form-label">Fuel Quantity</label>
-                                <input type="number" value="${fuel.fuel_quantity}" step="0.01" class="form-control" id="editfuel_quantityr${fuel.id}" aria-describedby="emailHelp"> 
-                            </div>
-                            <div class="mb-3">
-                                <label for="editfuel_cost${fuel.id}" class="form-label">Condition</label>
-                                <input type="text" value="${fuel.fuel_cost}" class="form-control" id="editfuel_cost${fuel.id}" aria-describedby="emailHelp"> 
-                            </div>
-                           
-                            <div class="mb-1">
-                                                <label for="status" class="form-label">Status</label>
-                                                <select name="status" id="status${fuel.id}"  class="form-control" required>
-                                                    <option value="unavailable">Unavailable</option>
-                                                    <option value="available">Available</option>
-                                                </select>
-                                            </div>
-
-
-
-                        </div>
+    <div class="mb-3">
+        <label for="editfuel_type${fuel.id}" class="form-label">Fuel Type</label>
+        <input type="text" value="${fuel.fuel_type}" class="form-control" id="editfuel_type${fuel.id}" aria-describedby="emailHelp"> 
+    </div>
+    <div class="mb-3">
+        <label for="editfuel_quantity${fuel.id}" class="form-label">Fuel Quantity</label>
+        <input type="number" value="${fuel.fuel_quantity}" step="0.01" class="form-control" id="editfuel_quantity${fuel.id}" aria-describedby="emailHelp"> 
+    </div>
+    <div class="mb-3">
+        <label for="editfuel_cost${fuel.id}" class="form-label">Cost</label>
+        <input type="number" value="${fuel.fuel_cost}" class="form-control" id="editfuel_cost${fuel.id}" aria-describedby="emailHelp"> 
+    </div>
+    
+    <div class="mb-1">
+        <label for="status" class="form-label">Status</label>
+        <select name="status" id="editstatus${fuel.id}" class="form-control" required>
+            <option value="unavailable">Unavailable</option>
+            <option value="available">Available</option>
+        </select>
+    </div>
+</div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary" id="editSaveBtn" data-id="${fuel.id}">Save</button>
@@ -310,45 +297,40 @@
             });
         }
 
-        function createFuel(date, fuel_type, fuel_quantity, fuel_cost, status, callback) {
-    $.ajax({
-        type: 'post',
-        url: '/admin/addnewfuel',
-        data: {
-            'date': date,
-            'fuel_type': fuel_type,
-            'fuel_quantity': fuel_quantity,
-            'fuel_cost': fuel_cost,
-            'status': status,
-        },
-        success: function(data) {
-            if (data.message === 'success') {
-                $('#messageflash').text(' added successfully');
-                callback(true); // Invoke the callback with true indicating success
-            }
-        },
-        error: function(xhr, status, error) {
-            // Log the error to the console for debugging
-            console.log(xhr.responseText);
-            callback(false); // Invoke the callback with false indicating failure
+        function createFuel(fuel_type, fuel_quantity, fuel_cost, status, callback) {
+            $.ajax({
+                type: 'post',
+                url: '/admin/addnewfuel',
+                data: {
+                    'fuel_type': fuel_type,
+                    'fuel_quantity': fuel_quantity,
+                    'fuel_cost': fuel_cost,
+                    'status': status,
+                },
+                success: function(data) {
+                    if (data.message === 'success') {
+                        $('#messageflash').text(' added successfully');
+                        callback(true); // Invoke the callback with true indicating success
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Log the error to the console for debugging
+                    console.log(xhr.responseText);
+                    callback(false); // Invoke the callback with false indicating failure
+                }
+            });
         }
-    });
-}
-
     </script>
 
     {{-- jquery code --}}
     <script>
         $('#createFuelBtn').on('click', function(e) {
             e.preventDefault(); // Prevent the default form submission behavior
-
-            let date = $('#date').val();
             let fuel_type = $('#fuel_type').val();
             let fuel_quantity = $('#fuel_quantity').val();
             let fuel_cost = $('#fuel_cost').val();
             let status = $('#status').val();
-            console.log(date+fuel_type+fuel_quantity+fuel_cost+status);
-            createFuel(date, fuel_type, fuel_quantity, fuel_cost, status, function(success) {
+            createFuel(fuel_type, fuel_quantity, fuel_cost, status, function(success) {
                 if (success === true) {
                     Swal.fire({
                         position: "center",
@@ -359,7 +341,6 @@
                         timerProgressBar: true,
 
                     }).then(() => {
-                        $('#date').val('');
                         $('#fuel_type').val('');
                         $('#fuel_quantity').val('');
                         $('#fuel_cost').val('');
@@ -372,78 +353,66 @@
             });
         });
 
-        $('tbody').on('click', '.editFuel', function() {
-            // Get the id of the vehicle to edit
-            let id = $(this).data('id');
 
-            // Show the edit modal
-            $(`#fuelEdit${id}`).modal('show');
+        $(document).on('click', '.editFuel', function() {
+    // Get the id of the fuel record to edit
+    let id = $(this).attr('data-id');
 
-            // Get the current vehicle data
-            let date = $('#date').val();
-            let fuel_type = $('#fuel_type').val();
-            let fuel_quantity = $('#fuel_quantity').val();
-            let fuel_cost = $('#fuel_cost').val();
-            let status = $('#status').val();
+    // Show the edit modal
+    $(`#fuelEdit${id}`).modal('show');
 
-            // Update the modal inputs with the current vehicle data
-            $(`#editdate${id}`).val(fuel.fuel_type);
-            $(`#editfuel_type${id}`).val(fuel.type);
-            $(`#editfuel_quantity${id}`).val(fuel.fuel_quantity);
-            $(`#editfuel_cost${id}`).val(fuel.condition);
-            $(`#status${id}`).val(fuel.status);
-        });
+    // Get the current fuel data
+    let fuel_type = $(`#fuel_typeId${id}`).text().trim();
+    let fuel_quantity = $(`#fuel_quantityId${id}`).text().trim();
+    let fuel_cost = $(`#fuel_costId${id}`).text().trim();
+    let status = $(`#statusId${id}`).text().trim();
 
-        // Save button click event listener
-        $('tbody').on('click', '#editSaveBtn', function() {
-            // Get the id of the vehicle being edited
-            let id = $(this).attr('data-id');
+    // Update the modal inputs with the current fuel data
+    $(`#editfuel_type${id}`).val(fuel_type);
+    $(`#editfuel_quantity${id}`).val(fuel_quantity);
+    $(`#editfuel_cost${id}`).val(fuel_cost);
+    $(`#status${id}`).val(status);
+});
 
-            // Get the updated values from the modal inputs
-            let date = $(`#editdate${id}`).val();
-            let fuel_type = $(`#editfuel_type${id}`).val();
-            let fuel_quantity = $(`#editfuel_quantity${id}`).val();
-            let fuel_cost = $(`#editfuel_cost${id}`).val();
-            let status = $(`#status${id}`).val();
+// Save button click event listener
+$(document).on('click', '#editSaveBtn', function() {
+    let id = $(this).attr('data-id');
+    let fuel_type = $(`#editfuel_type${id}`).val();
+    let fuel_quantity = $(`#editfuel_quantity${id}`).val();
+    let fuel_cost = $(`#editfuel_cost${id}`).val();
+    let status = $(`#editstatus${id}`).val();
 
-            // Send the data to the server using AJAX
-            $.ajax({
-                type: 'post',
-                url: '/admin/editbyid',
-                data: {
-                    'id': id,
-                    'date': date,
-                    'fuel_type': fuel_type,
-                    'fuel_quantity': fuel_quantity,
-                    'fuel_cost': fuel_cost,
-                    'status': status
-                },
-                success: function(response) {
-                    // Handle the success response
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Fuel updated successfully.',
-                        icon: 'success',
-                        timer: 2000, // 2 seconds
-                        timerProgressBar: true,
-                        didClose: () => {
-                            // Reload the page to reflect the changes
-                            location.reload();
-                        }
-                    });
-                    $(`#fuelEdit${id}`).modal('hide');
-                },
-                error: function(xhr, status, error) {
-                    // Handle the error response
-                    Swal.fire("Error!", "Failed to update vehicle.", "error");
-
+    $.ajax({
+        type: 'post',
+        url: '/admin/fuel/edit',
+        data: {
+            '_token': '{{ csrf_token() }}',
+            'id': id,
+            'fuel_type': fuel_type,
+            'fuel_quantity': fuel_quantity,
+            'fuel_cost': fuel_cost,
+            'status': status
+        },
+        success: function(response) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Fuel updated successfully.',
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                didClose: () => {
+                    location.reload();
                 }
             });
-
-        });
-
-        $(document).on('click', '[data-bs-dismiss="modal"]', function() {
-            $(this).closest('.modal').modal('hide');
-        });
+            $(`#fuelEdit${id}`).modal('hide');
+        },
+        error: function(xhr, status, error) {
+            Swal.fire("Error!", "Failed to update fuel.", "error");
+        }
+    });
+});
+$(document).on('click', '[data-bs-dismiss="modal"]', function() {
+    $(this).closest('.modal').modal('hide');
+});
     </script>
 @endpush

@@ -384,7 +384,7 @@
 
         $('tbody').on('click', '.editDriver', function() {
             // Get the id of the vehicle to edit
-            let id = $(this).data('id');
+            let id = $(this).attr('data-id');
 
             // Show the edit modal
             $(`#driverEdit${id}`).modal('show');
@@ -418,45 +418,42 @@
     let driver_license = $(`#editdriver_license${id}`).val();
     let address = $(`#editaddress${id}`).val();
     let status = $(`#editstatus${id}`).val();
-    console.log(driver_name+contact+email+driver_license+address+status);
 
     // Send the data to the server using AJAX
     $.ajax({
-    type: 'post',
-    url: '/admin/editbyid',
-    data: {
-        'id': id,
-        'driver_name': driver_name,
-        'contact': contact,
-        'email': email,
-        'driver_license': driver_license,
-        'address': address,
-        'status': status
-    },
-    success: function(response) {
-        // Handle the success response
-        Swal.fire({
-            title: 'Success!',
-            text: 'Driver updated successfully.',
-            icon: 'success',
-            timer: 2000, // 2 seconds
-            timerProgressBar: true,
-            didClose: () => {
-                // Reload the page to reflect the changes
-                location.reload();
-            }
-        });
-        $(`#driverEdit${id}`).modal('hide');
-    },
-    error: function(xhr, status, error) {
-        // Handle the error response
-        console.error('Error updating driver:', error);
-        Swal.fire("Error!", "Failed to update driver.", "error");
-    }
+        type: 'post',
+        url: '/admin/driver/edit', // Assuming this is the correct URL for editing drivers
+        data: {
+            '_token': '{{ csrf_token() }}',
+            'id': id,
+            'driver_name': driver_name,
+            'contact': contact,
+            'email': email,
+            'driver_license': driver_license,
+            'address': address,
+            'status': status
+        },
+        success: function(response) {
+            // Handle the success response
+            Swal.fire({
+                title: 'Success!',
+                text: 'Driver updated successfully.',
+                icon: 'success',
+                timer: 2000, // 2 seconds
+                timerProgressBar: true,
+                didClose: () => {
+                    // Reload the page to reflect the changes
+                    location.reload();
+                }
+            });
+            $(`#driverEdit${id}`).modal('hide');
+        },
+        error: function(xhr, status, error) {
+            // Handle the error response
+            Swal.fire("Error!", "Failed to update driver.", "error");
+        }
+    });
 });
-});
-        $(document).on('click', '[data-bs-dismiss="modal"]', function() {
-            $(this).closest('.modal').modal('hide');
-        });
+    
     </script>
 @endpush

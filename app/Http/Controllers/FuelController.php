@@ -5,81 +5,108 @@ namespace App\Http\Controllers;
 use App\Models\Fuel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use League\Config\Exception\ValidationException;
 
 class FuelController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('fuel.index');
-
     }
+
     public function create(Request $request)
-{
-    $validatedData = $request->validate([
-        'date' => 'required|date',
-        'fuel_type' => 'required|string',
-        'fuel_quantity' => 'required|',
-        'fuel_cost' => 'required|',
-        'status' => 'required|',
-    ]);
+    {
+        // Validation rules
+        $rules = [
+            'fuel_type' => 'required|string|max:20',
+            'fuel_quantity' => 'required|numeric',
+            'fuel_cost' => 'required|numeric',
+            'status' => 'required|string',
+        ];
 
-    // Create a new Fuel record
-    $fuel = new Fuel();
-    $fuel->date = $validatedData['date'];
-    $fuel->fuel_type = $validatedData['fuel_type'];
-    $fuel->fuel_quantity = $validatedData['fuel_quantity'];
-    $fuel->fuel_cost = $validatedData['fuel_cost'];
-    $fuel->status = $validatedData['status'];
-    $fuel->save();
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules);
 
-    // Return a success response
-    return response()->json(['message' => 'success']);
-}
-public function fuels()
-{
-    $fuels = Fuel::orderByRaw("CASE WHEN status = 'active' THEN 0 ELSE 1 END")
-        ->orderBy('date', 'desc')
-        ->get();
-    return response()->json([
-        'fuels' => $fuels, 
-        'message' => 'Fuel records retrieved successfully',
-    ]);
-}
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $validator->errors(),
+            ], 422); // Unprocessable Entity status code
+        }
 
-public function delete(Request $request)
+        // If validation passes, create a new fuel record
+        $fuel = new Fuel();
+        $fuel->fuel_type = $request->fuel_type;
+        $fuel->fuel_quantity = $request->fuel_quantity;
+        $fuel->fuel_cost = $request->fuel_cost;
+        $fuel->status = $request->status;
+
+        // Save the fuel record to the database
+        $fuel->save();
+
+        // Return a success response
+        return response()->json([
+            'message' => 'success',
+            'fuel' => $fuel,
+        ], 201); // Created status code
+    }
+
+    public function datafuels()
+    {
+        $fuels = Fuel::orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'fuels' => $fuels,
+        ]);
+    }
+
+    public function delete(Request $request)
     {
         $id = $request->id;
-        Fuel::find($id)->update([
-            'isdel' => 'deleted',
-        ]);
+        Fuel::find($id)->delete();
+
         return response()->json([
-            'message' => 'Mechanic deleted successfully',
+            'message' => 'success',
         ]);
-}
-
-public function edit(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'id' => 'required|exists:fuels',
-        'date' => 'required|date',
-        'fuel_type' => 'required|string',
-        'fuel_quantity' => 'required|numeric',
-        'fuel_cost' => 'required|numeric',
-        'status' => 'required|string|in:pending,active,inactive',
-    ]);
-    
-    if ($validator->fails()) {
-        return response()->json(['message' => $validator->errors()->first()], 422);
     }
 
-    $fuel = Fuel::find($request->id);
-    if (!$fuel) {
-        return response()->json(['message' => 'Fuel record not found'], 404);
+    public function edit(Request $request)
+    {
+        try {
+            // Validation rules
+            $rules = [
+                'fuel_type' => 'required|string|max:20',
+                'fuel_quantity' => 'required|numeric',
+                'fuel_cost' => 'required|numeric',
+                'status' => 'required|string',
+            ];
+
+            // Validate the request data
+            $validator = Validator::make($request->all(), $rules);
+
+            // Check if validation fails
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'failed',
+                    'errors' => $validator->errors(),
+                ], 422); // Unprocessable Entity status code
+            }
+
+            // Find the fuel record by ID
+            $fuel = Fuel::findOrFail($request->id);
+
+            // Update the fuel record attributes
+            $fuel->update($request->all());
+
+            return response()->json([
+                'message' => 'success',
+                'fuel' => $fuel, // Optionally return the updated fuel object
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'failed',
+                'error' => $e->getMessage(),
+            ], 500); // Internal Server Error status code
+        }
     }
-
-    $fuel->fill($validator->validated());
-    $fuel->save();
-
-    return response()->json(['message' => 'Fuel record updated successfully'], 200);
-}
 }
