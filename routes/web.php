@@ -172,7 +172,7 @@ Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 Route::get('/drivers', [DriverController::class, 'index']);
 Route::get('/driverdatatae', [DriverController::class, 'driverdata']);
 Route::post('/addnewDriver', [DriverController::class, 'create']);
-Route::post ('/editbyid', [DriverController::class, 'edit']);
+Route::post ('/driver/edit', [DriverController::class, 'edit']);
 Route::post('/driver/deletebyid', [DriverController::class, 'delete']);
 //tripdestination
 
@@ -187,9 +187,9 @@ Route::post('/tripdestination', [TripDestinationController::class, 'create']);
 //fuels
 
 Route::get('/fuel', [FuelController::class, 'index']);
-Route::get('/fueldata', [FuelController::class, 'fuels']);
+Route::get('/fueldata', [FuelController::class, 'datafuels']);
 Route::post('/addnewfuel', [FuelController::class, 'create']);
-Route::post ('/editbyid', [FuelController::class, 'edit']);
+Route::post ('fuel/edit', [FuelController::class, 'edit']);
 Route::post('/fuel/deletebyid', [FuelController::class, 'delete']);
 
 
@@ -205,8 +205,8 @@ Route::post('/admin/edit', [DepartmentController::class, 'edit']);
 
 // Parking area
 
-Route::get('/parking', [ParkingController::class, 'index']);
-
+Route::get('/parking', [ParkingController::class, 'index'])->name('parking.index');
+Route::post('/parking/{id}/toggle', [ParkingController::class, 'toggleAvailability'])->name('parking.toggle');
 });
 
 Route::middleware(['isUser'])->prefix('user')->group(function () {

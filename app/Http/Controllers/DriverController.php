@@ -74,7 +74,7 @@ class DriverController extends Controller
     
     public function edit(Request $request)
     {
-        $id = $request->id;
+        $id = $request->input('id');
 
         $rules = [
             'driver_name' => 'required|string',
@@ -84,16 +84,16 @@ class DriverController extends Controller
             'address' => 'required|string',
             'status' => 'required|string',
         ];
-    
+        
         $validator = Validator::make($request->all(), $rules);
-    
+        
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
         }
-    
+        
         try {
             $driver = Driver::findOrFail($id);
             $driver->update([
@@ -104,17 +104,16 @@ class DriverController extends Controller
                 'address' => $request->address,
                 'status' => $request->status,
             ]);
-    
+        
             return response()->json([
                 'message' => 'Driver updated successfully',
                 'driver' => $driver,
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to update driver: ' . $e->getMessage(),
+                'message' => 'Failed to update driver',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
-    
-   
-}    
+}
