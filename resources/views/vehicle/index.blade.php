@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<main class="mb-1">
+<main class="mb-1z">
 
 
  <header class="page-header page-header-dark bg-teal pb-10">
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         </div>
-
+                        
                         <table class="table table-bordered table-hover" id="dataTable"width="100%" cellspacing="1">
                             <thead>
                                 <tr>
