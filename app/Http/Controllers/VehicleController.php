@@ -11,6 +11,7 @@ class VehicleController extends Controller
 {
     public function index()
     {
+        
         return view('vehicle.index');
     }
 
@@ -118,5 +119,14 @@ class VehicleController extends Controller
             ], 500); // Internal Server Error status code
         }
     }
+    public function showTable()
+{
+    $vehicles = Vehicle::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $vehicles = Vehicle::all();
+
+    return view('dashboard.user.user', ['vehicles' => $vehicles]);
+}
     
 }

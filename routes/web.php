@@ -12,6 +12,7 @@ use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\TripDestinationController;
 use App\Http\Controllers\VehicleController;
+use App\Models\Parking;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -206,12 +207,15 @@ Route::post('/admin/edit', [DepartmentController::class, 'edit']);
 // Parking area
 
 Route::get('/parking', [ParkingController::class, 'index'])->name('parking.index');
-Route::post('/parking/{id}/toggle', [ParkingController::class, 'toggleAvailability'])->name('parking.toggle');
+Route::get('/parkingtae', [ParkingController::class, 'store']);
 });
 
 Route::middleware(['isUser'])->prefix('user')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+    Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
 
 });
 });

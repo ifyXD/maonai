@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('parkings', function (Blueprint $table) {
             $table->id();
-            $table->boolean('available')->default(true);
-            $table->string('vehicle_name')->nullable();
+            $table->string('slot_number');
+            $table->unsignedBigInteger('vehicles_id');
+            $table->foreign('vehicles_id')->references('id')->on('vehicles')->onDelete('cascade');  
+            $table->boolean('is_taken')->default(false);
             $table->timestamps();
         });
     }

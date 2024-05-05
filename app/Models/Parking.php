@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Parking extends Model
 {
-    use HasFactory;
-    protected $fillable = [
-        'name',
-        'available',
-    ];
+    use HasFactory;  
+    
+    protected $fillable = ['slot_number', 'is_taken'];
 
+
+    
 }

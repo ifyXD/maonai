@@ -1,208 +1,415 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+@extends('layouts.app')
+@section('content')
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    
-    <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
-
-    <!-- Scripts -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
-
-</head>
-<body class="nav-fixed">
-    <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white" id="sidenavAccordion">
-        <a class="navbar-brand" href="index.html">General Service Office</a>
-        <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2" id="sidebarToggle"><i data-feather="menu"></i></button>
-        <!-- Navbar Items-->
-        <ul class="navbar-nav align-items-center ml-auto">
-            <!-- User Dropdown-->
-            <li class="nav-item dropdown no-caret mr-3 mr-lg-0 dropdown-user">
-                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="img-fluid" src="assets/img/1.jpg" />
-                </a>
-                <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
-                    <h6 class="dropdown-header d-flex align-items-center">
-                        <div class="dropdown-user-details">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>{{ Auth::user()->username }}</a>
+<div class="card-body">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center mb-5">
+                        <!-- Create Organization-->
+                        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11 mt-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body px-5 pt-5 d-flex flex-column">
+                                    <div>
+                                        <div class="h3 text-primary font-weight-300">Request Vehicles Here!</div>
+                                    </div>
+                                    <div class="icons-org-create align-items-center mx-auto mt-auto">
+                                        <i class="icon-users" data-feather="users"></i>
+                                        <i class="icon-plus fas fa-plus"></i>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent px-5 py-4">
+                                    <div class="small text-center"><a class="btn btn-block btn-primary" href="multi-tenant-create.html">Click</a></div>
+                                </div>
+                            </div>
                         </div>
-                    </h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                        <!-- Join Organization-->
+                        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11 mt-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body px-5 pt-5 d-flex flex-column align-items-between">
+                                    <div>
+                                        <div class="h3 text-secondary font-weight-300">Technical Request Here!</div>
+                                    </div>
+                                    <div class="icons-org-join align-items-center mx-auto">
+                                        <i class="icon-user" data-feather="user"></i>
+                                        <i class="icon-arrow fas fa-long-arrow-alt-right"></i>
+                                        <i class="icon-users" data-feather="users"></i>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent px-5 py-4">
+                                    <div class="small text-center"><a class="btn btn-block btn-secondary" href="multi-tenant-join.html">Click</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </li>
-        </ul>
-    </nav>
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sidenav shadow-right sidenav-light">
-                <div class="sidenav-menu">
-                    <div class="nav accordion" id="accordionSidenav">
-                        <!-- Sidenav Link (Messages)-->
-                        <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                        <a class="nav-link d-sm-none" href="#!">
-                            <div class="nav-link-icon"><i data-feather="mail"></i></div>
-                            Messages <span class="badge badge-success-soft text-success ml-auto">2 New!</span>
-                        </a>
-                        <!-- Sidenav Menu Heading (Admin)-->
-                        <div class="sidenav-menu-heading">Administrator</div>
-                        <!-- Sidenav Accordion (Dashboard)-->
-                        <a class="nav-link" href="dashboard">
-                            <div class="nav-link-icon"><i data-feather="filter"></i></div>
-                            Dashboard
-                        </a>    
-                        <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseDashboards" aria-expanded="false" aria-controls="collapseDashboards">
-                            <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                            Job Request Management
-                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseDashboards" data-parent="#accordionSidenav">
-                            <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                                <a class="nav-link" href="pending_requests">Pending <span class="badge badge-warning-soft text-warning ml-auto">Updated</span></a>
-                                <a class="nav-link" href="accepted_requests">Accepted <span class="badge badge-success-soft text-success ml-auto">Updated</span></a>
-                                <a class="nav-link" href="declined_requests">Declined <span class="badge badge-danger-soft text-danger ml-auto">Updated</span></a>
-                            </nav>
-                        </div>
-                        <!-- Sidenav Heading (App Views)-->
-                        <!-- Sidenav Accordion (Flows)-->
-                        <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
-                            <div class="nav-link-icon"><i data-feather="repeat"></i></div>
-                            Vehicles Management
-                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>    
-                        <div class="collapse" id="collapseFlows" data-parent="#accordionSidenav">
-                            <nav class="sidenav-menu-nested nav">
-                                <a class="nav-link" href="vehicle">Vehicles</a>
-                                <a class="nav-link" href="maintenance">Maintenances</a>
-                                <a class="nav-link" href="mechanics">Mechanics</a>
-                                <a class="nav-link" href="drivers">Driver</a>
-                                <a class="nav-link" href="fuel">Fuel Types</a>
-                                <a class="nav-link" href="#">Parking area</a>
+                <h1>Vehicles:</h1>
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Plate Number</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Driver</th>
+                            <th scope="col">Condition</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="date-header">Created at (UTC)</th>
+                            <th scope="col" class="date-header">Updated at (UTC)</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be dynamically populated here -->
+                    </tbody>
+                </table>
+            </main>
+        </div>
+        
 
 
+@endsection
+@push('scripts')
+    {{-- ajax crud --}}
+    <script>
+  $('option[value="decline"]').hide();
+
+        datausers();
+
+        function formatDate(dateString) {
+    var date = new Date(dateString);
+    var monthNames = [
+        "Jan", "Feb", "Mar",
+        "Apr", "May", "Jun", "Jul",
+        "Aug", "Sep", "Oct",
+        "Nov", "Dec"
+    ];
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours from 24-hour to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    // Pad the hours, minutes, and seconds with leading zeros if needed
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return monthNames[monthIndex] + ' ' + day + ', ' + year + ' ' + hours + ':' + minutes + ' ' + ampm;
+}
 
 
-                               
+        function datausers() {
 
-                                
-                            </nav>
-                        </div>
-                    
-                        <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseVehicles" aria-expanded="false" aria-controls="collapseVehicles">
-                            <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                            Request Vehicles Management
-                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseVehicles" data-parent="#accordionSidenav">
-                            <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                                <a class="nav-link" href="#">Main <span class="badge badge-primary-soft text-primary ml-auto">Updated</span></a>
-                                <a class="nav-link" href="#">Pending <span class="badge badge-warning-soft text-warning ml-auto">Updated</span></a>
-                                <a class="nav-link" href="#">Accepted <span class="badge badge-success-soft text-success ml-auto">Updated</span></a>
-                                <a class="nav-link" href="#">Declined <span class="badge badge-danger-soft text-danger ml-auto">Updated</span></a>
-                            </nav>
-                        </div>
-                        <a class="nav-link" href="destination">
-                            <div class="nav-link-icon"><i data-feather="filter"></i></div>
-                            Trip Destination
-                        </a>
-                        <div class="sidenav-menu-heading">Users</div>
-                        <!-- Sidenav Link (Tables)-->
-                        <a class="nav-link" href="tables.html">
-                            <div class="nav-link-icon"><i data-feather="filter"></i></div>
-                            User Management
-                        </a>
-                        <a class="nav-link" href="departments">
-                            <div class="nav-link-icon"><i data-feather="filter"></i></div>
-                            Departments
-                        </a>
+            $('#dataTable').DataTable().destroy();
+            $('tbody').empty();
+            $.ajax({
+                type: 'get',
+                url: '/user/vehiclesdata',
+                success: function(data) {
+                    // Assuming data is an array of user objects
+                    $.each(data.vehicles, function(index, vehicle) {
+                        var key = index + 1;
+                        var ifdel = vehicle.isdel === 'deleted' ? 'is-deleted' : '';
+
+                        var action = vehicle.isdel === 'active' ?
+
                         
+    `<a href="#" class="editVehicle" data-id="${vehicle.id}" data-bs-toggle="modal" data-bs-target="#vehicleEdit${vehicle.id}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+        </svg>
+    </a>
+    <a href="#" onclick="confirmDelete(${vehicle.id});" id="deleteUserId">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-danger" viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+        </svg>
+    </a>` :
+    `<span class="text-danger">Deleted</span>`;
+// Assuming user has properties like id, name, email, etc.
+let row =
+    `<tr class="${ifdel}" id="trId${vehicle.id}">
+        <td > ${key }</td>
+        <td id="platenumberId${vehicle.id}"> ${vehicle.platenumber}</td>
+        <td id="typeId${vehicle.id}"> ${vehicle.type} </td>
+        <td id="driverId${vehicle.id}"> ${vehicle.driver}</td>
+        <td id="conditionId${vehicle.id}"> ${vehicle.condition} </td>
+        <td id="statusId${vehicle.id}"> ${vehicle.status} </td> 
+        <td id="createdAtId${vehicle.id}">${formatDate(vehicle.created_at)}</td>
+        <td id="updatedAtId${vehicle.id}">${formatDate(vehicle.updated_at)}</td>
+        <td> 
+            ${action}
+            <div class="modal fade" id="vehicleEdit${vehicle.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Vehicle</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <i class="fas fa-times"></i>
+</button>
+                        </div>
+                        <div class="modal-body"> 
+                            <div class="mb-3">
+                                <label for="editplatenumber${vehicle.id}" class="form-label">Plate Number</label>
+                                <input type="text" value="${vehicle.platenumber}" class="form-control" id="editplatenumber${vehicle.id}" aria-describedby="emailHelp"> 
+                            </div>
+                            <div class="mb-3">
+                                <label for="edittype${vehicle.id}" class="form-label">Type</label>
+                                <input type="text" value="${vehicle.type}" class="form-control" id="edittype${vehicle.id}" aria-describedby="emailHelp"> 
+                            </div>
+                            <div class="mb-3">
+                                <label for="editdriver${vehicle.id}" class="form-label">Driver</label>
+                                <input type="text" value="${vehicle.driver}" class="form-control" id="editdriver${vehicle.id}" aria-describedby="emailHelp"> 
+                            </div>
+                            <div class="mb-3">
+                                <label for="editcondition${vehicle.id}" class="form-label">Condition</label>
+                                <input type="text" value="${vehicle.condition}" class="form-control" id="editcondition${vehicle.id}" aria-describedby="emailHelp"> 
+                            </div>
+                            <div class="mb-3">
+                                <label for="editdescription${vehicle.id}" class="form-label">Description</label>
+                                <input type="text" value="${vehicle.description}" class="form-control" id="editdescription${vehicle.id}" aria-describedby="emailHelp"> 
+                            </div>
+                            <div class="mb-1">
+                                                <label for="status" class="form-label">Status</label>
+                                                <select name="status" id="status${vehicle.id}"  class="form-control" required>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="active">Active</option>
+                                                    <option value="inactive">Inactive</option>
+                                                </select>
+                                            </div>
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="editSaveBtn" data-id="${vehicle.id}">Save</button>
+                        </div>
                     </div>
                 </div>
+            </div> 
+        </td>
+    </tr>`;
+                        // Append the row to the 
 
+
+                        $('tbody').append(row);
+                    });
+                    $('#dataTable').DataTable();
+                     
+                   
+                }
+
+            });
+        } 
+
+        function deleteUser(userid) {
+            $.ajax({
+                type: 'post',
+                url: '/user/vehicle/deletebyid',
+                data: {
+                    'id': userid
+                },
+                success: function(data) {
+
+                    datausers();
+                },
+                error: function(xhr, status, error) {
+
+
+                    console.log(xhr);
+
+                }
+
+
+            });
+        }
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this data!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
                 
-                <!-- Sidenav Footer-->
-                <div class="sidenav-footer">
-                    <div class="sidenav-footer-content mb-10">
-                        <div class="sidenav-footer-subtitle">Logged in as:</div>
-                        <div class="sidenav-footer-title">Valerie Luna</div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        {{-- <style>
-            .is-deleted {
-                text-decoration: line-through;
-                color: red;
-            }
-        </style> --}}
-        <div id="layoutSidenav_content">
-            @yield('content')
-        </div>
-    </div>
-   <!-- Include jQuery, Bootstrap, Chart.js, DataTables, Moment.js, and your custom scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" crossorigin="anonymous"></script>
-<script src="{{ asset('js/scripts.js') }}"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+        // Call your delete function here
+        deleteUser(id);
+
+        Swal.fire({
+            title: 'Deleted!',
+            text: 'User has been deleted.',
+            icon: 'success',
+            timer: 2000, // 2 seconds
+            timerProgressBar: true
+        }).then(() => {
+            // Reload the page or do any other necessary action
+            location.reload();
+        });
+    }
+});
+        }
+
+        function createVehicle(platenumber, type, driver, condition, description, status, callback) {
+            $.ajax({
+                type: 'post',
+                url: '/user/addnewvehicle',
+                data: {
+                    'platenumber': platenumber,
+                    'type': type,
+                    'driver': driver,
+                    'condition': condition,
+                    'description': description,
+                    'status': status,
+
+                },
+                success: function(data) {
+                    if (data.message === 'success') {
+                        $('#messageflash').text('Vehicle added successfully');
+                        callback(true); // Invoke the callback with true indicating success
+                    }
+                },
+                error: function(xhr, status, error) {
 
 
-<script>
-    
-//  $(document).ready(function() {
-//     $('#dataTable thead th').each(function(index) {
-//         var columnId = 'column-' + index; // Generate a unique identifier for each column
-//         $(this).html('<div class="d-flex justify-content-between align-items-center"><span>' + $(this).text() + '</span><div class="sorting-icons" id="' + columnId + '"><i class="fas fa-sort-up sort-up" data-index="' + index + '"></i><i class="fas fa-sort-down sort-down" data-index="' + index + '"></i></div></div>');
-//     });
+                    // Error handling
+                    var errorMessage = xhr.responseJSON.message;
+                    if (errorMessage) {
+                        $('#messageflash').text('Erroryawa: ' + errorMessage);
+                    } else {
+                        $('#messageflash').text('An error occurred while adding the user');
+                    }
+                    callback(false); // Invoke the callback with false indicating failure
+                }
+            });
+        }
+    </script>
 
-//     $('#dataTable').on('click', '.sort-up', function() {
-//         var columnIndex = $(this).data('index');
-//         var columnId = '#column-' + columnIndex; // Get the unique identifier for the column
-//         table.order([columnIndex, 'asc']).draw();
-//         resetSortingIcons(columnId);
-//         $(this).addClass('active');
-//     });
+    {{-- jquery code --}}
+    <script>
 
-//     $('#dataTable').on('click', '.sort-down', function() {
-//         var columnIndex = $(this).data('index');
-//         var columnId = '#column-' + columnIndex; // Get the unique identifier for the column
-//         table.order([columnIndex, 'desc']).draw();
-//         resetSortingIcons(columnId);
-//         $(this).addClass('active');
-//     });
+$('#createVehicleBtn').on('click', function(e) {
+    e.preventDefault(); // Prevent the default form submission behavior
 
-//     function resetSortingIcons(columnId) {
-//         $('.sorting-icons').not(columnId).find('.sort-up, .sort-down').removeClass('active');
-//     }
-// });
+    let platenumber = $('#platenumber').val();
+    let type = $('#type').val();
+    let driver = $('#driver').val();
+    let condition = $('#condition').val();
+    let description = $('#description').val();
+    let status = $('#status').val();
 
+    createVehicle(platenumber, type, driver, condition, description, status, function(success) {
+        if (success === true) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Vehicle added successfully.",
+                showConfirmButton: true,
+                timer: 2000, // 2 seconds
+                timerProgressBar: true,
 
-    feather.replace();
-</script>
-<script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }).then(() => {
+                $('#platenumber').val('');
+                $('#type').val('');
+                $('#driver').val('');
+                $('#condition').val('');
+                $('#description').val('');
+                $('#status').val('');
+
+                // Redirect to the same page to refresh
+                location.reload();
+            });
         }
     });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-{{-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> --}}
-@stack('scripts')
-</body>
-</html>
- 
+});
+
+$('tbody').on('click', '.editVehicle', function() {
+    // Get the id of the vehicle to edit
+    let id = $(this).data('id');
+
+    // Show the edit modal
+    $(`#vehicleEdit${id}`).modal('show');
+
+    // Get the current vehicle data
+    let platenumber = $('#platenumber').val();
+    let type = $('#type').val();
+    let driver = $('#driver').val();
+    let condition = $('#condition').val();
+    let description = $('#description').val();
+    let status = $('#status').val();
+
+    // Update the modal inputs with the current vehicle data
+    $(`#editplatenumber${id}`).val(vehicle.platenumber);
+    $(`#edittype${id}`).val(vehicle.type);
+    $(`#editdriver${id}`).val(vehicle.driver);
+    $(`#editcondition${id}`).val(vehicle.condition);
+    $(`#editdescription${id}`).val(vehicle.description);
+    $(`#editstatus${id}`).val(vehicle.status);
+});
+
+// Save button click event listener
+$('tbody').on('click', '#editSaveBtn', function() {
+    // Get the id of the vehicle being edited
+    let id = $(this).attr('data-id');
+
+    // Get the updated values from the modal inputs
+    let platenumber = $(`#editplatenumber${id}`).val();
+    let type = $(`#edittype${id}`).val();
+    let driver = $(`#editdriver${id}`).val();
+    let condition = $(`#editcondition${id}`).val();
+    let description = $(`#editdescription${id}`).val();
+    let status = $(`#status${id}`).val();
+
+    // Send the data to the server using AJAX
+    $.ajax({
+        type: 'post',
+        url: '/user/editbyid',
+        data: {
+            'id': id,
+            'platenumber': platenumber,
+            'type': type,
+            'driver': driver,
+            'condition': condition,
+            'description': description,
+            'status': status
+        },
+        success: function(response) {
+            // Handle the success response
+            Swal.fire({
+                title: 'Success!',
+                text: 'Vehicle updated successfully.',
+                icon: 'success',
+                timer: 2000, // 2 seconds
+                timerProgressBar: true,
+                didClose: () => {
+                    // Reload the page to reflect the changes
+                    location.reload();
+                }
+            });
+            $(`#vehicleEdit${id}`).modal('hide');
+        },
+        error: function(xhr, status, error) {
+            // Handle the error response
+            Swal.fire("Error!", "Failed to update vehicle.", "error");
+            
+        }
+    });
+    
+});
+
+$(document).on('click', '[data-bs-dismiss="modal"]', function() {
+    $(this).closest('.modal').modal('hide');
+});
+
+
+
+    </script>
+@endpush
+

@@ -3,23 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Parking;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
 class ParkingController extends Controller
 {
     public function index()
     {
-        $parkingSpots = Parking::all();
-        return view('parking.index', compact('parkingSpots'));
+        $data = [
+            ['title' => 'Card 1', 'content' => 'This is the content of card 1'],
+            ['title' => 'Card 2', 'content' => 'This is the content of card 2'],
+            ['title' => 'Card 3', 'content' => 'This is the content of card 3'],
+        ];
+    
+        return view('parking.index', compact('data'));
     }
-
-    public function toggleAvailability(Request $request, $id)
-{
-    $parkingSpot = Parking::find($id);
-    $parkingSpot->available = $request->input('available', true);
-    $parkingSpot->name = $request->input('vehicleName', '');
-    $parkingSpot->save();
-
-    return response()->json(['message' => 'Spot updated successfully']);
-}
 }
