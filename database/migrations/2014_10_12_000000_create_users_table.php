@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('address');
             $table->string('contact'); 
             $table->string('username')->unique();
-            // $table->string('email')->unique();
             $table->string('role')->default('user');
             $table->string('password');
             $table->rememberToken();
+            $table->string('isdel')->nullable()->default('active');
             $table->timestamps();
         });
     }

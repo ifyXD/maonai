@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');  
             $table->enum('status', ['pending', 'accept', 'decline'])->default('pending');
             $table->dateTime('appointment');
+            $table->string('isdel')->nullable()->default('active');
+
             $table->timestamps();
         });
     }

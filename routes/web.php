@@ -11,6 +11,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\TripDestinationController;
+use App\Http\Controllers\userController;
 use App\Http\Controllers\VehicleController;
 use App\Models\Parking;
 use Illuminate\Support\Facades\Auth;
@@ -149,13 +150,28 @@ Route::post('/fuel/deletebyid', [FuelController::class, 'delete']);
 
 
 
-
 //Departments
 
 Route::get('/departments', [DepartmentController::class, 'index']);
 Route::post('/admin/datausers', [DepartmentController::class, 'datausers']);
 Route::post('/admin/yawa', [DepartmentController::class, 'create']);
 Route::post('/admin/edit', [DepartmentController::class, 'edit']);
+
+
+
+
+//User Managements
+
+Route::get('/create', [userController::class, 'index']);
+Route::get('/users', [userController::class, 'store']);
+Route::get('/recovery', [userController::class, 'destory']);
+Route::post('/addnewuser', [userController::class, 'create']);
+
+
+
+
+
+
 
 
 // Parking area

@@ -15,5 +15,6 @@ class requestVehicle extends Model
         'purpose',
         'status',
         'appointment',
+        'isdel',
     ];
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<main class="mb-1z">
+<main class="mb-1">
 
 
  <header class="page-header page-header-dark bg-teal pb-10">
