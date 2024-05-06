@@ -9,7 +9,17 @@ class Contact extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'status']; // Add 'status' to fillable fields
+    protected $fillable = ['name', 'email', 'department', 'content']; // Added 'content'
+
+    public function labors()
+    {
+        return $this->hasMany(Labor::class);
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
 
     public function requests()
     {
