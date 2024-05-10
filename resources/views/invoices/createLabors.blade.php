@@ -1,67 +1,42 @@
-<!-- resources/views/invoices/create.blade.php -->
+@extends('layouts.InvoiceInsert')
 
-@extends('layouts.landing')
+@section('content')
+<div class="container">
+    <h2 class="my-4"><i data-feather="user-plus"></i> <em>Add New Labor</em></h2>
 
-@section('design')
-    <div class="container">
-        <h1 class="my-4">Add New Labor</h1>
-        <form action="{{ route('invoices.storeLabors', ['contact_id' => $contact->id]) }}" method="POST" id="laborsForm">
-            @csrf
-            <div id="labors">
-                <!-- Fields for a single labor record -->
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" name="name[]">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{{ route('invoices.storeLabors', ['contact_id' => $contact->id]) }}" method="POST" id="laborsForm">
+                @csrf
+                <div class="mb-4 mt-5">
+                    <div class="card-header text-center font-weight-bold"><em>"Labor Details"</em></div>
+
+                    <div style="background-color: #F2F6FC;" id="formContainer">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name[]" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" name="date[]" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="rate">Rate</label>
+                                <input type="text" class="form-control" name="rate[]" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="hours">Hours</label>
+                                <input type="text" class="form-control" name="hours[]" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" class="form-control" name="date[]">
-                </div>
-                <div class="form-group">
-                    <label for="rate">Rate</label>
-                    <input type="text" class="form-control" name="rate[]">
-                </div>
-                <div class="form-group">
-                    <label for="hours">Hours</label>
-                    <input type="text" class="form-control" name="hours[]">
-                </div>
-            </div>
-            <button type="button" class="btn btn-success" id="addLabor">Add Labor</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+
+                <button type="button" class="btn btn-primary mb-3 float-right" id="addNewForm">Add New Form</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
-    <!-- Add this at the end of the invoices.create view -->
-@section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const addLaborButton = document.getElementById('addLabor');
-        const laborsContainer = document.getElementById('labors');
-
-        addLaborButton.addEventListener('click', function () {
-            const newLabor = document.createElement('div');
-            newLabor.innerHTML = `
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" name="name[]">
-                </div>
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" class="form-control" name="date[]">
-                </div>
-                <div class="form-group">
-                    <label for="rate">Rate</label>
-                    <input type="text" class="form-control" name="rate[]">
-                </div>
-                <div class="form-group">
-                    <label for="hours">Hours</label>
-                    <input type="text" class="form-control" name="hours[]">
-                </div>
-            `;
-            laborsContainer.appendChild(newLabor);
-        });
-    });
-</script>
+</div>
 @endsection
-
-@endsection
-

@@ -13,6 +13,8 @@ use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\TripDestinationController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ContactController;
 use App\Models\Parking;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,40 +31,21 @@ use Illuminate\Support\Facades\Route;
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*DO NOT TOUCH IT YET*/
-Route::get('/invoices/{contact_id}', function () {
-    return view('invoices.index');
-});
 
 
-use App\Http\Controllers\InvoiceController;
-
-// Route for generating and downloading a PDF invoice for a specific contact
-Route::get('/invoices/generate-pdf/{contact_id}', [InvoiceController::class, 'generatePDF'])->name('invoices.generatePDF');
 
 
-// Route for displaying invoices associated with a specific contact
-Route::get('/invoices/{contact_id}', [InvoiceController::class, 'index'])->name('invoices.index');
 
-// Route for displaying the form to add new labor records for a specific contact
-Route::get('/invoices/createLabors/{contact_id}', [InvoiceController::class, 'createLabors'])->name('invoices.createLabors');
 
-// Route for storing new labor records for a specific contact
-Route::post('/invoices/storeLabors/{contact_id}', [InvoiceController::class, 'storeLabors'])->name('invoices.storeLabors');
 
-// Route for displaying the form to add new material records for a specific contact
-Route::get('/invoices/createMaterials/{contact_id}', [InvoiceController::class, 'createMaterials'])->name('invoices.createMaterials');
 
-// Route for storing new material records for a specific contact
-Route::post('/invoices/storeMaterials/{contact_id}', [InvoiceController::class, 'storeMaterials'])->name('invoices.storeMaterials');
-
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\profileController;
+// Define route for updating contact status
+Route::put('contacts/{contact}/update-status', [ContactController::class, 'updateStatus'])->name('contacts.updateStatus');
 
 // Route for displaying the contact creation form
+Route::get('/', [ContactController::class, 'create'])->name('welcome');
 Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
 
-// Route for showing all contacts
-Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 
 // Route for showing the create contact form
 Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
@@ -72,6 +55,15 @@ Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.st
 
 // Route for updating a contact
 Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contacts.update');
+
+
+
+
+
+
+use App\Http\Controllers\profileController;
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,6 +118,46 @@ Route::post('/adminuser/editbyid', [VehicleController::class, 'edit']);
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
 Route::middleware(['isAdmin'])->prefix('admin')->group(function () {
+
+    // Route for showing all contacts
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+
+
+
+
+    Route::get('/quartet', [ContactController::class, 'quartetCard'])->name('contacts.cards.quartetCard');
+
+    // Route to display declined contacts
+    Route::get('/contacts/declined', [ContactController::class, 'declined'])->name('contacts.declined');
+    // Route to display pending contacts
+    Route::get('/contacts/pending', [ContactController::class, 'pending'])->name('contacts.pending');
+    // Route for displaying accepted contacts
+    Route::get('/contacts/accepted', [ContactController::class, 'accepted'])->name('contacts.accept');
+
+
+// Define routes for InvoiceController
+Route::get('/invoices/{contact_id}/generateWord', [InvoiceController::class, 'generateWord'])->name('invoices.generateWord');
+
+
+
+// Route for generating and downloading a PDF invoice for a specific contact
+Route::get('/invoices/generate-pdf/{contact_id}', [InvoiceController::class, 'generatePDF'])->name('invoices.generatePDF');
+
+
+// Route for displaying invoices associated with a specific contact
+Route::get('/invoices/{contact_id}', [InvoiceController::class, 'index'])->name('invoices.index');
+
+// Route for displaying the form to add new labor records for a specific contact
+Route::get('/invoices/createLabors/{contact_id}', [InvoiceController::class, 'createLabors'])->name('invoices.createLabors');
+
+// Route for storing new labor records for a specific contact
+Route::post('/invoices/storeLabors/{contact_id}', [InvoiceController::class, 'storeLabors'])->name('invoices.storeLabors');
+
+// Route for displaying the form to add new material records for a specific contact
+Route::get('/invoices/createMaterials/{contact_id}', [InvoiceController::class, 'createMaterials'])->name('invoices.createMaterials');
+
+// Route for storing new material records for a specific contact
+Route::post('/invoices/storeMaterials/{contact_id}', [InvoiceController::class, 'storeMaterials'])->name('invoices.storeMaterials');
 
 
 

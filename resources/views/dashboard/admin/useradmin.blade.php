@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-{{-- 
+{{--
     <div class="card mb-4">
         <div class="card-header">Cost of Gasoline</div>
         <div class="card-body">
@@ -145,7 +145,7 @@
                                 </div>
                             </td>
                         </tr>
-                        
+
                     </tbody>
                 </table>
             </div>

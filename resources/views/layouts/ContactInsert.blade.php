@@ -8,7 +8,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Dashboard - SB Admin Pro</title>
-        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+        <link href="css/styles.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" crossorigin="anonymous" />
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
@@ -132,45 +132,15 @@
                     </div>
                     <!-- Sidenav Footer-->
                     <div class="sidenav-footer">
-                        <div class="sidenav-footer-content mb-10">
-                            <div class="sidenav-footer-subtitle">Logged inyawadasda as:</div>
+                        <div class="sidenav-footer-content">
+                            <div class="sidenav-footer-subtitle">Logged in as:</div>
                             <div class="sidenav-footer-title">Valerie Luna</div>
                         </div>
                     </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-                    <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-                        <div class="container">
-                            <div class="page-header-content pt-4">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-auto mt-4">
-                                        <h1 class="page-header-title">
-                                            <div class="page-header-icon"><i data-feather="activity"></i></div>
-                                            GENERAL SERVICE OFFICE
-                                        </h1>
-                                        <div class="page-header-subtitle">WE DELIVER WHAT YOU COMMISSION</div>
-                                    </div>
-                                    <div class="col-12 col-xl-auto mt-4">
-                                        <button class="btn btn-white p-3" id="reportrange">
-                                            <i class="mr-2 text-primary" data-feather="calendar"></i>
-                                            <span></span>
-                                            <i class="ml-1" data-feather="chevron-down"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </header>
-                    <!-- Main page content-->
-
-
-                    <div class="container mt-n10">
-                       @yield('design')
-                    </div>
-                </main>
+                @yield('content')
                 <footer class="footer mt-auto footer-light">
                     <div class="container-fluid">
                         <div class="row">

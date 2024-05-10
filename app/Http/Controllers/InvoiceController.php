@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact; // Import the Contact model
 use Barryvdh\DomPDF\Facade\PDF;
 use Carbon\Carbon;
-
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class InvoiceController extends Controller
 
@@ -244,8 +244,96 @@ private function getTotalMaterialAmountPDF($materials)
 }
 
 
+public function generateWord($contact_id)
+{
+    // Retrieve the contact data for the specified contact ID
+    $contact = Contact::findOrFail($contact_id);
+
+    // Retrieve labors associated with the contact
+    $labors = $contact->labors;
+
+    // Retrieve materials associated with the contact
+    $materials = $contact->materials;
+
+    // Calculate total amount for labors
+    $totalLaborAmount = $this->getTotalLaborAmountWord($labors);
+
+    // Calculate total amount for materials
+    $totalMaterialAmount = $this->getTotalMaterialAmountWord($materials);
+
+    // Calculate overall total amount
+    $overallTotalAmount = $totalLaborAmount + $totalMaterialAmount;
+
+    // Load the Word document template
+    $templateProcessor = new TemplateProcessor('word-template/invoice.docx');
+
+    // Replace placeholders in the template with actual contact data
+    $templateProcessor->setValue('contact_name', $contact->name);
+    $templateProcessor->setValue('contact_email', $contact->email);
+    $templateProcessor->setValue('contact_department', $contact->department);
+    $templateProcessor->setValue('contact_content', $contact->content);
+
+    // Populate the labors table in the Word document
+    foreach ($labors as $index => $labor) {
+        $rowIndex = $index + 1;
+        $templateProcessor->setValue("labors_date_$rowIndex", $labor->date);
+        $templateProcessor->setValue("labors_name_$rowIndex", $labor->name);
+        $templateProcessor->setValue("labors_rate_$rowIndex", $labor->rate);
+        $templateProcessor->setValue("labors_hours_$rowIndex", $labor->hours);
+        $templateProcessor->setValue("labors_amount_$rowIndex", $labor->amount);
+    }
+
+    // Populate the materials table in the Word document
+    foreach ($materials as $index => $material) {
+        $rowIndex = $index + 1;
+        $templateProcessor->setValue("materials_date_$rowIndex", $material->date);
+        $templateProcessor->setValue("materials_material_$rowIndex", $material->material);
+        $templateProcessor->setValue("materials_quantity_$rowIndex", $material->quantity);
+        $templateProcessor->setValue("materials_unit_cost_$rowIndex", $material->unit_cost);
+        $templateProcessor->setValue("materials_amount_$rowIndex", $material->amount);
+    }
+
+    // Add total amounts to the template
+    $templateProcessor->setValue('total_labor_amount', $totalLaborAmount);
+    $templateProcessor->setValue('total_material_amount', $totalMaterialAmount);
+    $templateProcessor->setValue('overall_total_amount', $overallTotalAmount);
+
+    // Save the modified template as a new Word document
+    $tempFilePath = tempnam(sys_get_temp_dir(), 'word_template_');
+    $templateProcessor->saveAs($tempFilePath);
+
+    // Set the response headers to download the generated Word document
+    return response()->download($tempFilePath, 'contact_invoice_' . $contact->id . '.docx')->deleteFileAfterSend(true);
+}
 
 
+// Method to calculate total amount for labors
+private function getTotalLaborAmountWord($labors)
+{
+    // Initialize total labor amount
+    $totalLaborAmount = 0;
+
+    // Loop through labors and sum up amounts
+    foreach ($labors as $labor) {
+        $totalLaborAmount += $labor->amount;
+    }
+
+    return $totalLaborAmount;
+}
+
+// Method to calculate total amount for materials
+private function getTotalMaterialAmountWord($materials)
+{
+    // Initialize total material amount
+    $totalMaterialAmount = 0;
+
+    // Loop through materials and sum up amounts
+    foreach ($materials as $material) {
+        $totalMaterialAmount += $material->amount;
+    }
+
+    return $totalMaterialAmount;
+}
 
 
 
