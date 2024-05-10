@@ -14,6 +14,11 @@ class YourController extends Controller
         return view('requestvehicles.index'); // Replace your_view with your actual view name
     }
 
+    public function store(){
+
+        return view('requestvehicles.create');
+    }
+
     public function create(Request $request)
     {
         $rules = [
@@ -36,10 +41,7 @@ class YourController extends Controller
         
     }
 
-    public function store(){
-
-        return view('requestvehicles.create');
-    }
+   
 
     public function allRecords()
     {
@@ -49,6 +51,7 @@ class YourController extends Controller
             'records' => $requestVehicle,
         ]);
     }
+
 
     public function delete(Request $request)
     {

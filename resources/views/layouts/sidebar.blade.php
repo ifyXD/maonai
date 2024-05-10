@@ -22,6 +22,7 @@
                     </div>
                 </h6>
                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="profile">Profile</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
@@ -109,11 +110,57 @@
                             </nav>
                         </div>
                     @endif
-                    
-                    <a class="nav-link" href="destination">
+                    @if (auth()->check() && auth()->user()->role === 'user')
+
+                    <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
+                    data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                    <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                    Requested Vehicle
+                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseUsers" data-parent="#accordionSidenav">
+                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                        <a class="nav-link" href="#">Create Request Here <span>
+                            </a>
+                    <a class="nav-link" href="#">All Request<span>
+                           </a>
+                  
+                        <!-- Add links for All Users here -->
+                    </nav>
+                </div>
+                @endif  
+                @if (auth()->check() && auth()->user()->role === 'user')
+
+                <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
+                data-target="#collapseVehicles" aria-expanded="false" aria-controls="collapseVehicles">
+                <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                Technical Request Here
+                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapseVehicles" data-parent="#accordionSidenav">
+                <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                    <a class="nav-link" href="#">Create Request Here <span></a>
+                    <a class="nav-link" href="#">All Request<span></a>
+                    <!-- Add links for All Users here -->
+                </nav>
+            </div>
+            @endif
+            
+                    <!-- Users-->
+
+                    <a class="nav-link" href="destination"> 
                         <div class="nav-link-icon"><i data-feather="filter"></i></div>
                         Trip Destination
                     </a>
+
+                    @if (auth()->check() && auth()->user()->role === 'admin')
+
+                    <a class="nav-link" href="destination">
+                        <div class="nav-link-icon"><i data-feather="filter"></i></div>
+                       Reports
+                    </a>
+                    @endif
+
                     @if (auth()->check() && auth()->user()->role === 'admin')
 
                     <div class="sidenav-menu-heading">Users</div>
@@ -131,10 +178,12 @@
                         <nav class="sidenav-menu-nested nav">
                             <a class="nav-link" href="create">Create Users</a>
                             <a class="nav-link" href="users">All Users</a>
-                            <a class="nav-link" href="recovery">Recovery accounts</a>
-                            <a class="nav-link" href="permissions">Department</a>
+                            {{-- <a class="nav-link" href="recovery">Recovery accounts</a> --}}
+                            <a class="nav-link" href="departments">Department</a>
                         </nav>
                     </div>
+                    
+
                 @endif
                     
 

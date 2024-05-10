@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class userController extends Controller
 {
@@ -17,7 +18,9 @@ class userController extends Controller
 
     public function store(){
 
-        return view('users.all');
+        $users = User::all();
+    return view('users.all', ['users' => $users]);
+
     }
 
     public function destroy(){
@@ -33,9 +36,10 @@ class userController extends Controller
 
 
         return response()->json([
-            'vehicles' => $users,
+            'users' => $users,
         ]);
     }
+    
 
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -45,7 +49,7 @@ class userController extends Controller
             'address' => 'required|string|max:255',
             'contact' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|',
         ]);
     
         if ($validator->fails()) {
@@ -59,7 +63,7 @@ class userController extends Controller
             'address' => $request->input('address'),
             'contact' => $request->input('contact'),
             'username' => $request->input('username'),
-            'password' => bcrypt($request->input('password')),
+            'password' => Hash::make($request->input('password')),
         ]);
     
         $user->save();
@@ -69,17 +73,14 @@ class userController extends Controller
     }
 
     public function edit(Request $request, User $user){
-
-
         $validator = Validator::make($request->all(), [
             'ufname' => 'required|string|max:255',
             'uname' => 'required|string|max:255',
             'lname' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'contact' => 'required|string|max:255',
-            // 'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'username' => 'required|string|max:255|unique:users,username,'.$user->id,
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|string|min:6', // Change to nullable for non-required password
         ]);
     
         if ($validator->fails()) {
@@ -92,15 +93,20 @@ class userController extends Controller
         $user->address = $request->input('address');
         $user->contact = $request->input('contact');
         $user->username = $request->input('username');
-        if ($request->has('password')) {
-            $user->password = bcrypt($request->input('password'));
+    
+        // Check if password is provided and hash it
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
         }
     
         $user->save();
     
         // Optionally, you can redirect to a success page or return a success message here
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return response()->json(['message' => 'User updated successfully'], 200);
     }
+    
+    
+
 
     public function delete(Request $request)
     {
@@ -112,6 +118,8 @@ class userController extends Controller
             'message' => $request->id,
         ]);
     }
+
+    
     }
 
 

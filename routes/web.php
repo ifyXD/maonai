@@ -56,7 +56,7 @@ Route::get('/invoices/createMaterials/{contact_id}', [InvoiceController::class, 
 Route::post('/invoices/storeMaterials/{contact_id}', [InvoiceController::class, 'storeMaterials'])->name('invoices.storeMaterials');
 
 use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\profileController;
 
 // Route for displaying the contact creation form
 Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
@@ -121,6 +121,7 @@ Route::get('/', [LandingPage::class, 'index']);
 Route::get('/welcome', [ContactRequestController::class, 'create'])->name('welcome');
 
 Route::post('/adminuser/editbyid', [VehicleController::class, 'edit']);
+
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
@@ -199,9 +200,11 @@ Route::post('/fuel/deletebyid', [FuelController::class, 'delete']);
 //Departments
 
 Route::get('/departments', [DepartmentController::class, 'index']);
-Route::post('/admin/datausers', [DepartmentController::class, 'datausers']);
-Route::post('/admin/yawa', [DepartmentController::class, 'create']);
-Route::post('/admin/edit', [DepartmentController::class, 'edit']);
+Route::get('/departmentdata', [DepartmentController::class, 'datausers']);
+Route::post('/addnewdepartment', [DepartmentController::class, 'create']);
+Route::post('/editbyid', [DepartmentController::class, 'edit']);
+Route::post('/department/deletebyid', [DepartmentController::class, 'delete']);
+
 
 
 
@@ -212,7 +215,15 @@ Route::get('/create', [userController::class, 'index']);
 Route::get('/users', [userController::class, 'store']);
 Route::get('/recovery', [userController::class, 'destory']);
 Route::post('/addnewuser', [userController::class, 'create']);
+Route::get('/usersdata', [userController::class, 'tableusers']);
+Route::post ('user/editbyid', [userController::class, 'edit']);
+Route::post('/users/deletebyid', [userController::class, 'delete']);
 
+
+
+
+
+Route::get('/profile', [profileController::class, 'index']);
 
 
 
@@ -232,6 +243,11 @@ Route::middleware(['isUser'])->prefix('user')->group(function () {
 
 
     Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
+
+
+
+    Route::get('/profile', [profileController::class, 'index']);
+
 
 });
 });

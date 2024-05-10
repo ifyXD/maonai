@@ -55,34 +55,26 @@ class DepartmentController extends Controller
     }
 
 
-    public function datadeparts()
+    public function datausers()
     {
-//        $departments = Department::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
-//            ->orderBy('created_at', 'desc')
-//            ->get();
-
-//        $departments = Department::all();
-
-        $departments = Department::orderBy('created_at', 'desc')
+        $departments = Department::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc')
             ->get();
 
 
         return response()->json([
             'departments' => $departments,
         ]);
-
-
     }
 
     public function delete(Request $request)
     {
-
         $id = $request->id;
-        Department::find($id)->delete();
-
-
+        Department::find($id)->update([
+            'isdel' => 'deleted',
+        ]);
         return response()->json([
-            'message' => 'success',
+            'message' => $request->id,
         ]);
     }
 
@@ -90,21 +82,21 @@ class DepartmentController extends Controller
     {
         $id = $request->id;
         $name = $request->name;
-        $description = $request->email;
-
+        $description = $request->description;
+    
         try {
             // Validation rules
             $rules = [
                 'name' => [
                     'required',
-                    'name',
+                    'string',
                     Rule::unique('departments')->ignore($id),
                 ],
             ];
-
+    
             // Validate the request data
             $validator = Validator::make($request->all(), $rules);
-
+    
             // Check if validation fails
             if ($validator->fails()) {
                 return response()->json([
@@ -112,20 +104,20 @@ class DepartmentController extends Controller
                     'errors' => $validator->errors(),
                 ], 422); // Unprocessable Entity status code
             }
-
-            // Find the user by ID
+    
+            // Find the department by ID
             $department = Department::findOrFail($id);
-
-            // Update the user's name and email
-            $department->$name = $department;
-            $department->$description = $department;
-
+    
+            // Update the department's name and description
+            $department->name = $name;
+            $department->description = $description;
+    
             // Save the changes to the database
             $department->save();
-
+    
             return response()->json([
                 'message' => 'success',
-                'department' => $department // Optionally return the updated user object
+                'department' => $department // Optionally return the updated department object
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -133,5 +125,6 @@ class DepartmentController extends Controller
             ], 500); // Internal Server Error status code
         }
     }
+    
 }
 
