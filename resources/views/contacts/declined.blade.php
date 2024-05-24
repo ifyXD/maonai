@@ -77,9 +77,12 @@
 
 <div class="container mt-4">
     <h1>
-        Job Request Managment
-        <i data-feather="file-text" style="margin-right: 0.25em;"></i>
+        Job Request Management
+        <i data-feather="file-text" style="margin-right: 0.25em; width: 1em; height: 1em;"></i>
     </h1>
+    <script>
+        feather.replace()
+    </script>
 
     @include('contacts.cards.quartetCard', ['counts' => $counts])
 

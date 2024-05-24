@@ -8,11 +8,11 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    
+
     <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+
 
     <!-- Scripts -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
@@ -46,7 +46,7 @@
 <script src="assets/demo/chart-bar-demo.js"></script>
 
 <script>
-    
+
 //  $(document).ready(function() {
 //     $('#dataTable thead th').each(function(index) {
 //         var columnId = 'column-' + index; // Generate a unique identifier for each column

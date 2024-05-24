@@ -70,7 +70,6 @@
                     </div>
                     Dashboard: Accepted
                 </h1>
-
             </div>
         </div>
     </header>
@@ -78,9 +77,12 @@
 
 <div class="container mt-4">
     <h1>
-        Job Request Managment
-        <i data-feather="file-text" style="margin-right: 0.25em;"></i>
+        Job Request Management
+        <i data-feather="file-text" style="margin-right: 0.25em; width: 1em; height: 1em;"></i>
     </h1>
+    <script>
+        feather.replace()
+    </script>
 
     @include('contacts.cards.quartetCard', ['counts' => $counts])
 
@@ -102,8 +104,10 @@
                                 <th>Email</th>
                                 <th>Department</th>
                                 <th>Content</th>
-                                <th>Export</th>
-                                <th>Update</th>
+
+                                <th style="text-align: center;">Export</th>
+                                <th style="text-align: center;">Update</th>
+                                <th style="text-align: center;">Invoice</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,20 +117,29 @@
                                 <td>{{ $contact->email }}</td>
                                 <td>{{ $contact->department }}</td>
                                 <td>{{ $contact->content }}</td>
-                                <td>
-                                    <!-- Action button to export individual request as PDF -->
+                                <td class="text-center" style="width: 50px;">                                    <!-- Action button to export individual request as PDF -->
                                     <div class="action-table-container">
                                         <a href="" class="btn btn-datatable btn-icon btn-transparent-dark">
                                             <i data-feather="aperture"></i>
                                         </a>
                                     </div>
                                 </td>
-                                <td>
-                                    <!-- Button to trigger the modal for editing request -->
-                                    <button type="button" class="btn btn-datatable btn-icon btn-transparent-dark mr-2 edit-request-btn" data-toggle="modal" data-target="#editRequestModal">
-                                        <i data-feather="edit"></i>
-                                    </button>
+                                <td class="text-center" style="width: 50px;">
+                                    <div class="d-inline-block">
+                                        <button class="btn btn-sm btn-primary open-edit-modal" data-contact-id="{{ $contact->id }}">
+                                            <i data-feather="edit"></i> Edit
+                                        </button>
+                                    </div>
                                 </td>
+                                <td class="text-center" style="width: 50px;">
+                                    <!-- Button to redirect to the invoices.index route for the specified contact -->
+                                    <a href="{{ route('invoices.index', ['contact_id' => $contact->id]) }}" class="btn btn-sm btn-success">
+                                        <i data-feather="eye"></i> View
+                                    </a>
+                                </td>
+
+
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -135,6 +148,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Edit form content will be loaded here via AJAX -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.open-edit-modal').click(function() {
+            var contactId = $(this).data('contact-id');
+            $.ajax({
+                url: '/contacts/' + contactId + '/edit?redirect_to=accept', // Include redirect_to parameter
+                type: 'GET',
+                success: function(response) {
+                    $('#editModalBody').html(response);
+                    $('#editModal').modal('show');
+                },
+                error: function(xhr) {
+                    // Handle error
+                }
+            });
+        });
+    });
+    </script>
 
     <footer class="footer mt-auto footer-light">
         <div class="container-fluid">

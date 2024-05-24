@@ -124,11 +124,11 @@
                             </a>
                     <a class="nav-link" href="#">All Request<span>
                            </a>
-                  
+
                         <!-- Add links for All Users here -->
                     </nav>
                 </div>
-                @endif  
+                @endif
                 @if (auth()->check() && auth()->user()->role === 'user')
 
                 <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
@@ -145,10 +145,10 @@
                 </nav>
             </div>
             @endif
-            
+
                     <!-- Users-->
 
-                    <a class="nav-link" href="destination"> 
+                    <a class="nav-link" href="destination">
                         <div class="nav-link-icon"><i data-feather="filter"></i></div>
                         Trip Destination
                     </a>
@@ -182,10 +182,10 @@
                             <a class="nav-link" href="departments">Department</a>
                         </nav>
                     </div>
-                    
+
 
                 @endif
-                    
+
 
                 </div>
             </div>

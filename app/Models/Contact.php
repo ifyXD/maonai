@@ -11,6 +11,12 @@ class Contact extends Model
 
     protected $fillable = ['name', 'email', 'department', 'content']; // Added 'content'
 
+     // Define the relationship
+     public function user()
+     {
+         return $this->belongsTo(User::class);
+     }
+
     public function labors()
     {
         return $this->hasMany(Labor::class);

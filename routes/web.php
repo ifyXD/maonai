@@ -31,11 +31,32 @@ use Illuminate\Support\Facades\Route;
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*DO NOT TOUCH IT YET*/
+use App\Http\Controllers\UserContactController;
+
+Route::get('/users/dashboard', [UserContactController::class, 'showUserContacts'])->name('user.contacts');
 
 
 
+// Route to display the form for creating a new contact for a specific user
+Route::get('/users/{userId}/contacts/create', [UserContactController::class, 'create'])->name('contacts.create');
+
+// Route to insert a new contact record associated with a specific user
+Route::post('/users/{userId}/contacts', [UserContactController::class, 'insert'])->name('contacts.insert');
+
+// Route to display the index of users
+Route::get('/users', [UserContactController::class, 'index'])->name('users.index');
+
+// Route to display the form for creating a new contact for the currently logged-in user
+Route::get('/contacts/create', [UserContactController::class, 'createForCurrentUser'])->name('contacts.createCurrentUser');
+
+// Route to insert a new contact record associated with the currently logged-in user
+Route::post('/contacts', [UserContactController::class, 'insertForCurrentUser'])->name('contacts.insertCurrentUser');
 
 
+//EDIT AND UPDATE NEW!!!
+// Define routes for editing and updating contacts
+Route::get('/contacts/{id}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
+Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contacts.update');
 
 
 

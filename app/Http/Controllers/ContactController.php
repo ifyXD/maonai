@@ -8,6 +8,9 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+
 
 class ContactController extends Controller
 {
@@ -37,7 +40,9 @@ public function store(Request $request)
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:contacts,email',
             'department' => 'required|string|max:255',
-            'content' => 'nullable|string',
+            'request_type' => 'required|array',
+            'request_type.*' => 'in:repair,service,commission',
+            'other' => 'nullable|string|max:500',
         ]);
 
         // Create new contact
@@ -45,23 +50,12 @@ public function store(Request $request)
         $contact->name = $request->name;
         $contact->email = $request->email;
         $contact->department = $request->department;
-        $contact->content = $request->content;
+        $contact->content = implode(', ', $request->request_type); // Combine selected request types
+        if ($request->has('other')) {
+            $contact->content .= ' - : ' . $request->other; // Add 'other' field if provided
+        }
         $contact->status = 'pending'; // Set status to 'pending'
         $contact->save();
-
-         // Convert contact data to JSON
-         $jsonData = json_encode([
-            'name' => $contact->name,
-            'email' => $contact->email,
-            'department' => $contact->department,
-            'content' => $contact->content,
-            // Add any additional fields you want to include in the JSON
-        ]);
-
-        // Save JSON data to a file in the public path
-        $fileName = 'pendingData/contact_' . $contact->id . '.json';
-        Storage::disk('public')->put($fileName, $jsonData);
-
 
         // Flash success message
         return redirect()->route('welcome')->with('success', 'Contact created successfully.');
@@ -224,6 +218,66 @@ public function getCounts()
     ];
 }
 
+ /**
+     * Show the form for editing the specified contact.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        // Fetch the contact with the given ID and pass it to the view
+        $contact = Contact::findOrFail($id);
+        return view('contacts.edit', compact('contact'));
+    }
 
+
+
+ /**
+ * Update the specified contact in storage.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  int  $id
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function update(Request $request, $id)
+{
+    // Validate request data
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:contacts,email,'.$id,
+        'department' => 'required|string|max:255',
+        'request_type' => 'required|array',
+        'request_type.*' => 'in:repair,service,commission',
+        'other' => 'nullable|string|max:500',
+    ]);
+
+    // Find the contact by ID
+    $contact = Contact::findOrFail($id);
+
+    // Update contact data
+    $contact->name = $request->name;
+    $contact->email = $request->email;
+    $contact->department = $request->department;
+    $contact->content = implode(', ', $request->request_type); // Combine selected request types
+    if ($request->has('other')) {
+        $contact->content .= ' - : ' . $request->other; // Add 'other' field if provided
+    }
+    $contact->save();
+
+    // Debugging: Check if the redirect_to parameter is present and its value
+    Log::info('Redirect to parameter: ', ['redirect_to' => $request->get('redirect_to')]);
+
+    // Conditional redirect based on a query parameter
+    if ($request->has('redirect_to') && $request->redirect_to == 'accept') {
+        Log::info('Redirecting to contacts.accept');
+        return redirect()->route('contacts.accept')->with('success', 'Contact updated successfully.');
+    }
+
+
+    // Debugging: Default redirect
+    Log::info('Redirecting to contacts.index');
+    return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
+}
 
 }
