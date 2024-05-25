@@ -48,7 +48,7 @@
                     <div class="sidenav-menu-heading">UserDashboard</div>
                 @endif
                                     <!-- Sidenav Accordion (Dashboard)-->
-                    <a class="nav-link" href="dashboard">
+                    <a class="nav-link" href="contacts">
                         <div class="nav-link-icon"><i data-feather="filter"></i></div>
                         Dashboard
                     </a>
@@ -70,6 +70,7 @@
                             </nav>
                         </div>
                     @endif
+                    
                     <!-- Sidenav Heading (App Views)-->
                     <!-- Sidenav Accordion (Flows)-->
                     @if (auth()->check() && auth()->user()->role === 'admin')
@@ -120,9 +121,9 @@
                 </a>
                 <div class="collapse" id="collapseUsers" data-parent="#accordionSidenav">
                     <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                        <a class="nav-link" href="#">Create Request Here <span>
+                        <a class="nav-link" href="requestvehicle">Create Request Here <span>
                             </a>
-                    <a class="nav-link" href="#">All Request<span>
+                    <a class="nav-link" href="all">All Request<span>
                            </a>
                   
                         <!-- Add links for All Users here -->
@@ -155,9 +156,9 @@
 
                     @if (auth()->check() && auth()->user()->role === 'admin')
 
-                    <a class="nav-link" href="destination">
+                    <a class="nav-link" href="reports">
                         <div class="nav-link-icon"><i data-feather="filter"></i></div>
-                       Reports
+                       Reports Managements
                     </a>
                     @endif
 

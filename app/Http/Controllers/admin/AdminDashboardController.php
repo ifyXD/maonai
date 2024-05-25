@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class AdminDashboardController extends Controller
 {
     public function index(){
-        return view('dashboard.admin.useradmin');
+        return view('contacts.index');
     }
     public function userdashboard(){
         return view('dashboard.user.user');

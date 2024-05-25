@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\requestVehicle;
+use App\Models\User;
+use App\Models\Vehicle;
 use App\Models\YourModel; // Replace YourModel with your actual model name
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class YourController extends Controller
+class RequestVehicleController extends Controller
 {
     public function index()
     {
@@ -15,64 +19,96 @@ class YourController extends Controller
     }
 
     public function store(){
-
-        return view('requestvehicles.create');
+        $vehicle = Vehicle::all();
+        $requestvehicle = requestVehicle::all();
+        
+        return view('requestvehicles.create',compact('vehicle','requestvehicle'));
     }
 
     public function create(Request $request)
     {
         $rules = [
-            'name' => 'required|string|max:255',
+            
             'vehicle_id' => 'required|string|max:255',
-            'user_id' => 'required|string|max:255',
             'purpose' => 'required|string|max:255',
             'status' => 'required|string|max:255',
-            'appointment' => 'required|date',
+            'capacity' => 'required|integer',
+            'appointment' => 'required|date',   
         ];
-
+    
         $validatedData = $request->validate($rules);
-
-        $requestVehicle = requestVehicle::create($validatedData);
-
+        $validatedData['vehicles_id'] = $request->vehicle_id; // Add vehicles_id to the validated data
+    
+        $requestVehicle = RequestVehicle::create($validatedData);
+    
         return response()->json([
             'message' => 'Record created successfully',
             'data' => $requestVehicle,
         ], 201);
-        
     }
 
    
 
     public function allRecords()
     {
-        $requestVehicle = requestVehicle::orderBy('created_at', 'desc')->get();
-
+        if (auth()->user()->role === 'admin') {
+            $requestVehicles = DB::table('request_vehicles')
+                ->join('vehicles', 'request_vehicles.vehicles_id', 'vehicles.id')
+                ->select('request_vehicles.*', 'vehicles.type', 'vehicles.condition', 'vehicles.platenumber',)
+                ->orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+                ->orderBy('request_vehicles.created_at', 'desc')
+                ->get();
+        } else {
+            $requestVehicles = DB::table('request_vehicles')
+                ->join('vehicles', 'request_vehicles.vehicles_id', 'vehicles.id')
+                ->select('request_vehicles.*', 'vehicles.type', 'vehicles.condition', 'vehicles.platenumber',)
+                ->where('request_vehicles.user_id', auth()->user()->id)
+                ->orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+                ->orderBy('request_vehicles.created_at', 'desc')
+                ->get();
+        }
+    
         return response()->json([
-            'records' => $requestVehicle,
+            'records' => $requestVehicles,
         ]);
     }
-
-
+    
     public function delete(Request $request)
     {
         $id = $request->id;
-        requestVehicle::find($id)->delete();
-
+        $requestVehicle = requestVehicle::find($id);
+    
+        if (!$requestVehicle) {
+            return response()->json([
+                'message' => 'Record not found',
+            ], 404);
+        }
+    
+        if (auth()->user()->role !== 'admin' && $requestVehicle->user_id !== auth()->user()->id) {
+            return response()->json([
+                'message' => 'You are not authorized to delete this record',
+            ], 403);
+        }
+    
+        $requestVehicle->delete();
+    
         return response()->json([
             'message' => 'Record deleted successfully',
         ]);
     }
+    
 
     public function edit(Request $request)
     {
         try {
             $rules = [
-                'name' => 'required|string|max:255',
                 'vehicle_id' => 'required|string|max:255',
                 'user_id' => 'required|string|max:255',
                 'purpose' => 'required|string|max:255',
                 'status' => 'required|string|max:255',
                 'appointment' => 'required|date',
+                'capacity' => 'required|integer',
+
             ];
 
             $validatedData = $request->validate($rules);

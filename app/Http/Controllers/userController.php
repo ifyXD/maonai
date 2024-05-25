@@ -33,8 +33,7 @@ class userController extends Controller
         $users = User::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
             ->orderBy('created_at', 'desc')
             ->get();
-
-
+    
         return response()->json([
             'users' => $users,
         ]);

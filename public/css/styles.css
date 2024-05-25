@@ -20646,3 +20646,29 @@ pre[class*=language-] {
 .custom-card {
   margin-right: 0 !important;
 }
+/* Custom select styles */
+select.form-select {
+  /* Remove default arrow icon */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Add custom arrow icon */
+  background-image: url('path_to_your_custom_arrow_icon.svg');
+  background-repeat: no-repeat;
+  background-position: right center;
+  /* Customize border and padding */
+  border: 1px solid #ced4da;
+  padding: .375rem .75rem;
+  /* Add some margin for spacing */
+  margin-bottom: 1rem;
+  /* Set width */
+  width: 300px; /* Adjust the width as needed */
+}
+
+/* Style when select box is focused */
+select.form-select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+

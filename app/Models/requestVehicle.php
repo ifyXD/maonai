@@ -15,6 +15,10 @@ class requestVehicle extends Model
         'purpose',
         'status',
         'appointment',
+        'capacity',
         'isdel',
+        'drivers_id',
+        
     ];
 }
+

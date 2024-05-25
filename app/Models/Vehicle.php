@@ -12,10 +12,15 @@ class Vehicle extends Model
     protected $fillable = [
         'platenumber',
         'type',
-        'driver',
+        'name',
         'condition',
         'description',
         'status',
+        'drivers_id',
         'isdel',
     ];
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class, 'drivers_id', 'id');
+    }
 }

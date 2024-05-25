@@ -15,6 +15,11 @@ class Driver extends Model
         'driver_license',
         'address',
         'status',
+        'driver',
         'isdel'
     ];
+    public function vehicle()
+    {
+        return $this->hasMany(Vehicle::class, 'vehicles_id', 'id');
+    }
 }

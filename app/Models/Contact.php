@@ -21,8 +21,5 @@ class Contact extends Model
         return $this->hasMany(Material::class);
     }
 
-    public function requests()
-    {
-        return $this->hasMany(Request::class);
-    }
+
 }

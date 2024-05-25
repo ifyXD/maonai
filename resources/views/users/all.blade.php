@@ -78,22 +78,26 @@
 
 
         function tausers() {
+    // Destroy the existing DataTable instance to prevent conflicts
+    if ($.fn.DataTable.isDataTable('#dataTable')) {
+        $('#dataTable').DataTable().destroy();
+    }
 
-            $('#dataTable').DataTable().destroy();
-            $('tbody').empty();
-            $.ajax({
-                type: 'get',
-                url: '/admin/usersdata',
-                success: function(data) {
-                    // Assuming data is an array of user objects
-                    $.each(data.users, function(index, user) {
-                        var key = index + 1;
-                        var ifdel = user.isdel === 'deleted' ? 'is-deleted' : '';
+    // Clear the table body before populating it with new data
+    $('tbody').empty();
 
-                        var action = user.isdel === 'active' ?
+    $.ajax({
+        type: 'get',
+        url: '/admin/usersdata',
+        success: function(data) {
+            // Assuming data is an array of user objects
+            $.each(data.users, function(index, user) {
+                var key = index + 1;
+                var ifdel = user.isdel === 'deleted' ? 'is-deleted' : '';
 
+                var action = user.isdel === 'active' ?
 
-                            `<a href="#" class="editUsers" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#userEdit${user.id}">
+                `<a href="#" class="editUsers" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#userEdit${user.id}">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
               <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -108,17 +112,15 @@
                             `<span class="text-danger">Deleted</span>`;
                         // Assuming user has properties like id, name, email, etc.
                         let row =
-                            `<tr class="${ifdel}" id="trId${user.id}">
-          <td>${key}</td>
-          <td id="nameId${user.id}">${user.ufname} ${user.uname} ${user.lname}</td>
-          <td id="addressId${user.id}">${user.address}</td>
-          <td id="contactId${user.id}">${user.contact}</td>
-          <td id="usernameId${user.id}">${user.username}</td>
-          <td id="passwordId${user.id}" style="display:none;">${user.password}</td>
-
-          <td id="createdAtId${user.id}">${formatDate(user.created_at)}</td>
-          <td id="updatedAtId${user.id}">${formatDate(user.updated_at)}</td>
-         <td>
+                    `<tr class="${ifdel}" id="trId${user.id}">
+                        <td>${key}</td>
+                        <td id="nameId${user.id}">${user.ufname} ${user.uname} ${user.lname}</td>
+                        <td id="addressId${user.id}">${user.address}</td>
+                        <td id="contactId${user.id}">${user.contact}</td>
+                        <td id="usernameId${user.id}">${user.username}</td>
+                        <td id="createdAtId${user.id}">${formatDate(user.created_at)}</td>
+                        <td id="updatedAtId${user.id}">${formatDate(user.updated_at)}</td>
+                        <td>
 
               ${action}
               <div class="modal fade" id="userEdit${user.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -174,30 +176,17 @@
               </div> 
           </td>
       </tr>`;
-                        // Append the row to the 
+                $('tbody').append(row);
+            });
 
-
-                        $('tbody').append(row);
-                    });
-                    $('#dataTable').DataTable();
-
+            // Initialize the DataTable
+            $('#dataTable').DataTable();
 
                 }
 
             });
         }
-        function togglePasswordVisibility(userId) {
-    var passwordField = $(`#editpassword${userId}`);
-    var toggleButton = $(`#togglePassword${userId}`);
 
-    if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        toggleButton.text('Hide');
-    } else {
-        passwordField.attr('type', 'password');
-        toggleButton.text('Show');
-    }
-}
 
 
         function deleteUser(userid) {
@@ -257,12 +246,14 @@
             $(`#editaddress${id}`).val($(`#addressId${id}`).text());
             $(`#editcontact${id}`).val($(`#contactId${id}`).text());
             $(`#editusername${id}`).val($(`#usernameId${id}`).text());
+            $(`#editpassword${id}`).val($(`#usernameId${id}`).text());
+
         });
 
 
         // Save button click event listener
       // Save button click event listener
-$('tbody').on('click', '#editSaveBtn', function() {
+      $('tbody').on('click', '#editSaveBtn', function() {
     let id = $(this).data('id');
     let ufname = $(`#editufname${id}`).val();
     let uname = $(`#edituname${id}`).val();
@@ -272,9 +263,6 @@ $('tbody').on('click', '#editSaveBtn', function() {
     let username = $(`#editusername${id}`).val();
     let password = $(`#editpassword${id}`).val();
 
-    // Hash the new password
-    let hashedPassword = password ? Hash.make(password) : null;
-
     $.ajax({
         type: 'post',
         url: '/admin/user/editbyid',
@@ -282,11 +270,11 @@ $('tbody').on('click', '#editSaveBtn', function() {
             'id': id,
             'ufname': ufname,
             'uname': uname,
-            'lname': lname,
+            'lname': lname, 
             'address': address,
             'contact': contact,
             'username': username,
-            'password': hashedPassword // Use hashed password here
+            'password': password // Send plain password to server
         },
         success: function(response) {
             Swal.fire({
@@ -306,8 +294,6 @@ $('tbody').on('click', '#editSaveBtn', function() {
         }
     });
 });
-
-
         $(document).on('click', '[data-bs-dismiss="modal"]', function() {
             $(this).closest('.modal').modal('hide');
         });

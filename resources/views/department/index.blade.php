@@ -253,6 +253,8 @@
         success: function(data) {
             if (data.message === 'success') {
                 $('#messageflash').text('Department added successfully');
+                console.log('Vehicle added successfully'); // Log success message
+
                 callback(true); // Invoke the callback with true indicating success
             }
         },

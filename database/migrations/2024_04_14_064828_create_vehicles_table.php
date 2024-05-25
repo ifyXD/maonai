@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('platenumber');
             $table->string('type');
-            $table->string('driver');
+            $table->string('name');
             $table->string('condition');
             $table->string('description')->default('');
             $table->string('status')->default('pending');
             $table->string('isdel')->nullable()->default('active');
+            $table->unsignedBigInteger('drivers_id');
+            $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');            
             $table->timestamps();
         });
     }

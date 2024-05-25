@@ -10,6 +10,7 @@ use App\Http\Controllers\LandingPage;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\ParkingController;
+use App\Http\Controllers\RequestVehicleController;
 use App\Http\Controllers\TripDestinationController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\VehicleController;
@@ -62,8 +63,8 @@ Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contac
 
 
 use App\Http\Controllers\profileController;
-
-
+use App\Http\Controllers\reportController;
+use App\Models\requestVehicle;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -110,9 +111,8 @@ Route::put('/contacts_requests/{id}', [ContactRequestController::class, 'update'
 Route::get('/', [LandingPage::class, 'index']);
 
 
-Route::get('/welcome', [ContactRequestController::class, 'create'])->name('welcome');
 
-Route::post('/adminuser/editbyid', [VehicleController::class, 'edit']);
+Route::get('/welcome', [ContactRequestController::class, 'create'])->name('welcome');
 
 
 Auth::routes();
@@ -170,7 +170,7 @@ Route::get('/accepted_requests', [ContactRequestController::class, 'showAccepted
 Route::get('/pending_requests', [ContactRequestController::class, 'showPendingRequests'])->name('pending_requests');
 Route::get('/declined_requests', [ContactRequestController::class, 'showDeclinedRequests'])->name('declined_requests');
 
-Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/contacts', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
@@ -180,6 +180,7 @@ Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
 Route::post('/addnewvehicle', [VehicleController::class, 'create']);
 Route::get('/vehicle', [VehicleController::class, 'index']);
 Route::post('/vehicle/deletebyid', [VehicleController::class, 'delete']);
+Route::post('/editbyid', [VehicleController::class, 'edit']);
 
 
 //Maintenances
@@ -248,16 +249,38 @@ Route::get('/users', [userController::class, 'store']);
 Route::get('/recovery', [userController::class, 'destory']);
 Route::post('/addnewuser', [userController::class, 'create']);
 Route::get('/usersdata', [userController::class, 'tableusers']);
-Route::post ('user/editbyid', [userController::class, 'edit']);
-Route::post('/users/deletebyid', [userController::class, 'delete']);
+Route::post ('/user/editbyid', [userController::class, 'edit']);
+Route::post('/deletebyid', [userController::class, 'delete']);
 
 
 
 
-
+// Profile
 Route::get('/profile', [profileController::class, 'index']);
 
 
+
+//Reports
+Route::get('/reports', [reportController::class, 'index']);
+
+
+
+
+
+//RequestVehicle
+
+
+
+
+
+
+
+
+
+
+
+
+//Technical Request
 
 
 
@@ -270,7 +293,7 @@ Route::get('/parkingtae', [ParkingController::class, 'store']);
 });
 
 Route::middleware(['isUser'])->prefix('user')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
+    Route::get('/contacts', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
@@ -279,6 +302,13 @@ Route::middleware(['isUser'])->prefix('user')->group(function () {
 
 
     Route::get('/profile', [profileController::class, 'index']);
+
+
+
+    Route::get('/all', [RequestVehicleController::class, 'index']);
+Route::get('/requestvehicle', [RequestVehicleController::class, 'store']);
+
+
 
 
 });
