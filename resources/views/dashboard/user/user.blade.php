@@ -73,6 +73,46 @@
     </div>
 </div>
 
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-header">Request Details</div>
+                <div class="card-body">
+                    <h4>User Information</h4>
+                    <p><strong>Name:</strong> </p>
+                    <p><strong>Email:</strong> </p>
+                    <h4>My Contacts</h4>
+                    {{-- @if($contacts->isEmpty())
+                        <p>You have no contacts.</p>
+                    @else
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+
+                                    <th>Department</th>
+                                    <th>Content</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($contacts as $contact)
+                                    <tr>
+
+                                        <td>{{ $contact->department }}</td>
+                                        <td>{{ $contact->content }}</td>
+                                        <td>{{ $contact->status }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif --}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('scripts')
     {{-- ajax crud --}}
@@ -122,7 +162,7 @@
 
                         var action = vehicle.isdel === 'active' ?
 
-                        
+
     `<a href="#" class="editVehicle" data-id="${vehicle.id}" data-bs-toggle="modal" data-bs-target="#vehicleEdit${vehicle.id}">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -144,10 +184,10 @@ let row =
         <td id="typeId${vehicle.id}"> ${vehicle.type} </td>
         <td id="driverId${vehicle.id}"> ${vehicle.driver}</td>
         <td id="conditionId${vehicle.id}"> ${vehicle.condition} </td>
-        <td id="statusId${vehicle.id}"> ${vehicle.status} </td> 
+        <td id="statusId${vehicle.id}"> ${vehicle.status} </td>
         <td id="createdAtId${vehicle.id}">${formatDate(vehicle.created_at)}</td>
         <td id="updatedAtId${vehicle.id}">${formatDate(vehicle.updated_at)}</td>
-        <td> 
+        <td>
             ${action}
             <div class="modal fade" id="vehicleEdit${vehicle.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -158,26 +198,26 @@ let row =
   <i class="fas fa-times"></i>
 </button>
                         </div>
-                        <div class="modal-body"> 
+                        <div class="modal-body">
                             <div class="mb-3">
                                 <label for="editplatenumber${vehicle.id}" class="form-label">Plate Number</label>
-                                <input type="text" value="${vehicle.platenumber}" class="form-control" id="editplatenumber${vehicle.id}" aria-describedby="emailHelp"> 
+                                <input type="text" value="${vehicle.platenumber}" class="form-control" id="editplatenumber${vehicle.id}" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="edittype${vehicle.id}" class="form-label">Type</label>
-                                <input type="text" value="${vehicle.type}" class="form-control" id="edittype${vehicle.id}" aria-describedby="emailHelp"> 
+                                <input type="text" value="${vehicle.type}" class="form-control" id="edittype${vehicle.id}" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="editdriver${vehicle.id}" class="form-label">Driver</label>
-                                <input type="text" value="${vehicle.driver}" class="form-control" id="editdriver${vehicle.id}" aria-describedby="emailHelp"> 
+                                <input type="text" value="${vehicle.driver}" class="form-control" id="editdriver${vehicle.id}" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="editcondition${vehicle.id}" class="form-label">Condition</label>
-                                <input type="text" value="${vehicle.condition}" class="form-control" id="editcondition${vehicle.id}" aria-describedby="emailHelp"> 
+                                <input type="text" value="${vehicle.condition}" class="form-control" id="editcondition${vehicle.id}" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="editdescription${vehicle.id}" class="form-label">Description</label>
-                                <input type="text" value="${vehicle.description}" class="form-control" id="editdescription${vehicle.id}" aria-describedby="emailHelp"> 
+                                <input type="text" value="${vehicle.description}" class="form-control" id="editdescription${vehicle.id}" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-1">
                                                 <label for="status" class="form-label">Status</label>
@@ -197,21 +237,21 @@ let row =
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </td>
     </tr>`;
-                        // Append the row to the 
+                        // Append the row to the
 
 
                         $('tbody').append(row);
                     });
                     $('#dataTable').DataTable();
-                     
-                   
+
+
                 }
 
             });
-        } 
+        }
 
         function deleteUser(userid) {
             $.ajax({
@@ -243,7 +283,7 @@ let row =
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                
+
                 confirmButtonText: "Yes, delete it!",
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -405,10 +445,10 @@ $('tbody').on('click', '#editSaveBtn', function() {
         error: function(xhr, status, error) {
             // Handle the error response
             Swal.fire("Error!", "Failed to update vehicle.", "error");
-            
+
         }
     });
-    
+
 });
 
 $(document).on('click', '[data-bs-dismiss="modal"]', function() {

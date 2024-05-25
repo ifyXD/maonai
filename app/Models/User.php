@@ -34,7 +34,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
- 
+
 
     /**
      * The attributes that should be cast.
@@ -44,4 +44,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Define the relationship
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }

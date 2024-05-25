@@ -1,6 +1,6 @@
-<!-- resources/views/contacts/index.blade.php -->
+<!-- resources/views/JRMSdashboard.blade.php -->
 
-@extends('layouts.application')
+@extends('layouts.app')
 
 @section('content')
 <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-4">
@@ -20,7 +20,6 @@
 </header>
 
 <div class="container mt-4">
-
     <h1>
         Job Request Management
         <i data-feather="file-text" style="margin-right: 0.25em; width: 1em; height: 1em;"></i>
@@ -29,76 +28,73 @@
         feather.replace()
     </script>
 
-    @include('contacts.cards.quartetCard')
-
     <div class="card mb-4">
         <div class="card-header" style="background-image: linear-gradient(to right, #117105, #82AD34); color: white;">
             <div>
                 <i data-feather="database" style="margin-right: 0.25em;"></i> Main
             </div>
         </div>
-                <!-- Display flash message -->
-            @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
+        <!-- Display flash message -->
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
 
         <div class="card-body">
             <div class="datatable">
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Content</th>
-                            <th scope="col">Status</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th style="text-align: center;">Request</th>
                             <th style="text-align: center;">Update</th>
+                            <th style="text-align: center;">ListView</th>
+
+
+                            <!-- Add more fields as needed -->
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($contacts as $contact) --}}
-                        <tr>
-                            {{-- <td>{{ $contact->name }}</td>
-                            <td>{{ $contact->email }}</td>
-                            <td>{{ $contact->department }}</td>
-                            <td>{{ $contact->content }}</td> --}}
-                            <td>
-                                {{-- <form action="{{ route('contacts.updateStatus', ['contact' => $contact->id]) }}" method="POST"> --}}
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="d-flex align-items-center">
-                                        <select name="status" class="form-control" style="min-width: 120px;">
-                                            {{-- <option value="pending" {{ $contact->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                            <option value="accepted" {{ $contact->status === 'accepted' ? 'selected' : '' }}>Accepted</option>
-                                            <option value="declined" {{ $contact->status === 'declined' ? 'selected' : '' }}>Declined</option> --}}
-                                        </select>
-                                        <div class="input-group-append ml-2">
-                                            <button type="submit" class="btn btn-primary">
-                                                <i data-feather="refresh-ccw"></i>
-                                            </button>
-                                        </div>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <!-- Add more fields as needed -->
+                                <td class="text-center" style="width: 50px;">
+                                    <div class="d-inline-block">
+                                        <a href="{{ route('contacts.create', ['userId' => $user->id]) }}" class="btn btn-sm btn-info open-edit-modal">
+                                            <i data-feather="aperture"></i> Insert
+                                        </a>
                                     </div>
-                                </form>
-                            </td>
-                            <td class="text-center" style="width: 50px;">
-                                <div class="d-inline-block">
-                                    <button class="btn btn-sm btn-primary open-edit-modal" data-contact-id="{{ $contact->id }}">
-                                        <i data-feather="edit"></i> Edit
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                </td>
+
+                                <td class="text-center" style="width: 50px;">
+                                    <div class="d-inline-block">
+                                        <button class="btn btn-sm btn-primary open-edit-modal" data-contact-id="">
+                                            <i data-feather="edit"></i> Edit
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="text-center" style="width: 50px;">
+                                    <div class="d-inline-block">
+                                        <a href="{{ route("contacts.index") }}" class="btn btn-sm btn-success open-edit-modal">
+                                            <i data-feather="airplay"></i> Contact
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+
+                </table>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- Modal -->
@@ -150,5 +146,5 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-    </footer>
+</footer>
 @endsection

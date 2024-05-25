@@ -82,10 +82,10 @@
                         </a>
                         <div class="collapse" id="collapseFlows" data-parent="#accordionSidenav">
                             <nav class="sidenav-menu-nested nav">
+                                <a class="nav-link" href="drivers">Driver</a>
                                 <a class="nav-link" href="vehicle">Vehicles</a>
                                 <a class="nav-link" href="maintenance">Maintenances</a>
                                 <a class="nav-link" href="mechanics">Mechanics</a>
-                                <a class="nav-link" href="drivers">Driver</a>
                                 <a class="nav-link" href="fuel">Fuel Types</a>
                                 <a class="nav-link" href="parking">Parking area</a>
                             </nav>
@@ -125,11 +125,11 @@
                             </a>
                     <a class="nav-link" href="all">All Request<span>
                            </a>
-                  
+
                         <!-- Add links for All Users here -->
                     </nav>
                 </div>
-                @endif  
+                @endif
                 @if (auth()->check() && auth()->user()->role === 'user')
 
                 <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
@@ -146,10 +146,10 @@
                 </nav>
             </div>
             @endif
-            
+
                     <!-- Users-->
 
-                    <a class="nav-link" href="destination"> 
+                    <a class="nav-link" href="destination">
                         <div class="nav-link-icon"><i data-feather="filter"></i></div>
                         Trip Destination
                     </a>
@@ -183,10 +183,10 @@
                             <a class="nav-link" href="departments">Department</a>
                         </nav>
                     </div>
-                    
+
 
                 @endif
-                    
+
 
                 </div>
             </div>

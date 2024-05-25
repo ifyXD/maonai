@@ -15,7 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('platenumber');
             $table->string('type');
-            $table->string('name');
+            // $table->string('driver');
+            // $table->unsignedBigInteger('driver_id');
+            // $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
+            $table->unsignedBigInteger('driver_id');
+            $table->foreign('driver_id')
+                ->references('id')
+                ->on('drivers')
+                ->onDelete('no action');
             $table->string('condition');
             $table->string('description')->default('');
             $table->string('status')->default('pending');

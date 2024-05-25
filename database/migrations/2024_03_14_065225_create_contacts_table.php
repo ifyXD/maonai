@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('department');
