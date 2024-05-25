@@ -138,170 +138,167 @@ Route::post('/adminuser/editbyid', [VehicleController::class, 'edit']);
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
-Route::middleware(['isAdmin'])->prefix('admin')->group(function () {
+    Route::middleware(['isAdmin'])->prefix('admin')->group(function () {
 
-    // Route for showing all contacts
-Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+        // Route for showing all contacts
+        Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 
 
 
 
-    Route::get('/quartet', [ContactController::class, 'quartetCard'])->name('contacts.cards.quartetCard');
+        Route::get('/quartet', [ContactController::class, 'quartetCard'])->name('contacts.cards.quartetCard');
 
-    // Route to display declined contacts
-    Route::get('/contacts/declined', [ContactController::class, 'declined'])->name('contacts.declined');
-    // Route to display pending contacts
-    Route::get('/contacts/pending', [ContactController::class, 'pending'])->name('contacts.pending');
-    // Route for displaying accepted contacts
-    Route::get('/contacts/accepted', [ContactController::class, 'accepted'])->name('contacts.accept');
+        // Route to display declined contacts
+        Route::get('/contacts/declined', [ContactController::class, 'declined'])->name('contacts.declined');
+        // Route to display pending contacts
+        Route::get('/contacts/pending', [ContactController::class, 'pending'])->name('contacts.pending');
+        // Route for displaying accepted contacts
+        Route::get('/contacts/accepted', [ContactController::class, 'accepted'])->name('contacts.accept');
 
 
-// Define routes for InvoiceController
-Route::get('/invoices/{contact_id}/generateWord', [InvoiceController::class, 'generateWord'])->name('invoices.generateWord');
+        // Define routes for InvoiceController
+        Route::get('/invoices/{contact_id}/generateWord', [InvoiceController::class, 'generateWord'])->name('invoices.generateWord');
 
 
 
-// Route for generating and downloading a PDF invoice for a specific contact
-Route::get('/invoices/generate-pdf/{contact_id}', [InvoiceController::class, 'generatePDF'])->name('invoices.generatePDF');
+        // Route for generating and downloading a PDF invoice for a specific contact
+        Route::get('/invoices/generate-pdf/{contact_id}', [InvoiceController::class, 'generatePDF'])->name('invoices.generatePDF');
 
 
-// Route for displaying invoices associated with a specific contact
-Route::get('/invoices/{contact_id}', [InvoiceController::class, 'index'])->name('invoices.index');
+        // Route for displaying invoices associated with a specific contact
+        Route::get('/invoices/{contact_id}', [InvoiceController::class, 'index'])->name('invoices.index');
 
-// Route for displaying the form to add new labor records for a specific contact
-Route::get('/invoices/createLabors/{contact_id}', [InvoiceController::class, 'createLabors'])->name('invoices.createLabors');
+        // Route for displaying the form to add new labor records for a specific contact
+        Route::get('/invoices/createLabors/{contact_id}', [InvoiceController::class, 'createLabors'])->name('invoices.createLabors');
 
-// Route for storing new labor records for a specific contact
-Route::post('/invoices/storeLabors/{contact_id}', [InvoiceController::class, 'storeLabors'])->name('invoices.storeLabors');
+        // Route for storing new labor records for a specific contact
+        Route::post('/invoices/storeLabors/{contact_id}', [InvoiceController::class, 'storeLabors'])->name('invoices.storeLabors');
 
-// Route for displaying the form to add new material records for a specific contact
-Route::get('/invoices/createMaterials/{contact_id}', [InvoiceController::class, 'createMaterials'])->name('invoices.createMaterials');
+        // Route for displaying the form to add new material records for a specific contact
+        Route::get('/invoices/createMaterials/{contact_id}', [InvoiceController::class, 'createMaterials'])->name('invoices.createMaterials');
 
-// Route for storing new material records for a specific contact
-Route::post('/invoices/storeMaterials/{contact_id}', [InvoiceController::class, 'storeMaterials'])->name('invoices.storeMaterials');
+        // Route for storing new material records for a specific contact
+        Route::post('/invoices/storeMaterials/{contact_id}', [InvoiceController::class, 'storeMaterials'])->name('invoices.storeMaterials');
 
 
 
-Route::post('/contacts_requests/store', [ContactRequestController::class, 'store'])->name('contacts_requests.store');
-Route::post('/contacts_requests/update_status', [ContactRequestController::class, 'updateStatus'])->name('update_status');
+        Route::post('/contacts_requests/store', [ContactRequestController::class, 'store'])->name('contacts_requests.store');
+        Route::post('/contacts_requests/update_status', [ContactRequestController::class, 'updateStatus'])->name('update_status');
 
 
-Route::get('/contacts_requests', [ContactRequestController::class, 'getContactRequests'])->name('contacts_requests');
-Route::get('/accepted_requests', [ContactRequestController::class, 'showAcceptedRequests'])->name('accepted_requests');
-Route::get('/pending_requests', [ContactRequestController::class, 'showPendingRequests'])->name('pending_requests');
-Route::get('/declined_requests', [ContactRequestController::class, 'showDeclinedRequests'])->name('declined_requests');
+        Route::get('/contacts_requests', [ContactRequestController::class, 'getContactRequests'])->name('contacts_requests');
+        Route::get('/accepted_requests', [ContactRequestController::class, 'showAcceptedRequests'])->name('accepted_requests');
+        Route::get('/pending_requests', [ContactRequestController::class, 'showPendingRequests'])->name('pending_requests');
+        Route::get('/declined_requests', [ContactRequestController::class, 'showDeclinedRequests'])->name('declined_requests');
 
-Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 
+        // Vehicles
+        Route::get('/vehicle', [VehicleController::class, 'index']);
+        Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
+        Route::post('/addnewvehicle', [VehicleController::class, 'create']);
+        Route::post('/vehicle/deletebyid', [VehicleController::class, 'delete']);
 
-Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
-Route::post('/addnewvehicle', [VehicleController::class, 'create']);
-Route::get('/vehicle', [VehicleController::class, 'index']);
-Route::post('/vehicle/deletebyid', [VehicleController::class, 'delete']);
 
+        //Maintenances
 
-//Maintenances
 
 
+        Route::get('/maintenancedata', [MaintenanceController::class, 'maintenance']);
+        Route::post('/addmaintenance', [MaintenanceController::class, 'create']);
+        Route::post('/editbyid', [MaintenanceController::class, 'edit']);
+        Route::get('/maintenance', [MaintenanceController::class, 'index']);
+        Route::post('/maintenance/deletebyid', [MaintenanceController::class, 'delete']);
 
-Route::get('/maintenancedata', [MaintenanceController::class, 'maintenance']);
-Route::post('/addmaintenance', [MaintenanceController::class, 'create']);
-Route::post('/editbyid', [MaintenanceController::class, 'edit']);
-Route::get('/maintenance', [MaintenanceController::class, 'index']);
-Route::post('/maintenance/deletebyid', [MaintenanceController::class, 'delete']);
 
+        //Mechanics
 
-//Mechanics
+        Route::get('/mechanics', [MechanicsController::class, 'index']);
+        Route::get('/mechanicsdata', [MechanicsController::class, 'mechanics']);
+        Route::post('/addmechanics', [MechanicsController::class, 'create']);
+        Route::post('/editbyid', [MechanicsController::class, 'edit']);
+        Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 
-Route::get('/mechanics', [MechanicsController::class, 'index']);
-Route::get('/mechanicsdata', [MechanicsController::class, 'mechanics']);
-Route::post('/addmechanics', [MechanicsController::class, 'create']);
-Route::post ('/editbyid', [MechanicsController::class, 'edit']);
-Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 
 
+        //Drivers
+        Route::get('/drivers', [DriverController::class, 'index']);
+        Route::get('/driverdatatae', [DriverController::class, 'driverdata']);
+        Route::post('/addnewDriver', [DriverController::class, 'create']);
+        Route::post('/driver/edit', [DriverController::class, 'edit']);
+        Route::post('/driver/deletebyid', [DriverController::class, 'delete']);
+        //tripdestination
 
-//Drivers
-Route::get('/drivers', [DriverController::class, 'index']);
-Route::get('/driverdatatae', [DriverController::class, 'driverdata']);
-Route::post('/addnewDriver', [DriverController::class, 'create']);
-Route::post ('/driver/edit', [DriverController::class, 'edit']);
-Route::post('/driver/deletebyid', [DriverController::class, 'delete']);
-//tripdestination
 
 
+        Route::get('/destination', [TripDestinationController::class, 'index']);
 
-Route::get('/destination', [TripDestinationController::class, 'index']);
+        Route::post('/tripdestination', [TripDestinationController::class, 'create']);
 
-Route::post('/tripdestination', [TripDestinationController::class, 'create']);
 
 
+        //fuels
 
-//fuels
+        Route::get('/fuel', [FuelController::class, 'index']);
+        Route::get('/fueldata', [FuelController::class, 'datafuels']);
+        Route::post('/addnewfuel', [FuelController::class, 'create']);
+        Route::post('fuel/edit', [FuelController::class, 'edit']);
+        Route::post('/fuel/deletebyid', [FuelController::class, 'delete']);
 
-Route::get('/fuel', [FuelController::class, 'index']);
-Route::get('/fueldata', [FuelController::class, 'datafuels']);
-Route::post('/addnewfuel', [FuelController::class, 'create']);
-Route::post ('fuel/edit', [FuelController::class, 'edit']);
-Route::post('/fuel/deletebyid', [FuelController::class, 'delete']);
 
 
+        //Departments
 
-//Departments
+        Route::get('/departments', [DepartmentController::class, 'index']);
+        Route::get('/departmentdata', [DepartmentController::class, 'datausers']);
+        Route::post('/addnewdepartment', [DepartmentController::class, 'create']);
+        Route::post('/editbyid', [DepartmentController::class, 'edit']);
+        Route::post('/department/deletebyid', [DepartmentController::class, 'delete']);
 
-Route::get('/departments', [DepartmentController::class, 'index']);
-Route::get('/departmentdata', [DepartmentController::class, 'datausers']);
-Route::post('/addnewdepartment', [DepartmentController::class, 'create']);
-Route::post('/editbyid', [DepartmentController::class, 'edit']);
-Route::post('/department/deletebyid', [DepartmentController::class, 'delete']);
 
 
 
 
+        //User Managements
 
-//User Managements
+        Route::get('/create', [userController::class, 'index']);
+        Route::get('/users', [userController::class, 'store']);
+        Route::get('/recovery', [userController::class, 'destory']);
+        Route::post('/addnewuser', [userController::class, 'create']);
+        Route::get('/usersdata', [userController::class, 'tableusers']);
+        Route::post('user/editbyid', [userController::class, 'edit']);
+        Route::post('/users/deletebyid', [userController::class, 'delete']);
 
-Route::get('/create', [userController::class, 'index']);
-Route::get('/users', [userController::class, 'store']);
-Route::get('/recovery', [userController::class, 'destory']);
-Route::post('/addnewuser', [userController::class, 'create']);
-Route::get('/usersdata', [userController::class, 'tableusers']);
-Route::post ('user/editbyid', [userController::class, 'edit']);
-Route::post('/users/deletebyid', [userController::class, 'delete']);
 
 
 
 
+        Route::get('/profile', [profileController::class, 'index']);
 
-Route::get('/profile', [profileController::class, 'index']);
 
 
 
 
 
 
+        // Parking area
 
-// Parking area
+        Route::get('/parking', [ParkingController::class, 'index'])->name('parking.index');
+        Route::get('/parkingtae', [ParkingController::class, 'store']);
+    });
 
-Route::get('/parking', [ParkingController::class, 'index'])->name('parking.index');
-Route::get('/parkingtae', [ParkingController::class, 'store']);
+    Route::middleware(['isUser'])->prefix('user')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+        Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
+
+
+
+        Route::get('/profile', [profileController::class, 'index']);
+    });
 });
-
-Route::middleware(['isUser'])->prefix('user')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-    Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
-
-
-
-    Route::get('/profile', [profileController::class, 'index']);
-
-
-});
-});
-

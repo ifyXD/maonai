@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,8 +12,8 @@ class VehicleController extends Controller
 {
     public function index()
     {
-        
-        return view('vehicle.index');
+        $drivers = Driver::orderBy('driver_name', 'asc')->get();
+        return view('vehicle.index', compact('drivers'));
     }
 
     public function create(Request $request)
@@ -21,7 +22,7 @@ class VehicleController extends Controller
         $rules = [
             'platenumber' => 'required|string|max:20|',
             'type' => 'required|string|max:20',
-            'driver' => 'required|string|max:30',
+            'driver_id' => 'required|string|max:30',
             'condition' => 'required|string|max:30',
             'description' => 'nullable|string|max:30',
             'status' => 'required|string',
@@ -42,7 +43,7 @@ class VehicleController extends Controller
         $vehicle = new Vehicle();
         $vehicle->platenumber = $request->platenumber;
         $vehicle->type = $request->type;
-        $vehicle->driver = $request->driver;
+        $vehicle->driver_id = $request->driver_id;
         $vehicle->condition = $request->condition;
         $vehicle->description = $request->description;
 
@@ -59,9 +60,12 @@ class VehicleController extends Controller
 
     public function datausers()
     {
-        $vehicles = Vehicle::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
-            ->orderBy('created_at', 'desc')
+        $vehicles = Vehicle::join('drivers', 'vehicles.driver_id', '=', 'drivers.id')
+            ->orderByRaw("CASE WHEN vehicles.isdel = 'active' THEN 0 ELSE 1 END")
+            ->orderBy('vehicles.created_at', 'desc')
+            ->select('vehicles.id as id', 'drivers.id as did','vehicles.*', 'drivers.driver_name') // Ensure to select columns from vehicles to avoid ambiguous column errors
             ->get();
+
 
 
         return response()->json([
@@ -74,6 +78,9 @@ class VehicleController extends Controller
         Vehicle::find($id)->update([
             'isdel' => 'deleted',
         ]);
+
+        // Driver::find($driverId)->relatedRecords()->update(['driver_id' => null]);
+        // Driver::destroy($driverId);
         return response()->json([
             'message' => $request->id,
         ]);
@@ -85,15 +92,15 @@ class VehicleController extends Controller
             $rules = [
                 'platenumber' => 'required',
                 'type' => 'required',
-                'driver' => 'required',
+                'driver_id' => 'required',
                 'condition' => 'required',
                 'description' => 'required',
                 'status' => 'required',
             ];
-    
+
             // Validate the request data
             $validator = Validator::make($request->all(), $rules);
-    
+
             // Check if validation fails
             if ($validator->fails()) {
                 return response()->json([
@@ -101,13 +108,13 @@ class VehicleController extends Controller
                     'errors' => $validator->errors(),
                 ], 422); // Unprocessable Entity status code
             }
-    
+
             // Find the vehicle by ID
             $vehicle = Vehicle::findOrFail($request->id);
-    
+
             // Update the vehicle attributes
             $vehicle->update($request->all());
-    
+
             return response()->json([
                 'message' => 'success',
                 'vehicle' => $vehicle // Optionally return the updated vehicle object
@@ -120,13 +127,12 @@ class VehicleController extends Controller
         }
     }
     public function showTable()
-{
-    $vehicles = Vehicle::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
-        ->orderBy('created_at', 'desc')
-        ->get();
+    {
+        $vehicles = Vehicle::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc')
+            ->get();
         $vehicles = Vehicle::all();
 
-    return view('dashboard.user.user', ['vehicles' => $vehicles]);
-}
-    
+        return view('dashboard.user.user', ['vehicles' => $vehicles]);
+    }
 }
