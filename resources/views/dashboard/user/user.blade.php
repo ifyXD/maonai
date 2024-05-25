@@ -80,10 +80,10 @@
                 <div class="card-header">Request Details</div>
                 <div class="card-body">
                     <h4>User Information</h4>
-                    <p><strong>Name:</strong> {{ $user->name }}</p>
-                    <p><strong>Email:</strong> {{ $user->email }}</p>
+                    <p><strong>Name:</strong> </p>
+                    <p><strong>Email:</strong> </p>
                     <h4>My Contacts</h4>
-                    @if($contacts->isEmpty())
+                    {{-- @if($contacts->isEmpty())
                         <p>You have no contacts.</p>
                     @else
                         <table class="table table-striped">
@@ -106,7 +106,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>

@@ -81,10 +81,10 @@
                         </a>
                         <div class="collapse" id="collapseFlows" data-parent="#accordionSidenav">
                             <nav class="sidenav-menu-nested nav">
+                                <a class="nav-link" href="drivers">Driver</a>
                                 <a class="nav-link" href="vehicle">Vehicles</a>
                                 <a class="nav-link" href="maintenance">Maintenances</a>
                                 <a class="nav-link" href="mechanics">Mechanics</a>
-                                <a class="nav-link" href="drivers">Driver</a>
                                 <a class="nav-link" href="fuel">Fuel Types</a>
                                 <a class="nav-link" href="parking">Parking area</a>
                             </nav>
