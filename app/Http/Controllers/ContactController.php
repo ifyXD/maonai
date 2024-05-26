@@ -280,4 +280,21 @@ public function update(Request $request, $id)
     return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
 }
 
+    public function mergetae(){
+
+        $contacts = Contact::count();
+
+        // Count contacts based on status
+        $acceptedCount =  count(Contact::where('status', 'accepted')->get());
+        $pendingCount = Contact::where('status', 'pending')->get();
+        $declinedCount = Contact::where('status', 'declined')->get();
+    
+        // Return the counts data to the views
+        return view ('contacts.index', compact('contacts,acceptedCount,pendingCount,declinedCount'));
+    
+        
+
+    }
+
+
 }

@@ -61,21 +61,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($contacts as $contact) --}}
+                        @foreach ($contacts as $contact)
                         <tr>
-                            {{-- <td>{{ $contact->name }}</td>
+                            <td>{{ $contact->name }}</td>
                             <td>{{ $contact->email }}</td>
                             <td>{{ $contact->department }}</td>
-                            <td>{{ $contact->content }}</td> --}}
+                            <td>{{ $contact->content }}</td>
                             <td>
-                                {{-- <form action="{{ route('contacts.updateStatus', ['contact' => $contact->id]) }}" method="POST"> --}}
+                                <form action="{{ route('contacts.updateStatus', ['contact' => $contact->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="d-flex align-items-center">
                                         <select name="status" class="form-control" style="min-width: 120px;">
-                                            {{-- <option value="pending" {{ $contact->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="pending" {{ $contact->status === 'pending' ? 'selected' : '' }}>Pending</option>
                                             <option value="accepted" {{ $contact->status === 'accepted' ? 'selected' : '' }}>Accepted</option>
-                                            <option value="declined" {{ $contact->status === 'declined' ? 'selected' : '' }}>Declined</option> --}}
+                                            <option value="declined" {{ $contact->status === 'declined' ? 'selected' : '' }}>Declined</option>
                                         </select>
                                         <div class="input-group-append ml-2">
                                             <button type="submit" class="btn btn-primary">

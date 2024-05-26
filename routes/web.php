@@ -142,6 +142,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Route for showing all contacts
         Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+        Route::get('/mergetae', [ContactController::class, 'mergetae'])->name('contacts.index');
 
 
 
