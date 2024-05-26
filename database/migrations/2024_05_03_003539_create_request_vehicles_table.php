@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('drivers_id');
             $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');  
             $table->dateTime('appointment');
-            $table->string('appointment_end');
+            $table->dateTime('appointment_end'); 
             $table->string('isdel')->nullable()->default('active');
             $table->timestamps();
         });

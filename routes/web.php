@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\CategoryVehiclesController;
 use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\DepartmentController;
@@ -127,6 +128,9 @@ Route::put('/contacts_requests/{id}', [ContactRequestController::class, 'update'
 
 
 
+// 
+
+
 
 //JRMS Landing Page Interfaces
 Route::get('/', [LandingPage::class, 'index']);
@@ -200,6 +204,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Vehicles
         Route::get('/vehicle', [VehicleController::class, 'index']);
+        Route::post('/editbyid-vehicle', [VehicleController::class, 'edit']);
         Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
         Route::post('/addnewvehicle', [VehicleController::class, 'create']);
         Route::post('/vehicle/deletebyid', [VehicleController::class, 'delete']);
@@ -221,7 +226,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/mechanics', [MechanicsController::class, 'index']);
         Route::get('/mechanicsdata', [MechanicsController::class, 'mechanics']);
         Route::post('/addmechanics', [MechanicsController::class, 'create']);
-        Route::post('/editbyid', [MechanicsController::class, 'edit']);
+        Route::post('/editbyid-mechanic', [MechanicsController::class, 'edit']);
         Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
 
 
@@ -282,27 +287,27 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-//Reports
-Route::get('/reports', [reportController::class, 'index']);
+        //Reports
+        Route::get('/reports', [reportController::class, 'index']); 
+
+        //RequestVehicle
+        Route::get('/pending-requests/vehicle-bookings', [AdminBookingController::class, 'index']);
+        Route::get('/accepted-requests/vehicle-bookings', [AdminBookingController::class, 'accepted']);
+        Route::get('/declined-requests/vehicle-bookings', [AdminBookingController::class, 'declined']);
+        Route::get('/request-decide/{id}/{status}', [AdminBookingController::class, 'updateStatus'])->name('request-decide.admin');
+        Route::get('/request-vehicles/print-to-pdf/{id}', [AdminBookingController::class, 'printPdfById']);
 
 
 
 
 
-//RequestVehicle
 
 
 
 
 
 
-
-
-
-
-
-
-//Technical Request
+        //Technical Request
 
 
 
@@ -316,8 +321,11 @@ Route::get('/reports', [reportController::class, 'index']);
     Route::middleware(['isUser'])->prefix('user')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        // 
 
-
+        Route::get('/create-request', [RequestVehicleController::class, 'store'])->name('create-request-vehicle.user');
+        Route::post('/request-store', [RequestVehicleController::class, 'createRequest'])->name('request-store.user');
+        Route::get('/all-requests', [RequestVehicleController::class, 'index'])->name('all-requests.user');
         Route::get('/vehiclesdata', [VehicleController::class, 'datausers']);
 
 

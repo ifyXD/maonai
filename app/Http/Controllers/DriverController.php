@@ -180,8 +180,6 @@ class DriverController extends Controller
 
         return $html;
     }
-
-
     public function driverdata()
     {
 

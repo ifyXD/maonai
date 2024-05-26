@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="mb-1">
-
-
+    <main class="mb-1"> 
         <header class="page-header page-header-dark bg-teal pb-10">
             <div class="container">
                 <div class="page-header-content pt-4">
@@ -18,10 +16,7 @@
             </div>
         </header>
 
-        <body>
-
-
-
+        <body>  
             <div class="container mt-n10">
 
                 <div class="card mb-4">
@@ -184,7 +179,7 @@
                 success: function(data) {
                     // Assuming data contains a success message or indication
                     console.log('User deleted successfully');
-                    datausers(); // Reload the data
+                    driver(); // Reload the data
                 },
                 error: function(xhr, status, error) {
                     console.error('Error deleting user:', error);
@@ -212,7 +207,7 @@
                         title: 'Deleted!',
                         text: 'User has been deleted.',
                         icon: 'success',
-                        timer: 2000, // 2 seconds
+                        timer: 1500, // 2 seconds
                         timerProgressBar: true
                     }).then(() => {
                         // Reload the page or do any other necessary action
@@ -223,39 +218,17 @@
             });
         }
 
+        function formatErrors(errors) {
+            let errorMessage = '';
+            for (const field in errors) {
+                if (errors.hasOwnProperty(field)) {
+                    errorMessage += `${errors[field].join(', ')}<br>`;
+                }
+            }
+            return errorMessage;
+        }
+
         function createDriver(driver_name, contact, email, driver_license, address, status, callback) {
-            // $.ajax({
-            //     type: 'post',
-            //     url: '/admin/addnewDriver',
-            //     data: {
-            //         driver_name: driver_name,
-            //         contact: contact,
-            //         email: email,
-            //         driver_license: driver_license,
-            //         address: address,
-            //         status: status,
-            //     },
-            //     success: function(data) {
-            //         $('#messageflash').text('Driver added successfully');
-            //         callback(true); // Invoke the callback with true indicating success
-            //     },
-            //     error: function(xhr, status, error) {
-            //         // Error handling
-            //         var response = xhr.responseJSON;
-            //         if (response && response.errors) {
-            //             var errorMessages = '';
-            //             $.each(response.errors, function(key, messages) {
-            //                 errorMessages += messages.join(' ') + '<br>';
-            //             });
-            //             Swal.fire("Error!", errorMessages, "error");
-            //         } else if (response && response.message) {
-            //             Swal.fire("Error!", response.message, "error");
-            //         } else {
-            //             Swal.fire("Error!", "An error occurred while adding the driver.", "error");
-            //         }
-            //         callback(false); // Invoke the callback with false indicating failure
-            //     }
-            // });
             $.ajax({
                 type: 'post',
                 url: '/admin/addnewDriver',
@@ -312,7 +285,7 @@
                         icon: "success",
                         title: "Driver added successfully.",
                         showConfirmButton: true,
-                        timer: 2000, // 2 seconds
+                        timer: 1500, // 2 seconds
                         timerProgressBar: true,
                     }).then(() => {
                         $('#driver_name').val('');
@@ -391,20 +364,29 @@
                         title: 'Success!',
                         text: 'Driver updated successfully.',
                         icon: 'success',
-                        timer: 2000, // 2 seconds
+                        timer: 1500, // 2 seconds
                         timerProgressBar: true,
                         didClose: () => {
                             // Reload the page to reflect the changes
-                            // location.reload(); 
                             driver();
                         }
                     });
                     $(`#driverEdit${id}`).modal('hide');
-
                 },
                 error: function(xhr, status, error) {
                     // Handle the error response
-                    Swal.fire("Error!", "Failed to update driver.", "error");
+                    var response = xhr.responseJSON;
+                    if (response && response.errors) {
+                        var errorMessages = '';
+                        $.each(response.errors, function(key, messages) {
+                            errorMessages += messages.join(' ') + '<br>';
+                        });
+                        Swal.fire("Error!", errorMessages, "error");
+                    } else if (response && response.message) {
+                        Swal.fire("Error!", response.message, "error");
+                    } else {
+                        Swal.fire("Error!", "Failed to update driver.", "error");
+                    }
                 }
             });
         });

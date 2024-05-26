@@ -13,41 +13,55 @@ use Illuminate\Support\Facades\Validator;
 
 class RequestVehicleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('requestvehicles.index'); // Replace your_view with your actual view name
+        $status = $request->status?? 'pending';
+
+        $query = RequestVehicle::where('user_id', auth()->user()->id);
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $myrequests = $query->orderBy('created_at', 'desc')->get();
+
+        return view('requestvehicles.index', compact('myrequests', 'status'));
     }
 
-    public function store(){
+    public function store()
+    {
         $vehicle = Vehicle::all();
         $requestvehicle = requestVehicle::all();
-        
-        return view('requestvehicles.create',compact('vehicle','requestvehicle'));
+
+        return view('requestvehicles.create', compact('vehicle', 'requestvehicle'));
     }
 
-    public function create(Request $request)
+    public function createRequest(Request $request)
     {
-        $rules = [
-            
-            'vehicle_id' => 'required|string|max:255',
-            'purpose' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'capacity' => 'required|integer',
-            'appointment' => 'required|date',   
-        ];
-    
-        $validatedData = $request->validate($rules);
-        $validatedData['vehicles_id'] = $request->vehicle_id; // Add vehicles_id to the validated data
-    
-        $requestVehicle = RequestVehicle::create($validatedData);
-    
-        return response()->json([
-            'message' => 'Record created successfully',
-            'data' => $requestVehicle,
-        ], 201);
+
+        $vehicle = Vehicle::find($request->vehicle_id);
+
+        // Create a new RequestVehicle instance
+        $requestVehicle = new RequestVehicle();
+        $requestVehicle->name = $request->username;
+        $requestVehicle->vehicle_id = $request->vehicle_id;
+        $requestVehicle->capacity = $request->capacity;
+        $requestVehicle->purpose = $request->purpose;
+        $requestVehicle->status = 'pending';
+        $requestVehicle->user_id = auth()->user()->id;
+        $requestVehicle->drivers_id = $vehicle->driver_id;
+        $requestVehicle->appointment = $request->appointment;
+        $requestVehicle->appointment_end = $request->appointment_end;
+
+        // Save the new RequestVehicle record
+        $requestVehicle->save();
+
+        // Optionally, return a success response or redirect back
+        return redirect()->route('all-requests.user')->with('message', 'Your request has been submitted');
     }
 
-   
+
+
 
     public function allRecords()
     {
@@ -67,36 +81,36 @@ class RequestVehicleController extends Controller
                 ->orderBy('request_vehicles.created_at', 'desc')
                 ->get();
         }
-    
+
         return response()->json([
             'records' => $requestVehicles,
         ]);
     }
-    
+
     public function delete(Request $request)
     {
         $id = $request->id;
         $requestVehicle = requestVehicle::find($id);
-    
+
         if (!$requestVehicle) {
             return response()->json([
                 'message' => 'Record not found',
             ], 404);
         }
-    
+
         if (auth()->user()->role !== 'admin' && $requestVehicle->user_id !== auth()->user()->id) {
             return response()->json([
                 'message' => 'You are not authorized to delete this record',
             ], 403);
         }
-    
+
         $requestVehicle->delete();
-    
+
         return response()->json([
             'message' => 'Record deleted successfully',
         ]);
     }
-    
+
 
     public function edit(Request $request)
     {

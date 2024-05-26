@@ -1,6 +1,6 @@
 <!-- resources/views/contacts/index.blade.php -->
 
-@extends('layouts.application')
+@extends('layouts.app')
 
 @section('content')
 <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-4">

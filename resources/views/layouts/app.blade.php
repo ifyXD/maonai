@@ -85,6 +85,16 @@
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    // Check for the session message
+    @if (session('message'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('message') }}',
+        });
+    @endif
+</script>
 {{-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> --}}
 @stack('scripts')
 </body>

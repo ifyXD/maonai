@@ -41,13 +41,13 @@
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="cpu" style="margin-right: 0.25em;"></i>
-                                Main
+                                Drivers 
                             </h5>
                             <a href="/admin/contacts" class="btn btn-light">View Info</a>
                         </div>
                         <div class="d-flex align-items-center">
                             <span class="mr-2">Totalization Contacts Requested →</span>
-                            <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;"> {{($vehicles)}}
                                 {{-- <div class="font-weight-bold">{{ $counts['totalContacts'] }}</div> --}}
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="pause-circle" style="margin-right: 0.25em;"></i>
-                                Pending
+                                Mechanics
                             </h5>
                             <a href="/admin/contacts/pending" class="btn btn-light">View Info</a>
                         </div>
@@ -83,7 +83,7 @@
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="feather" style="margin-right: 0.25em;"></i>
-                                Accepted
+                                Fuels
                             </h5>
                             <a href="/admin/contacts/accepted" class="btn btn-light">View Info</a>
                         </div>
@@ -104,7 +104,7 @@
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="alert-circle" style="margin-right: 0.25em;"></i>
-                                Declined
+                                Vehicles
                             </h5>
                             <a href="/admin/contacts/declined" class="btn btn-light">View Info</a>
                         </div>
@@ -119,13 +119,13 @@
             </div>
 
             <!-- New Card 1 -->
-            <div class="col-md-6">
+            <div class="col-md-6 m-auto">
                 <div class="card mb-4 bg-info text-white">
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="info" style="margin-right: 0.25em;"></i>
-                                New Card 1
+                                Maintenanances
                             </h5>
                             <a href="#" class="btn btn-light">View Info</a>
                         </div>
@@ -139,67 +139,7 @@
                 </div>
             </div>
 
-            <!-- New Card 2 -->
-            <div class="col-md-6">
-                <div class="card mb-4 bg-secondary text-white">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title text-white">
-                                <i data-feather="archive" style="margin-right: 0.25em;"></i>
-                                New Card 2
-                            </h5>
-                            <a href="#" class="btn btn-light">View Info</a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <span class="mr-2">New Card 2 Data →</span>
-                            <div class="rounded-circle bg-white text-secondary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                                {{-- <div class="font-weight-bold">{{ $counts['newCard2Data'] }}</div> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-<!-- New Card 3 -->
-<div class="col-md-6">
-    <div class="card mb-4 bg-info text-white">
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="card-title text-white">
-                    <i data-feather="info" style="margin-right: 0.25em;"></i>
-                    New Card 3
-                </h5>
-                <a href="#" class="btn btn-light">View Info</a>
-            </div>
-            <div class="d-flex align-items-center">
-                <span class="mr-2">New Card 3 Data →</span>
-                <div class="rounded-circle bg-white text-info d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                    {{-- <div class="font-weight-bold">{{ $counts['newCard3Data'] }}</div> --}}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- New Card 4 -->
-<div class="col-md-6">
-    <div class="card mb-4 bg-secondary text-white">
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="card-title text-white">
-                    <i data-feather="archive" style="margin-right: 0.25em;"></i>
-                    New Card 4
-                </h5>
-                <a href="#" class="btn btn-light">View Info</a>
-            </div>
-            <div class="d-flex align-items-center">
-                <span class="mr-2">New Card 4 Data →</span>
-                <div class="rounded-circle bg-white text-secondary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                    {{-- <div class="font-weight-bold">{{ $counts['newCard4Data'] }}</div> --}}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+       
         </div>
     </div>
 

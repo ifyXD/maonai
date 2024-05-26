@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('evaluation');
             $table->string('condition');
+            $table->dateTime('timestarted');
             $table->dateTime('timefinish');
             $table->string('status')->default('pending');
             $table->unsignedBigInteger('vehicle_id');
             $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
-            $table->unsignedBigInteger('mechanics_id');
-            $table->foreign('mechanics_id')->references('id')->on('mechanics')->onDelete('cascade');    
+            // $table->unsignedBigInteger('mechanic_id');
+            // $table->foreign('mechanic_id')->references('id')->on('mechanics')->onDelete('cascade');    
             $table->string('isdel')->nullable()->default('active');
             $table->timestamps();
         });

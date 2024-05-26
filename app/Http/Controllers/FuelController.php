@@ -14,42 +14,44 @@ class FuelController extends Controller
     }
 
     public function create(Request $request)
-    {
-        // Validation rules
-        $rules = [
-            'fuel_type' => 'required|string|max:20',
-            'fuel_quantity' => 'required|numeric',
-            'fuel_cost' => 'required|numeric',
-            'status' => 'required|string',
-        ];
+{
+    // Validation rules
+    $rules = [
+        'fuel_type' => 'required|string|max:20',
+        'fuel_quantity' => 'required|numeric',
+        'fuel_cost' => 'required|numeric',
+        'status' => 'required|string',
+    ];
 
-        // Validate the request data
-        $validator = Validator::make($request->all(), $rules);
+    // Validate the request data
+    $validator = Validator::make($request->all(), $rules);
 
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'failed',
-                'errors' => $validator->errors(),
-            ], 422); // Unprocessable Entity status code
-        }
-
-        // If validation passes, create a new fuel record
-        $fuel = new Fuel();
-        $fuel->fuel_type = $request->fuel_type;
-        $fuel->fuel_quantity = $request->fuel_quantity;
-        $fuel->fuel_cost = $request->fuel_cost;
-        $fuel->status = $request->status;
-
-        // Save the fuel record to the database
-        $fuel->save();
-
-        // Return a success response
+    // Check if validation fails
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'success',
-            'fuel' => $fuel,
-        ], 201); // Created status code
+            'message' => 'failed',
+            'errors' => $validator->errors(),
+        ], 422); // Unprocessable Entity status code
     }
+
+    // If validation passes, create a new fuel record
+    $fuel = new Fuel();
+    $fuel->fuel_type = $request->fuel_type;
+    $fuel->fuel_quantity = $request->fuel_quantity;
+    $fuel->fuel_cost = $request->fuel_cost;
+    $fuel->status = $request->status;
+
+    // Save the fuel record to the database
+    $fuel->save();
+
+    // Return a success response
+    return response()->json([
+        'message' => 'success',
+        'fuel' => $fuel,
+    ], 201); // Created status code
+}
+
+
 
     public function datafuels()
     {

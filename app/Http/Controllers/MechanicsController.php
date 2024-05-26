@@ -68,7 +68,7 @@ public function edit(Request $request)
         $validatedData = $request->validate([
             'mechanics_name' => 'required|string',
             'contact' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'description' => 'nullable|string',
             'status' => 'required',
         ]);

@@ -15,22 +15,26 @@ return new class extends Migration
             $table->id();
             $table->string('platenumber');
             $table->string('type');
-            // $table->string('driver');
-            // $table->unsignedBigInteger('driver_id');
-            // $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
-            $table->unsignedBigInteger('driver_id');
+            $table->string('seat_capacity')->nullable();
+            $table->unsignedBigInteger('driver_id')->nullable(); // Make driver_id nullable
             $table->foreign('driver_id')
                 ->references('id')
                 ->on('drivers')
-                ->onDelete('no action');
-            $table->string('condition');
+                ->onDelete('set null'); // Use 'set null' for on delete action
+        
+            $table->unsignedBigInteger('fuel_id')->nullable(); // Make fuel_id nullable
+            $table->foreign('fuel_id')
+                ->references('id')
+                ->on('fuels')
+                ->onDelete('set null'); // Use 'set null' for on delete action 
+                
+            // $table->string('condition');
             $table->string('description')->default('');
             $table->string('status')->default('pending');
             $table->string('isdel')->nullable()->default('active');
-            $table->unsignedBigInteger('drivers_id');
-            $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');            
             $table->timestamps();
         });
+        
     }
 
     /**
