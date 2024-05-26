@@ -137,6 +137,7 @@ Route::post('/adminuser/editbyid', [VehicleController::class, 'edit']);
 
 
 Auth::routes();
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['isAdmin'])->prefix('admin')->group(function () {
 

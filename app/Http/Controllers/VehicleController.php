@@ -22,15 +22,15 @@ class VehicleController extends Controller
         $rules = [
             'platenumber' => 'required|string|max:20|',
             'type' => 'required|string|max:20',
-            'driver_id' => 'required|string|max:30',
+            'driver_id' => 'required|string|max:30|unique:vehicles,driver_id',
             'condition' => 'required|string|max:30',
             'description' => 'nullable|string|max:30',
             'status' => 'required|string',
         ];
-
+    
         // Validate the request data
         $validator = Validator::make($request->all(), $rules);
-
+    
         // Check if validation fails
         if ($validator->fails()) {
             return response()->json([
@@ -38,24 +38,26 @@ class VehicleController extends Controller
                 'errors' => $validator->errors(),
             ], 422); // Unprocessable Entity status code
         }
-
-        // If validation passes, create a new user
+    
+        // If validation passes, create a new vehicle
         $vehicle = new Vehicle();
         $vehicle->platenumber = $request->platenumber;
         $vehicle->type = $request->type;
         $vehicle->driver_id = $request->driver_id;
         $vehicle->condition = $request->condition;
         $vehicle->description = $request->description;
-
         $vehicle->status = $request->status;
-        // Save the user to the database
+    
+        // Save the vehicle to the database
         $vehicle->save();
+    
         // Return a success response
         return response()->json([
             'message' => 'success',
             'vehicle' => $vehicle,
         ], 201); // Created status code
     }
+    
 
 
     public function datausers()
@@ -90,17 +92,17 @@ class VehicleController extends Controller
         try {
             // Validation rules
             $rules = [
-                'platenumber' => 'required',
-                'type' => 'required',
-                'driver_id' => 'required',
-                'condition' => 'required',
-                'description' => 'required',
-                'status' => 'required',
+                'platenumber' => 'required|string|max:20',
+                'type' => 'required|string|max:20',
+                'driver_id' => 'required|string|max:30|unique:vehicles,driver_id,' . $request->id,
+                'condition' => 'required|string|max:30',
+                'description' => 'required|string|max:30',
+                'status' => 'required|string',
             ];
-
+    
             // Validate the request data
             $validator = Validator::make($request->all(), $rules);
-
+    
             // Check if validation fails
             if ($validator->fails()) {
                 return response()->json([
@@ -108,13 +110,13 @@ class VehicleController extends Controller
                     'errors' => $validator->errors(),
                 ], 422); // Unprocessable Entity status code
             }
-
+    
             // Find the vehicle by ID
             $vehicle = Vehicle::findOrFail($request->id);
-
+    
             // Update the vehicle attributes
             $vehicle->update($request->all());
-
+    
             return response()->json([
                 'message' => 'success',
                 'vehicle' => $vehicle // Optionally return the updated vehicle object
@@ -126,6 +128,7 @@ class VehicleController extends Controller
             ], 500); // Internal Server Error status code
         }
     }
+    
     public function showTable()
     {
         $vehicles = Vehicle::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")

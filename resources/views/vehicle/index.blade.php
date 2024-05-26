@@ -335,13 +335,12 @@
                 type: 'post',
                 url: '/admin/addnewvehicle',
                 data: {
-                    'platenumber': platenumber,
-                    'type': type,
-                    'driver_id': driver,
-                    'condition': condition,
-                    'description': description,
-                    'status': status,
-
+                    platenumber: platenumber,
+                    type: type,
+                    driver_id: driver,
+                    condition: condition,
+                    description: description,
+                    status: status,
                 },
                 success: function(data) {
                     if (data.message === 'success') {
@@ -350,23 +349,37 @@
                     }
                 },
                 error: function(xhr, status, error) {
-
-
                     // Error handling
-                    var errorMessage = xhr.responseJSON.message;
-                    if (errorMessage) {
-                        $('#messageflash').text('Erroryawa: ' + errorMessage);
+                    var response = xhr.responseJSON;
+                    if (response && response.errors) {
+                        var errorMessages = '';
+                        $.each(response.errors, function(key, messages) {
+                            errorMessages += messages.join(' ') + '<br>';
+                        });
+                        Swal.fire("Error!", errorMessages, "error");
+                    } else if (response && response.message) {
+                        Swal.fire("Error!", response.message, "error");
                     } else {
-                        $('#messageflash').text('An error occurred while adding the user');
+                        Swal.fire("Error!", "An error occurred while adding the vehicle.", "error");
                     }
                     callback(false); // Invoke the callback with false indicating failure
                 }
             });
+
         }
     </script>
 
     {{-- jquery code --}}
     <script>
+        function formatErrors(errors) {
+            let errorMessage = '';
+            for (const field in errors) {
+                if (errors.hasOwnProperty(field)) {
+                    errorMessage += `${errors[field].join(', ')}<br>`;
+                }
+            }
+            return errorMessage;
+        }
         $('#createVehicleBtn').on('click', function(e) {
             e.preventDefault(); // Prevent the default form submission behavior
 
@@ -468,8 +481,8 @@
                     $(`#vehicleEdit${id}`).modal('hide');
                 },
                 error: function(xhr, status, error) {
-                    // Handle the error response
-                    Swal.fire("Error!", "Failed to update vehicle.", "error");
+                    // Handle the error response 
+                    Swal.fire("Error!", formatErrors(xhr.responseJSON.errors), "error");
 
                 }
             });
