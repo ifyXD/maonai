@@ -65,16 +65,7 @@ Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contac
 // Define route for updating contact status
 Route::put('contacts/{contact}/update-status', [ContactController::class, 'updateStatus'])->name('contacts.updateStatus');
 
-// Route for displaying the contact creation form
-Route::get('/', [ContactController::class, 'create'])->name('welcome');
-Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
 
-
-// Route for showing the create contact form
-Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
-
-// Route for storing a new contact
-Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
 
 // Route for updating a contact
 Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contacts.update');
@@ -128,7 +119,7 @@ Route::put('/contacts_requests/{id}', [ContactRequestController::class, 'update'
 
 
 
-// 
+//
 
 
 
@@ -288,7 +279,7 @@ Route::middleware(['auth'])->group(function () {
 
 
         //Reports
-        Route::get('/reports', [reportController::class, 'index']); 
+        Route::get('/reports', [reportController::class, 'index']);
 
         //RequestVehicle
         Route::get('/pending-requests/vehicle-bookings', [AdminBookingController::class, 'index']);
@@ -321,7 +312,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['isUser'])->prefix('user')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-        // 
+        //
 
         Route::get('/create-request', [RequestVehicleController::class, 'store'])->name('create-request-vehicle.user');
         Route::post('/request-store', [RequestVehicleController::class, 'createRequest'])->name('request-store.user');

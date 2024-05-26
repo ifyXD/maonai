@@ -28,16 +28,18 @@
                         <div class="card text-center h-100">
                             <div class="card-body px-5 pt-5 d-flex flex-column align-items-between">
                                 <div>
-                                    <div class="h3 text-secondary font-weight-300">Technical Request Here!</div>
+                                    <div class="h3 text-success font-weight-300">Technical Request Here!</div>
                                 </div>
                                 <div class="icons-org-join align-items-center mx-auto">
-                                    <i class="icon-user" data-feather="user"></i>
-                                    <i class="icon-arrow fas fa-long-arrow-alt-right"></i>
-                                    <i class="icon-users" data-feather="users"></i>
+                                    <i class="icon-user" style="color: green;" data-feather="user"></i>
+                                    <i class="icon-arrow fas fa-long-arrow-alt-right" style="color: green;"></i>
+                                    <i class="icon-user" style="color: green;" data-feather="copy"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent px-5 py-4">
-                                <div class="small text-center"><a class="btn btn-block btn-secondary" href="multi-tenant-join.html">Click</a></div>
+                                <div class="small text-center">
+                                    <a class="btn btn-block btn-success" href="{{ route('contacts.create', ['userId' => auth()->user()->id]) }}">Click</a>
+                                </div>
                             </div>
                         </div>
                     </div>
