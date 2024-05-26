@@ -137,6 +137,7 @@ Route::get('/welcome', [ContactRequestController::class, 'create'])->name('welco
 
 
 Auth::routes();
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['isAdmin'])->prefix('admin')->group(function () {
 

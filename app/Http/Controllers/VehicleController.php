@@ -23,36 +23,24 @@ class VehicleController extends Controller
         $validator = Validator::make($request->all(), [
             'platenumber' => 'required|string|max:20',
             'type' => 'required|string|max:20',
-            'name' => 'required|string|max:30',
+            'driver_id' => 'required|string|max:30|unique:vehicles,driver_id',
             'condition' => 'required|string|max:30',
             'description' => 'nullable|string|max:30',
             'status' => 'required|string',
-            'drivers_id' => 'nullable|exists:drivers,id',
-        ]);
-
-        // Check if a vehicle with the same driver name and driver license already exists
-        $driver = Driver::find($request->drivers_id);
-        if ($driver) {
-            $existingVehicle = Vehicle::whereHas('driver', function ($query) use ($driver) {
-                $query->where('driver_name', $driver->driver_name)
-                      ->where('driver_license', $driver->driver_license);
-            })->first();
-
-            if ($existingVehicle) {
-                return response()->json([
-                    'message' => 'Validation failed',
-                    'errors' => ['drivers_id' => 'The combination of driver name and driver license is already taken.'],
-                ], 422);
-            }
-        }
-
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules);
+    
+        // Check if validation fails
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
         }
-
+    
+        // If validation passes, create a new vehicle
         $vehicle = new Vehicle();
         $vehicle->platenumber = $request->platenumber;
         $vehicle->type = $request->type;
@@ -60,17 +48,18 @@ class VehicleController extends Controller
         $vehicle->condition = $request->condition;
         $vehicle->description = $request->description;
         $vehicle->status = $request->status;
-        $vehicle->drivers_id = $request->drivers_id;
-     
-
-
+    
+        // Save the vehicle to the database
         $vehicle->save();
-
+    
+        // Return a success response
         return response()->json([
             'message' => 'Record created successfully',
             'vehicle' => $vehicle,
         ], 201);
     }
+    
+
 
     public function datausers()
     {
@@ -117,11 +106,10 @@ class VehicleController extends Controller
             $rules = [
                 'platenumber' => 'required|string|max:20',
                 'type' => 'required|string|max:20',
-                'name' => 'required|string|max:30',
+                'driver_id' => 'required|string|max:30|unique:vehicles,driver_id,' . $request->id,
                 'condition' => 'required|string|max:30',
-                'description' => 'nullable|string|max:30',
+                'description' => 'required|string|max:30',
                 'status' => 'required|string',
-                'drivers_id' => 'nullable|exists:drivers,id',
             ];
     
             // Validate the request data
@@ -152,7 +140,7 @@ class VehicleController extends Controller
             ], 500); // Internal Server Error status code
         }
     }
-
+    
     public function showTable()
     {
         $vehicles = Vehicle::orderByRaw("CASE WHEN isdel = 'active' THEN 0 ELSE 1 END")
