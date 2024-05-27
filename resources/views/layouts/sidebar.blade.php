@@ -50,7 +50,7 @@
                         </a>
                     @else
                         <div class="sidenav-menu-heading">UserDashboard</div>
-                        <a class="nav-link" href="{{url('contacts')}}">
+                        <a class="nav-link" href="{{url('/users/dashboard')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
