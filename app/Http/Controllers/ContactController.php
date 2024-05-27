@@ -17,58 +17,6 @@ class ContactController extends Controller
 
 
 
-
-    /**
-     * Show the form for creating a new contact.
-     */
-    public function create()
-    {
-        return view('welcome');
-    }
-
-    /**
- * Store a newly created contact in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return \Illuminate\Http\JsonResponse
- */
-public function store(Request $request)
-{
-    try {
-        // Validate request data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:contacts,email',
-            'department' => 'required|string|max:255',
-            'request_type' => 'required|array',
-            'request_type.*' => 'in:repair,service,commission',
-            'other' => 'nullable|string|max:500',
-        ]);
-
-        // Create new contact
-        $contact = new Contact();
-        $contact->name = $request->name;
-        $contact->email = $request->email;
-        $contact->department = $request->department;
-        $contact->content = implode(', ', $request->request_type); // Combine selected request types
-        if ($request->has('other')) {
-            $contact->content .= ' - : ' . $request->other; // Add 'other' field if provided
-        }
-        $contact->status = 'pending'; // Set status to 'pending'
-        $contact->save();
-
-        // Flash success message
-        return redirect()->route('welcome')->with('success', 'Contact created successfully.');
-    } catch (ValidationException $e) {
-        // Email already exists
-        if ($e->validator->errors()->has('email')) {
-            return redirect()->back()->withInput()->withErrors(['email' => 'The email has already been taken.']);
-        }
-        // For other validation errors
-        throw $e;
-    }
-}
-
 /**
  * Update the status of the specified contact.
  *
@@ -279,22 +227,5 @@ public function update(Request $request, $id)
     Log::info('Redirecting to contacts.index');
     return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
 }
-
-    public function mergetae(){
-
-        $contacts = Contact::count();
-
-        // Count contacts based on status
-        $acceptedCount =  count(Contact::where('status', 'accepted')->get());
-        $pendingCount = Contact::where('status', 'pending')->get();
-        $declinedCount = Contact::where('status', 'declined')->get();
-    
-        // Return the counts data to the views
-        return view ('contacts.index', compact('contacts,acceptedCount,pendingCount,declinedCount'));
-    
-        
-
-    }
-
 
 }
