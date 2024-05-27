@@ -320,6 +320,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['isUser'])->prefix('user')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'userdashboard'])->name('user.dashboard');
+
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         //
 
