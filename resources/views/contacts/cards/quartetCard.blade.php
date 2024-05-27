@@ -32,11 +32,11 @@
                             <i data-feather="cpu" style="margin-right: 0.25em;"></i>
                             Main
                         </h5>
-                        <a href="/contacts" class="btn btn-light">View Info</a>
+                        <a href="/admin/contacts" class="btn btn-light">View Info</a>
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Totalization Contacts Requested →</span>
-                        <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                        <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;"> 
                             <div class="font-weight-bold">{{ $counts['totalContacts'] }}</div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             <i data-feather="pause-circle" style="margin-right: 0.25em;"></i>
                             Pending
                         </h5>
-                        <a href="/contacts/pending" class="btn btn-light">View Info</a>
+                        <a href="/admin/contacts/pending" class="btn btn-light">View Info</a>
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Total of Pending Requests →</span>
@@ -75,7 +75,7 @@
                             <i data-feather="feather" style="margin-right: 0.25em;"></i>
                             Accepted
                         </h5>
-                        <a href="/contacts/accepted" class="btn btn-light">View Info</a>
+                        <a href="/admin/contacts/accepted" class="btn btn-light">View Info</a>
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Total of Accepted Requests →</span>
@@ -96,7 +96,7 @@
                             <i data-feather="alert-circle" style="margin-right: 0.25em;"></i>
                             Declined
                         </h5>
-                        <a href="/contacts/declined" class="btn btn-light">View Info</a>
+                        <a href="/admin/contacts/declined" class="btn btn-light">View Info</a>
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Total of Declined Requests →</span>

@@ -18,13 +18,7 @@
                             GENERAL SERVICE OFFICE REPORTS
                         </h1>
                     </div>
-                    <div class="col-12 col-xl-auto mt-4">
-                        <button class="btn btn-white p-3" id="reportrange">
-                            <i class="mr-2 text-primary" data-feather="calendar"></i>
-                            <span></span>
-                            <i class="ml-1" data-feather="chevron-down"></i>
-                        </button>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -41,13 +35,13 @@
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="cpu" style="margin-right: 0.25em;"></i>
-                                Drivers 
+                                Fuels 
                             </h5>
-                            <a href="/admin/contacts" class="btn btn-light">View Info</a>
+                            <a href="/admin/fuel" class="btn btn-light">View Info</a>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="mr-2">Totalization Contacts Requested →</span>
-                            <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;"> {{($vehicles)}}
+                            <span class="mr-2">Fuel Cost Total →</span>
+                            <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 1rem;"> {{($vehicles)}}
                                 {{-- <div class="font-weight-bold">{{ $counts['totalContacts'] }}</div> --}}
                             </div>
                         </div>
@@ -67,9 +61,10 @@
                             <a href="/admin/contacts/pending" class="btn btn-light">View Info</a>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="mr-2">Total of Pending Requests →</span>
+                            <span class="mr-2">Total of Mechanics →</span>
                             <div class="rounded-circle bg-white text-warning d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                                {{-- <div class="font-weight-bold">{{ $counts['pendingCount'] }}</div> --}}
+                                {{ $mechanicsCount }}
+                                                        {{-- <div class="font-weight-bold">{{ $counts['pendingCount'] }}</div> --}}
                             </div>
                         </div>
                     </div>
@@ -83,13 +78,13 @@
                         <div>
                             <h5 class="card-title text-white">
                                 <i data-feather="feather" style="margin-right: 0.25em;"></i>
-                                Fuels
+                                Driver
                             </h5>
-                            <a href="/admin/contacts/accepted" class="btn btn-light">View Info</a>
+                            <a href="/admin/drivers" class="btn btn-light">View Info</a>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="mr-2">Total of Accepted Requests →</span>
-                            <div class="rounded-circle bg-white text-success d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <span class="mr-2">Total of Driver →</span>
+                            <div class="rounded-circle bg-white text-success d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">{{$driver}}
                                 {{-- <div class="font-weight-bold">{{ $counts['acceptedCount'] }}</div> --}}
                             </div>
                         </div>
@@ -106,11 +101,11 @@
                                 <i data-feather="alert-circle" style="margin-right: 0.25em;"></i>
                                 Vehicles
                             </h5>
-                            <a href="/admin/contacts/declined" class="btn btn-light">View Info</a>
+                            <a href="/admin/vehicle" class="btn btn-light">View Info</a>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="mr-2">Total of Declined Requests →</span>
-                            <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <span class="mr-2">Total of Vehicle →</span>
+                            <div class="rounded-circle bg-white text-success d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">{{$vehiclesdata}}
                                 {{-- <div class="font-weight-bold">{{ $counts['declinedCount'] }}</div> --}}
                             </div>
                         </div>
@@ -127,11 +122,11 @@
                                 <i data-feather="info" style="margin-right: 0.25em;"></i>
                                 Maintenanances
                             </h5>
-                            <a href="#" class="btn btn-light">View Info</a>
+                            <a href="/admin/maintenance" class="btn btn-light">View Info</a>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="mr-2">New Card 1 Data →</span>
-                            <div class="rounded-circle bg-white text-info d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <span class="mr-2">Maintenances →</span>
+                            <div class="rounded-circle bg-white text-info d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;"> {{$maintenance}}
                                 {{-- <div class="font-weight-bold">{{ $counts['newCard1Data'] }}</div> --}}
                             </div>
                         </div>

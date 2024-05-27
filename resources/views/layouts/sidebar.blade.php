@@ -49,8 +49,11 @@
                             Dashboard
                         </a>
                     @else
+                    @endif
+                    @if (auth()->check() && auth()->user()->role === 'user')
+
                         <div class="sidenav-menu-heading">UserDashboard</div>
-                        <a class="nav-link" href="{{url('contacts')}}">
+                        <a class="nav-link" href="{{url('user')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
@@ -154,7 +157,7 @@
 
 
                     @if (auth()->check() && auth()->user()->role === 'admin')
-                        <a class="nav-link" href="reports">
+                        <a class="nav-link" href="{{url('admin/reports')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Reports Managements
                         </a>
