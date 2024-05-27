@@ -44,19 +44,19 @@
                     <!-- Sidenav Menu Heading (Admin)-->
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         <div class="sidenav-menu-heading">Administrator</div>
-                        <a class="nav-link" href="{{url('admin/contacts')}}">
+                        <a class="nav-link" href="{{url('contacts')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
                     @else
                         <div class="sidenav-menu-heading">UserDashboard</div>
-                        <a class="nav-link" href="{{url('admin/contacts')}}">
+                        <a class="nav-link" href="{{url('contacts')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
                     @endif
                     <!-- Sidenav Accordion (Dashboard)-->
-                   
+
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
                             data-target="#collapseDashboards" aria-expanded="false" aria-controls="collapseDashboards">
@@ -66,11 +66,11 @@
                         </a>
                         <div class="collapse" id="collapseDashboards" data-parent="#accordionSidenav">
                             <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                                <a class="nav-link" href="pending_requests">Pending <span
+                                <a class="nav-link" href="/contacts/pending">Pending <span
                                         class="badge badge-warning-soft text-warning ml-auto">Updated</span></a>
-                                <a class="nav-link" href="accepted_requests">Accepted <span
+                                <a class="nav-link" href="/contacts/accepted">Accepted <span
                                         class="badge badge-success-soft text-success ml-auto">Updated</span></a>
-                                <a class="nav-link" href="declined_requests">Declined <span
+                                <a class="nav-link" href="/contacts/declined">Declined <span
                                         class="badge badge-danger-soft text-danger ml-auto">Updated</span></a>
                             </nav>
                         </div>
@@ -151,7 +151,7 @@
 
                     <!-- Users-->
 
-                   
+
 
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         <a class="nav-link" href="reports">

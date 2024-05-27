@@ -116,7 +116,6 @@ Route::put('/edit-request/{id}', [ContactRequestController::class, 'updateReques
 Route::get('/contacts_requests/{id}/edit', [ContactRequestController::class, 'edit'])->name('contacts_requests.edit');
 Route::put('/contacts_requests/{id}', [ContactRequestController::class, 'update'])->name('contacts_requests.update');
 
-Route::get('/quartet', [ContactController::class, 'quartetCard'])->name('contacts.cards.quartetCard');
 
 
 
@@ -133,6 +132,13 @@ Route::get('/', [LandingPage::class, 'index']);
 Route::get('/welcome', [ContactRequestController::class, 'create'])->name('welcome');
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+
+ // Route to display declined contacts
+ Route::get('/contacts/declined', [ContactController::class, 'declined'])->name('contacts.declined');
+ // Route to display pending contacts
+ Route::get('/contacts/pending', [ContactController::class, 'pending'])->name('contacts.pending');
+ // Route for displaying accepted contacts
+ Route::get('/contacts/accepted', [ContactController::class, 'accepted'])->name('contacts.accept');
 
 Auth::routes();
 
