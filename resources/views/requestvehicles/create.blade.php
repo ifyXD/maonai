@@ -34,17 +34,46 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="type" class="form-label">Vehicle</label>
-                                    <select class="form-control" id="type" name="vehicle_id" required>
+                                    {{-- <select name="vehicle_id" id="vehicle_id" class="form-control">
                                         <option value="" selected disabled>Select Vehicle</option>
-                                        @php
-                                            $vehicle_id = $myrequest->vehicle_id ?? null;
-                                        @endphp
-                                        @foreach ($vehicle as $vehicle)
-                                            <option {{ $vehicle->id == $vehicle_id ? 'selected' : '' }}
-                                                value="{{ $vehicle->id }}" data-platenumber="{{ $vehicle->platenumber }}"
-                                                data-condition="{{ $vehicle->condition }}">{{ $vehicle->type }}</option>
+                                        @foreach ($vehicles as $vehicle)
+                                            @php
+                                                $vehicle_id = $myrequest->vehicle_id ?? null;
+                                                $isDisabled = isset($pendingOrAcceptedRequests[$vehicle->id]) && $vehicle->id != $vehicle_id;
+                                            @endphp
+                                            <option 
+                                                value="{{ $vehicle->id }}" 
+                                                data-platenumber="{{ $vehicle->platenumber }}" 
+                                                data-condition="{{ $vehicle->condition }}" 
+                                                {{ $vehicle->id == $vehicle_id ? 'selected' : '' }}
+                                                {{ $isDisabled ? 'disabled' : '' }}>
+                                                {{ $vehicle->type }} {{ $isDisabled ? '(Not Available)' : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select> --}}
+
+                                    <select name="vehicle_id" id="vehicle_id" class="form-control">
+                                        <option value="" selected disabled>Select Vehicle</option>
+                                        @foreach ($vehicles as $vehicle)
+                                            @php
+                                                $vehicle_id = $myrequest->vehicle_id ?? null;
+                                                $hasPendingRequest = isset($pendingOrAcceptedRequests[$vehicle->id]) && $pendingOrAcceptedRequests[$vehicle->id]->where('user_id', $userId)->isNotEmpty();
+                                                $hasAcceptedRequestForOtherUsers = isset($acceptedRequestsForOtherUsers[$vehicle->id]);
+                                                $isDisabled = $hasPendingRequest || $hasAcceptedRequestForOtherUsers;
+                                            @endphp
+                                            <option 
+                                                value="{{ $vehicle->id }}" 
+                                                data-platenumber="{{ $vehicle->platenumber }}" 
+                                                data-condition="{{ $vehicle->condition }}" 
+                                                {{ $vehicle->id == $vehicle_id ? 'selected' : '' }}
+                                                {{ $isDisabled ? 'disabled' : '' }}>
+                                                {{ $vehicle->type }} {{ $isDisabled ? '(Not Available)' : '' }}
+                                            </option>
                                         @endforeach
                                     </select>
+                                    
+                                    
+                                    
                                 </div>
                             </div>
                         </div>
@@ -105,6 +134,24 @@
 @endsection
 @push('scripts')
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the current date and time
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            // Format the date and time for the datetime-local input
+            const currentDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+            // Set the min attribute to the current date and time
+            document.getElementById('appointment').setAttribute('min', currentDateTime);
+            document.getElementById('appointment_end').setAttribute('min', currentDateTime);
+        });
+
+
         selectedVehicle();
 
         function selectedVehicle() {

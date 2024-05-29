@@ -42,10 +42,28 @@ class RequestVehicleController extends Controller
         } else {
             $myrequest = null;
         }
-        $vehicle = Vehicle::where('isdel', 'active')->get();
+        // $vehicles = Vehicle::where('isdel', 'active')->get();
+
+        $userId = auth()->user()->id;
+
+        // Retrieve all vehicles
+        $vehicles = Vehicle::where('isdel', 'active')->get();
+    
+        // Retrieve all request vehicles with status 'pending' or 'accepted'
+        $pendingOrAcceptedRequests = RequestVehicle::whereIn('status', ['pending', 'accept'])
+            ->get()
+            ->groupBy('vehicle_id');
+    
+        // Retrieve accepted request vehicles for other users
+        $acceptedRequestsForOtherUsers = RequestVehicle::where('status', 'accept')
+            ->where('user_id', '!=', $userId)
+            ->get()
+            ->groupBy('vehicle_id');
+
+
         $requestvehicle = requestVehicle::all();
 
-        return view('requestvehicles.create', compact('vehicle', 'requestvehicle', 'myrequest'));
+        return view('requestvehicles.create', compact('vehicles', 'requestvehicle', 'myrequest', 'pendingOrAcceptedRequests', 'acceptedRequestsForOtherUsers', 'userId'));
     }
 
     public function createRequest(Request $request)
@@ -72,21 +90,30 @@ class RequestVehicleController extends Controller
             }
         } else {
 
+            // Check if a RequestVehicle record with the same user_id, vehicle_id, and status (pending or accepted) already exists
+            $existingRequest = RequestVehicle::where('user_id', auth()->user()->id)
+                ->where('vehicle_id', $request->vehicle_id)
+                ->whereIn('status', ['pending', 'accepted'])
+                ->first();
 
-            // Create a new RequestVehicle instance
-            $requestVehicle = new RequestVehicle();
-            $requestVehicle->name = $request->username;
-            $requestVehicle->vehicle_id = $request->vehicle_id;
-            $requestVehicle->capacity = $request->capacity;
-            $requestVehicle->purpose = $request->purpose;
-            $requestVehicle->status = 'pending';
-            $requestVehicle->user_id = auth()->user()->id;
-            $requestVehicle->drivers_id = $vehicle->driver_id;
-            $requestVehicle->appointment = $request->appointment;
-            $requestVehicle->appointment_end = $request->appointment_end;
+            if (!$existingRequest) {
+                // Create a new RequestVehicle instance if no such record exists
+                $requestVehicle = new RequestVehicle();
+                $requestVehicle->name = $request->username;
+                $requestVehicle->vehicle_id = $request->vehicle_id;
+                $requestVehicle->capacity = $request->capacity;
+                $requestVehicle->purpose = $request->purpose;
+                $requestVehicle->status = 'pending';
+                $requestVehicle->user_id = auth()->user()->id;
+                $requestVehicle->drivers_id = $vehicle->driver_id;
+                $requestVehicle->appointment = $request->appointment;
+                $requestVehicle->appointment_end = $request->appointment_end;
 
-            // Save the new RequestVehicle record
-            $requestVehicle->save();
+                // Save the new RequestVehicle record
+                $requestVehicle->save();
+            } else {
+                return back()->with('message', 'A similar request for vehicle already exists');
+            }
         }
 
 
