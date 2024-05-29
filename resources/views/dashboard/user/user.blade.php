@@ -60,8 +60,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Plate Number</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Driver</th>
-                                <th scope="col">Condition</th>
+                                {{-- <th scope="col">Driver</th>
+                                <th scope="col">Condition</th> --}}
                                 <th scope="col">Status</th>
                                 <th scope="col" class="date-header">Created at (UTC)</th>
                                 <th scope="col" class="date-header">Updated at (UTC)</th>
@@ -170,6 +170,7 @@
             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
         </svg>
+        
     </a>
     <a href="#" onclick="confirmDelete(${vehicle.id});" id="deleteUserId">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-danger" viewBox="0 0 16 16">
@@ -184,8 +185,7 @@ let row =
         <td > ${key }</td>
         <td id="platenumberId${vehicle.id}"> ${vehicle.platenumber}</td>
         <td id="typeId${vehicle.id}"> ${vehicle.type} </td>
-        <td id="driverId${vehicle.id}"> ${vehicle.driver}</td>
-        <td id="conditionId${vehicle.id}"> ${vehicle.condition} </td>
+    
         <td id="statusId${vehicle.id}"> ${vehicle.status} </td>
         <td id="createdAtId${vehicle.id}">${formatDate(vehicle.created_at)}</td>
         <td id="updatedAtId${vehicle.id}">${formatDate(vehicle.updated_at)}</td>

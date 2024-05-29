@@ -53,7 +53,7 @@
                     @if (auth()->check() && auth()->user()->role === 'user')
 
                         <div class="sidenav-menu-heading">UserDashboard</div>
-                        <a class="nav-link" href="{{url('user')}}">
+                        <a class="nav-link" href="{{url('/user/dashboard')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
@@ -90,11 +90,11 @@
                         </a>
                         <div class="collapse" id="collapseFlows" data-parent="#accordionSidenav">
                             <nav class="sidenav-menu-nested nav">
-                                <a class="nav-link" href="drivers">Drivers</a>
-                                <a class="nav-link" href="mechanics">Mechanics</a>
-                                <a class="nav-link" href="fuel">Fuels</a>
-                                <a class="nav-link" href="vehicle">Vehicles</a>
-                                <a class="nav-link" href="maintenance">Maintenances</a>
+                                <a class="nav-link" href="/admin/drivers">Drivers</a>
+                                <a class="nav-link" href="/admin/mechanics">Mechanics</a>
+                                <a class="nav-link" href="/admin/fuel">Fuels</a>
+                                <a class="nav-link" href="/admin/vehicle">Vehicles</a>
+                                <a class="nav-link" href="/admin/maintenance">Maintenances</a>
                             </nav>
                         </div>
                     @endif
