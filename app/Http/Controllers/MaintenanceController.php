@@ -102,6 +102,9 @@ class MaintenanceController extends Controller
         Maintenance::find($id)->update([
             'isdel' => 'deleted',
         ]);
+        MechanicMaintenance::where('maintenance_id',$id)->update([
+            'isdel' => 'deleted',
+        ]);
         return response()->json([
             'message' => $request->id,
         ]);
@@ -109,50 +112,78 @@ class MaintenanceController extends Controller
     public function edit(Request $request)
     {
         $id = $request->id;
-        $timefinish = $request->timefinish;
-        $evaluation = $request->evaluation;
-        $condition = $request->condition;
-        $status = $request->status;
+
+        // Validation rules
+        $rules = [
+            'vehicle_id' => 'required',
+            'evaluation' => 'required|string',
+            'condition' => 'required|string',
+            'timestarted' => 'required|date',
+            'timefinish' => 'required|date',
+            'status' => 'required|in:pending,ongoing,completed',
+
+            'mechanic_ids' => 'required|array',
+            'mechanic_ids.*' => 'required|exists:mechanics,id',
+            'mechanics.*.mechanic_name' => 'required|string',
+        ];
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422); // Unprocessable Entity status code
+        }
 
         try {
-            // Validation rules
-            $rules = [
-                'evaluation' => 'required|string',
-                'condition' => 'required|string',
-                'timefinish' => 'required|date',
-                'status' => 'required', // Assuming 'status' can only be 'pending' or 'completed'
-            ];
-
-            // Validate the request data
-            $validator = Validator::make($request->all(), $rules);
-
-            // Check if validation fails
-            if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'Validation failed',
-                    'errors' => $validator->errors(),
-                ], 422); // Unprocessable Entity status code
-            }
-
             // Find the maintenance record by ID
             $maintenance = Maintenance::findOrFail($id);
 
             // Update the maintenance attributes
             $maintenance->update([
-                'timefinish' => $timefinish,
-                'evaluation' => $evaluation,
-                'condition' => $condition,
-                'status' => $status,
+                'vehicle_id' => $request->vehicle_id,
+                'evaluation' => $request->evaluation,
+                'condition' => $request->condition,
+                'timestarted' => $request->timestarted,
+                'timefinish' => $request->timefinish,
+                'status' => $request->status,
             ]);
+
+            // Remove existing mechanics linked to this maintenance
+            MechanicMaintenance::where('maintenance_id', $maintenance->id)->delete();
+
+            // Link new mechanics to the maintenance
+            foreach ($request->mechanic_ids as $id) {
+                $mechanic = Mechanics::find($id);
+
+                MechanicMaintenance::create([
+                    'maintenance_id' => $maintenance->id,
+                    'mechanic_id' => $id,
+                    'mechanic_name' => $mechanic->mechanics_name,
+                ]);
+            }
 
             return response()->json([
                 'message' => 'Maintenance updated successfully',
-                'maintenance' => $maintenance // Optionally return the updated maintenance object
-            ]);
+                'maintenance' => $maintenance, // Optionally return the updated maintenance object
+            ], 200); // OK status code
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to update maintenance: ' . $e->getMessage()
             ], 500); // Internal Server Error status code
         }
+    }
+
+    public function getMechanicByMaintenanceId(Request $request)
+    {
+
+        $mechanics = MechanicMaintenance::where('maintenance_id', $request->id)->get();
+        return response()->json([
+            'mechanics_main' => $mechanics,
+        ]);
     }
 }

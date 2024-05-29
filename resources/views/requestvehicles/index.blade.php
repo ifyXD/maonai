@@ -17,8 +17,6 @@
         </header>
         <div class="container mt-n10">
             <div class="card">
-
-
                 <div class="container mt-3">
                     <div class="row">
                         <div class="col-12">
@@ -28,6 +26,7 @@
                             <form action="{{ url('user/all-requests') }}" method="get" class="form-inline">
 
                                 <select name="status" id="status" class="form-control mr-2">
+                                    <option {{ $status == 'all' ? 'selected' : '' }} value="all">All</option>
                                     <option {{ $status == 'pending' ? 'selected' : '' }} value="pending">Pending</option>
                                     <option {{ $status == 'accept' ? 'selected' : '' }} value="accept">Accept</option>
                                     <option {{ $status == 'decline' ? 'selected' : '' }} value="decline">Decline</option>
@@ -50,6 +49,7 @@
                                 <th scope="col">Appointment Start</th>
                                 <th scope="col">Appointment End</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,13 +64,26 @@
                                         <td>{{ $item->appointment }}</td>
                                         <td>{{ $item->appointment_end }}</td>
                                         <td><span
-                                                class="{{ $item->status == 'pending' ? 'text-primary' : ($item->status == 'accept' ? 'text-success' : ($item->status == 'decline' ? 'text-danger' : '')) }}">{{ $item->status }}</span>
+                                                class="{{ $item->status == 'pending' ? 'text-primary' : ($item->status == 'accept' ? 'text-success' : ($item->status == 'decline' ? 'text-danger' : '')) }}">{{ $item->status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($item->status == 'pending')
+                                                <form method="get" action="{{ url('user/create-request') }}">
+                                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                                </form>
+                                            @else
+                                                <div class="text-center">
+                                                    <span class="text-danger">----</span>
+                                                </div>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr class="text-center text-danger">
-                                    <td  colspan="8"> No data found</td>
+                                    <td colspan="8"> No data found</td>
                                 </tr>
                             @endif
                         </tbody>

@@ -14,7 +14,7 @@ class VehicleController extends Controller
 {
     public function index()
     {
-        $drivers = Driver::orderBy('driver_name', 'asc')->get();
+        $drivers = Driver::where('isdel', 'active')->orderBy('driver_name', 'asc')->get();
         $fuels = Fuel::orderBy('fuel_type', 'asc')->get();
         return view('vehicle.index', compact('drivers', 'fuels'));
     }
@@ -78,7 +78,7 @@ class VehicleController extends Controller
                 'vehicles.fuel_id',
                 'vehicles.description as description',
                 'vehicles.seat_capacity as seat_capacity',
-                'vehicles.status as status',
+                'vehicles.status as vstatus',
                 'vehicles.isdel as visdel',
                 'drivers.id as driver_id',
                 'drivers.driver_name',

@@ -19,7 +19,7 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent px-5 py-4">
-                                <div class="small text-center"><a class="btn btn-block btn-primary" href="multi-tenant-create.html">Click</a></div>
+                                <div class="small text-center"><a class="btn btn-block btn-primary" href="{{route('create-request-vehicle.user')}}">Click</a></div>
                             </div>
                         </div>
                     </div>
@@ -60,12 +60,11 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Plate Number</th>
                                 <th scope="col">Type</th>
-                                {{-- <th scope="col">Driver</th>
-                                <th scope="col">Condition</th> --}}
+                                <th scope="col">Driver</th>
+                                <th scope="col">Condition</th>
                                 <th scope="col">Status</th>
                                 <th scope="col" class="date-header">Created at (UTC)</th>
                                 <th scope="col" class="date-header">Updated at (UTC)</th>
-                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -77,15 +76,14 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-lg-12 col-md-12">
+        <div class="col-lg-12 col-md-12 mb-">
             <div class="card">
                 <div class="card-header">Request Details</div>
                 <div class="card-body">
                     <h4>User Information</h4>
-                    <p><strong>Name:</strong> </p>
-                    <p><strong>Email:</strong> </p>
-                    <h4>My Contacts</h4>
-                    {{-- @if($contacts->isEmpty())
+                    <p><strong>Name: {{ ucfirst(Auth::user()->ufname) }} {{ Auth::user()->uname }} {{ Auth::user()->lname }}</strong></p>
+                    <h4>Contact Request</h4>
+                    @if($contacts->isEmpty())
                         <p>You have no contacts.</p>
                     @else
                         <table class="table table-striped">
@@ -108,7 +106,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    @endif --}}
+                    @endif
                 </div>
             </div>
         </div>
@@ -170,7 +168,6 @@
             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
         </svg>
-        
     </a>
     <a href="#" onclick="confirmDelete(${vehicle.id});" id="deleteUserId">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-danger" viewBox="0 0 16 16">

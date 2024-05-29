@@ -10,7 +10,7 @@
             <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
                 href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
-                <img class="img-fluid" src="assets/img/1.jpg" />
+                <img class="img-fluid" src="{{url('assets/img/1.jpg')}}" />
             </a>
             <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
                 aria-labelledby="navbarDropdownUserImage">
@@ -22,7 +22,7 @@
                     </div>
                 </h6>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="profile">Profile</a>
+                <a class="dropdown-item" href="{{url('admin/profile')}}">Profile</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
@@ -53,7 +53,7 @@
                     @if (auth()->check() && auth()->user()->role === 'user')
 
                         <div class="sidenav-menu-heading">UserDashboard</div>
-                        <a class="nav-link" href="{{url('/user/dashboard')}}">
+                        <a class="nav-link" href="{{url('contacts')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
@@ -90,11 +90,11 @@
                         </a>
                         <div class="collapse" id="collapseFlows" data-parent="#accordionSidenav">
                             <nav class="sidenav-menu-nested nav">
-                                <a class="nav-link" href="/admin/drivers">Drivers</a>
-                                <a class="nav-link" href="/admin/mechanics">Mechanics</a>
-                                <a class="nav-link" href="/admin/fuel">Fuels</a>
-                                <a class="nav-link" href="/admin/vehicle">Vehicles</a>
-                                <a class="nav-link" href="/admin/maintenance">Maintenances</a>
+                                <a class="nav-link" href="drivers">Drivers</a>
+                                <a class="nav-link" href="mechanics">Mechanics</a>
+                                <a class="nav-link" href="fuel">Fuels</a>
+                                <a class="nav-link" href="vehicle">Vehicles</a>
+                                <a class="nav-link" href="maintenance">Maintenances</a>
                             </nav>
                         </div>
                     @endif

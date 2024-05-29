@@ -14,43 +14,6 @@ class DriverController extends Controller
     {
         return view('driver.index');
     }
-
-
-
-    // public function create(Request $request)
-    // {
-    //     $rules = [
-    //         'driver_name' => 'required|string|max:255',
-    //         'contact' => 'required|string|max:255',
-    //         'email' => 'required|email|max:255',
-    //         'driver_license' => 'required|string|max:255',
-    //         'address' => 'required|string',
-    //         'status' => 'required|string',
-    //     ];
-
-    //     $validator = Validator::make($request->all(), $rules);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'message' => 'Validation failed',
-    //             'errors' => $validator->errors(),
-    //         ], 422);
-    //     }
-
-    //     $driver = new Driver();
-    //     $driver->driver_name = $request->driver_name;
-    //     $driver->contact = $request->contact;
-    //     $driver->email = $request->email;
-    //     $driver->driver_license = $request->driver_license;
-    //     $driver->address = $request->address;
-    //     $driver->status = $request->status;
-    //     $driver->save();
-
-    //     return response()->json([
-    //         'message' => 'Driver created successfully',
-    //         'driver' => $driver,
-    //     ], 201);
-    // }
     public function create(Request $request)
     {
         $rules = [
@@ -161,9 +124,9 @@ class DriverController extends Controller
                                             <div class="mb-1">
                                                 <label for="status" class="form-label">Status</label>
                                                 <select name="status" id="editstatus' . $driver->id . '" class="form-control" required>
-                                                    <option value="pending">Pending</option>
-                                                    <option value="active">Active</option>
-                                                    <option value="inactive">Inactive</option>
+                                                    <option ' . ($driver->status == "pending" ? "selected" : "") . ' value="pending">Pending</option>
+                                                    <option ' . ($driver->status == "active" ? "selected" : "") . ' value="active">Active</option>
+                                                    <option ' . ($driver->status == "inactive" ? "selected" : "") . ' value="inactive">Inactive</option>
                                                 </select>
                                             </div>
                                         </div>

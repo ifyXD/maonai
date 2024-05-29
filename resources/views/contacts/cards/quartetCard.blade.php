@@ -36,8 +36,8 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Totalization Contacts Requested →</span>
-                        <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;"> 
-                            {{-- <div class="font-weight-bold">{{ $counts['totalContacts'] }}</div> --}}
+                        <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <div class="font-weight-bold">{{ $counts['totalContacts'] }}</div>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Total of Pending Requests →</span>
                         <div class="rounded-circle bg-white text-warning d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                            {{-- <div class="font-weight-bold">{{ $counts['pendingCount'] }}</div> --}}
+                            <div class="font-weight-bold">{{ $counts['pendingCount'] }}</div>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Total of Accepted Requests →</span>
                         <div class="rounded-circle bg-white text-success d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                            {{-- <div class="font-weight-bold">{{ $counts['acceptedCount'] }}</div> --}}
+                            <div class="font-weight-bold">{{ $counts['acceptedCount'] }}</div>
                         </div>
                     </div>
                 </div>
@@ -101,21 +101,13 @@
                     <div class="d-flex align-items-center">
                         <span class="mr-2">Total of Declined Requests →</span>
                         <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; font-size: 2rem;">
-                            {{-- <div class="font-weight-bold">{{ $counts['declinedCount'] }}</div> --}}
+                            <div class="font-weight-bold">{{ $counts['declinedCount'] }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
     </div>
-
-
-
-
-
 </main>
 
 
