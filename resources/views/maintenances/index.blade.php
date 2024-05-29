@@ -171,9 +171,11 @@
             populateMechanicSelect($('#mechanicsTable #tbodypart tr:last .mechanicSelect'));
         });
 
+
         $('#mechanicsTable').on('click', '.removeBtn', function() {
             $(this).closest('tr').remove();
         });
+
 
         $('option[value="decline"]').hide();
 
@@ -205,7 +207,6 @@
         }
 
         function maintenance() {
-
             $('#datatable').DataTable().destroy();
             $('tbody').empty();
             $.ajax({
@@ -245,8 +246,8 @@
                                 <td id="updatedAtId${maintenance.id}">${formatDate(maintenance.updated_at)}</td>
                                 <td>
                                     ${action}
-                                                <div class="modal fade" id="maintenanceEdit${maintenance.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
+                                                <div class="modal fade" data-id="${maintenance.id}" id="maintenanceEdit${maintenance.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Edit maintenances</h1>
@@ -256,32 +257,73 @@
                                                             </div>
                                                             <div class="modal-body"> 
                                                                 <div class="mb-3">
+                                                                    <label for="evaluation" class="form-label">Vehicle Name</label>
+                                                                    <select name="editvehicle" class="form-control" id="editvehicle${maintenance.id}">
+                                                                        <option value="" selected disabled>Select Vehicle</option>
+                                                                        @foreach ($vehicles as $item)
+                                                                            <option ${maintenance.vehicle_id == {{ $item->id }} ? 'selected' : ''} value="{{ $item->id }}">{{ ucfirst($item->type) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
                                                                     <label for="editevaluation${maintenance.id}" class="form-label">Evaluation</label>
                                                                     <input type="text" value="${maintenance.evaluation}" class="form-control" id="editevaluation${maintenance.id}" aria-describedby="emailHelp"> 
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label for="edittimefinish${maintenance.id}" class="form-label">Timefinish</label>
-                                                                    <input type="datetime-local" value="${maintenance.timefinish}" class="form-control" id="edittimefinish${maintenance.id}" aria-describedby="emailHelp"> 
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="editcondition${maintenance.id}" class="form-label">condition</label>
+                                                                    <label for="editcondition${maintenance.id}" class="form-label">Condition</label>
                                                                     <input type="text" value="${maintenance.condition}" class="form-control" id="editcondition${maintenance.id}" aria-describedby="emailHelp"> 
                                                                 </div>
+                                                                <div class="mb-3">
+                                                                    <label for="edittimestarted${maintenance.id}" class="form-label">Time and Date Started</label>
+                                                                    <input type="datetime-local" value="${maintenance.timestarted}" class="form-control" id="edittimestarted${maintenance.id}" aria-describedby="emailHelp"> 
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="edittimefinish${maintenance.id}" class="form-label">Time and Date Finished</label>
+                                                                    <input type="datetime-local" value="${maintenance.timefinish}" class="form-control" id="edittimefinish${maintenance.id}" aria-describedby="emailHelp"> 
+                                                                </div>
+                                                              
                                                                 <div class="mb-1">
                                                                 <label for="editstatus" class="form-label">Status</label>
                                                                 <select name="status" id="status${maintenance.id}"  class="form-control" required>
-                                                                    <option value="pending">Pending</option>
-                                                                    <option value="active">Active</option>
-                                                                    <option value="inactive">Inactive</option>
+                                                                    <option ${maintenance.status == 'pending' ? 'selected' : ''} value="pending">Pending</option>
+                                                                    <option ${maintenance.status == 'ongoing' ? 'selected' : ''} value="ongoing">Ongoing Maintenance</option>
+                                                                    <option ${maintenance.status == 'completed' ? 'selected' : ''} value="completed">Completed Maintenance</option>
                                                                 </select>
                                                             </div>
 
-
-
+                                                            <hr>
+                                                            <div class="text-center">
+                                                                    <h4 class="text-info">
+                                                                        -- SELECT MECHANIC/S --
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="mb-1">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table" id="mechanicsTable${maintenance.id}">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Mechanic Name</th>
+                                                                                    <th>Action</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <thead id="tbodypart${maintenance.id}">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <select class="form-control editMechanicSelect mechanicSelect${maintenance.id}" name="mechanic"
+                                                                                            id="mechanicSelec${maintenance.id}t">
+                                                                                            <option value="">Select Mechanic</option>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                    <td><button type="button" onclick="editAddRowBtn(${maintenance.id}, $(this));" class="btn btn-primary rounded-pill editaddRowBtn">+</button></td>
+                                                                                </tr>
+                                                                            </thead>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary" id="editSaveBtn" data-id="${maintenance.id}">Save</button>
+                                                                <button type="button" class="btn btn-primary" id="editSaveBtn" data-id="${maintenance.id}">Update</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -323,6 +365,31 @@
             });
         }
 
+        function editAddRowBtn(id, element) {
+            let mechanicsa = @json($mechanics);
+
+            // Build the options string
+            let options = '<option value="" disabled selected>Select Mechanic</option>';
+            $.each(mechanicsa, function(index, mechanic) {
+                options += `<option value="${mechanic.id}">${mechanic.mechanics_name}</option>`;
+            });
+
+            // Append the new row with the mechanics options
+            $(`#tbodypart${id}`).append(`
+                <tr class="subtr${id}">
+                    <td>
+                        <select name="mechanic" class="form-control editMechanicSelect mechanicSelect${id} mechanicSelectSub${id}">
+                            ${options}
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" onclick="editRemove(${id}, $(this));" class="btn btn-danger rounded-pill editremoveBtn">x</button>
+                    </td>
+                </tr>
+            `);
+        }
+
+
         function confirmDelete(id) {
             Swal.fire({
                 title: "Are you sure?",
@@ -342,7 +409,7 @@
                         title: 'Deleted!',
                         text: 'User has been deleted.',
                         icon: 'success',
-                        timer: 2000, // 2 seconds
+                        timer: 1500, // 2 seconds
                         timerProgressBar: true
                     }).then(() => {
                         // Reload the page or do any other necessary action
@@ -362,6 +429,17 @@
             });
             return Array.from(selectedIds);
         }
+        function edditgetSelectedMechanicIds(id) {
+            let selectedIds = new Set();
+            $(`.mechanicSelect${id}`).each(function() {
+                let selectedId = $(this).val();
+                if (selectedId !== "") {
+                    selectedIds.add(selectedId);
+                }
+            });
+            return Array.from(selectedIds);
+        }
+
 
         function formatErrors(errors) {
             let errorMessage = '';
@@ -414,6 +492,13 @@
                 }
             });
         }
+
+        function editRemove(id, element) {
+            $(`#mechanicsTable${id}`).on('click', '.editremoveBtn', function() {
+                $(element).closest('tr').remove();
+            });
+
+        }
     </script>
 
     {{-- jquery code --}}
@@ -438,7 +523,7 @@
                         icon: "success",
                         title: " Maintenance Added successfully.",
                         showConfirmButton: true,
-                        timer: 2000, // 2 seconds
+                        timer: 1500, // 2 seconds
                         timerProgressBar: true,
 
                     }).then(() => {
@@ -473,6 +558,80 @@
             $(`#edittimefinish${id}`).val(timefinish);
             $(`#editcondition${id}`).val(condition);
             $(`#status${id}`).val(status);
+
+            $.ajax({
+                type: 'get',
+                url: '/admin/getmechanic_maintenances',
+                data: {
+                    'id': id,
+                },
+                success: function(response) {
+                    let first = response.mechanics_main[0].mechanic_id;
+                    let filteredMechanics = response.mechanics_main.filter(mechanic => mechanic
+                        .mechanic_id !== first);
+
+                    let eachMechanicOptions = '';
+                    let mechanicsa = @json($mechanics);
+
+                    $(`.mechanicSelect${id}`).empty(); // Clear existing options
+                    $(`.subtr${id}`).empty(); // Clear existing options
+
+                    // Add the default option
+                    $(`.mechanicSelect${id}`).append($('<option>', {
+                        value: '',
+                        text: 'Select Mechanic',
+                        disabled: true,
+                    }));
+
+                    // Add mechanic options and select the first mechanic if it matches
+                    $.each(mechanicsa, function(index, mechanic) {
+                        $(`.mechanicSelect${id}`).append($('<option>', {
+                            value: mechanic.id,
+                            text: mechanic.mechanics_name,
+                            selected: mechanic.id === first
+                        }));
+                    });
+
+                    // Generate options string for mechanics
+                    $.each(mechanicsa, function(index, mechanic) {
+                        eachMechanicOptions +=
+                            `<option value="${mechanic.id}">${mechanic.mechanics_name}</option>`;
+                    });
+
+                    // Generate rows for each filtered mechanic
+                    let rows = '';
+                    $.each(filteredMechanics, function(index, filteredMechanic) {
+                        let optionsWithSelected = mechanicsa.map(mechanic => {
+                            let selected = (filteredMechanic.mechanic_id === mechanic
+                                .id) ? 'selected' : '';
+                            return `<option value="${mechanic.id}" ${selected}>${mechanic.mechanics_name}</option>`;
+                        }).join('');
+
+                        rows += `
+                                <tr class="subtr${id}">
+                                    <td>
+                                        <select name="mechanic" class="form-control editMechanicSelect mechanicSelect${id} mechanicSelectSub${id}">
+                                            <option value="" selected disabled>Select Mechanic</option>
+                                            ${optionsWithSelected}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button type="button" onclick="editRemove(${id}, $(this));" class="btn btn-danger rounded-pill editremoveBtn">x</button>
+                                    </td>
+                                </tr>`;
+                    });
+
+                    // Append generated rows to the tbody
+                    $(`#tbodypart${id}`).append(rows);
+                },
+
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    // Handle the error response
+                    // Swal.fire("Error!", "Failed to update maintenance: " + xhr.responseJSON.message,
+                    //     "error");
+                }
+            });
         });
 
         // Save button click event listener
@@ -481,22 +640,29 @@
             let id = $(this).data('id');
 
             // Get the updated values from the modal inputs
+            let vehicle_id = $(`#editvehicle${id}`).val();
             let evaluation = $(`#editevaluation${id}`).val();
-            let timefinish = $(`#edittimefinish${id}`).val();
             let condition = $(`#editcondition${id}`).val();
+            let timestarted = $(`#edittimestarted${id}`).val();
+            let timefinish = $(`#edittimefinish${id}`).val();
             let status = $(`#status${id}`).val();
+
             console.log(evaluation + timefinish + condition + status);
+            let selectedMechanicIds = edditgetSelectedMechanicIds(id);
 
             // Send the data to the server using AJAX
             $.ajax({
                 type: 'post',
-                url: '/admin/editbyid',
+                url: '/admin/editbyid-maintenance',
                 data: {
                     'id': id,
+                    'vehicle_id': vehicle_id,
                     'evaluation': evaluation,
+                    'timestarted': timestarted,
                     'timefinish': timefinish,
                     'condition': condition,
-                    'status': status
+                    'status': status,
+                    'mechanic_ids': selectedMechanicIds,
                 },
                 success: function(response) {
                     // Handle the success response
@@ -504,11 +670,11 @@
                         title: 'Success!',
                         text: 'Maintenance updated successfully.',
                         icon: 'success',
-                        timer: 2000, // 2 seconds
+                        timer: 1500, // 2 seconds
                         timerProgressBar: true,
                         didClose: () => {
                             // Reload the page to reflect the changes
-                            location.reload();
+                            maintenance();
                         }
                     });
                     $(`#maintenanceEdit${id}`).modal('hide');
@@ -524,6 +690,9 @@
 
         $(document).on('click', '[data-bs-dismiss="modal"]', function() {
             $(this).closest('.modal').modal('hide');
+        });
+        $(document).on('click', '.editaddRowBtn', function() {
+            console.log($(this).closest('.modal').data('id'));
         });
     </script>
 @endpush

@@ -194,7 +194,7 @@
                                     <td id="typeId${vehicle.vid}"> ${vehicle.seat_capacity} seat/s</td>
                                     <td id="driverId${vehicle.vid}"> ${vehicle.driver_name}</td> 
                                     <td id="descriptionId${vehicle.vid}"> ${vehicle.description}</td>
-                                    <td id="statusId${vehicle.vid}"> ${vehicle.status} </td> 
+                                    <td id="statusId${vehicle.vid}"> ${vehicle.vstatus} </td> 
                                     <td id="createdAtId${vehicle.vid}">${formatDate(vehicle.created_at)}</td>
                                     <td id="updatedAtId${vehicle.vid}">${formatDate(vehicle.updated_at)}</td>
                                     <td> 
@@ -251,9 +251,9 @@
                                                                 <div class="mb-1">
                                                                                     <label for="status" class="form-label">Status</label>
                                                                                     <select name="status" id="status${vehicle.vid}"  class="form-control">
-                                                                                        <option value="pending">Pending</option>
-                                                                                        <option value="active">Active</option>
-                                                                                        <option value="inactive">Inactive</option>
+                                                                                        <option ${vehicle.vstatus == 'pending' ? 'selected' : ''} value="pending">Pending</option>
+                                                                                        <option ${vehicle.vstatus == 'active'?  'selected' : ''} value="active">Active</option>
+                                                                                        <option ${vehicle.vstatus == 'inactive'?  'selected' : ''} value="inactive">Inactive</option>
                                                                                     </select>
                                                                                 </div>
 

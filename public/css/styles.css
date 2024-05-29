@@ -102,6 +102,14 @@ body {
   outline: 0 !important;
 }
 
+.dataTables_empty{
+  color: red;
+}
+
+.dataTables_length ,select{
+  height: 30px;
+}
+
 hr {
   box-sizing: content-box;
   height: 0;
@@ -2781,7 +2789,7 @@ pre code {
   border: 0;
 }
 
-.form-control {
+.form-control ,.dataTable_filter, input{
   display: block;
   width: 100%;
   height: calc(1em + 1.75rem + 2px);
@@ -2796,6 +2804,7 @@ pre code {
   border-radius: 0.35rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;

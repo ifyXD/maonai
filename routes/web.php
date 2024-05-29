@@ -216,7 +216,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/maintenancedata', [MaintenanceController::class, 'maintenance']);
         Route::post('/addmaintenance', [MaintenanceController::class, 'create']);
-        Route::post('/editbyid', [MaintenanceController::class, 'edit']);
+        Route::post('/editbyid-maintenance', [MaintenanceController::class, 'edit']);
         Route::get('/maintenance', [MaintenanceController::class, 'index']);
         Route::post('/maintenance/deletebyid', [MaintenanceController::class, 'delete']);
 
@@ -228,6 +228,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/addmechanics', [MechanicsController::class, 'create']);
         Route::post('/editbyid-mechanic', [MechanicsController::class, 'edit']);
         Route::post('/mechanic/deletebyid', [MechanicsController::class, 'delete']);
+        Route::get('/getmechanic_maintenances', [MaintenanceController::class, 'getMechanicByMaintenanceId']);
 
 
 

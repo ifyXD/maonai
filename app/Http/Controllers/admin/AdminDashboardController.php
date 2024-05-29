@@ -9,10 +9,13 @@ use Illuminate\Http\Request;
 class AdminDashboardController extends Controller
 {
     public function index(){
+        // admin dashboard
         $contacts = Contact::get();
         return view('contacts.index', compact('contacts'));
     }
     public function userdashboard(){
-        return view('dashboard.user.user');
+        // user dashboard
+        $contacts = Contact::get();
+        return view('dashboard.user.user', compact('contacts'));
     }
 }

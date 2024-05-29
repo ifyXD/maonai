@@ -15,25 +15,37 @@ class RequestVehicleController extends Controller
 {
     public function index(Request $request)
     {
-        $status = $request->status?? 'pending';
+        $status = $request->status ?? 'all';
 
-        $query = RequestVehicle::where('user_id', auth()->user()->id);
+        if ($status == 'all' || $status == 'pending' || $status == 'accept' || $status == 'decline') {
+            $query = RequestVehicle::where('user_id', auth()->user()->id);
 
-        if ($status) {
-            $query->where('status', $status);
+            if ($status != 'all') {
+                $query->where('status', $status);
+            }
+
+            $myrequests = $query->orderBy('created_at', 'desc')->get();
+        } else {
+            abort(404);
         }
-
-        $myrequests = $query->orderBy('created_at', 'desc')->get();
 
         return view('requestvehicles.index', compact('myrequests', 'status'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $vehicle = Vehicle::all();
+        $id = $request->id;
+
+        $myrequest = null;
+        if ($request->id != null) {
+            $myrequest = requestVehicle::findOrFail($id);
+        } else {
+            $myrequest = null;
+        }
+        $vehicle = Vehicle::where('isdel', 'active')->get();
         $requestvehicle = requestVehicle::all();
 
-        return view('requestvehicles.create', compact('vehicle', 'requestvehicle'));
+        return view('requestvehicles.create', compact('vehicle', 'requestvehicle', 'myrequest'));
     }
 
     public function createRequest(Request $request)
@@ -41,20 +53,42 @@ class RequestVehicleController extends Controller
 
         $vehicle = Vehicle::find($request->vehicle_id);
 
-        // Create a new RequestVehicle instance
-        $requestVehicle = new RequestVehicle();
-        $requestVehicle->name = $request->username;
-        $requestVehicle->vehicle_id = $request->vehicle_id;
-        $requestVehicle->capacity = $request->capacity;
-        $requestVehicle->purpose = $request->purpose;
-        $requestVehicle->status = 'pending';
-        $requestVehicle->user_id = auth()->user()->id;
-        $requestVehicle->drivers_id = $vehicle->driver_id;
-        $requestVehicle->appointment = $request->appointment;
-        $requestVehicle->appointment_end = $request->appointment_end;
+        $id = $request->id;
+        if ($request->id != null) {
+            $myrequest = requestVehicle::findOrFail($id);
 
-        // Save the new RequestVehicle record
-        $requestVehicle->save();
+            if ($myrequest->status == 'pending') {
+                $myrequest->update([
+                    'name' => $request->username,
+                    'vehicle_id' => $request->vehicle_id,
+                    'capacity' => $request->capacity,
+                    'purpose' => $request->purpose,
+                    'drivers_id' => $vehicle->driver_id,
+                    'appointment' => $request->appointment,
+                    'appointment_end' => $request->appointment_end,
+                ]);
+            } else {
+                return redirect()->route('all-requests.user')->with('message', 'Request update failed');
+            }
+        } else {
+
+
+            // Create a new RequestVehicle instance
+            $requestVehicle = new RequestVehicle();
+            $requestVehicle->name = $request->username;
+            $requestVehicle->vehicle_id = $request->vehicle_id;
+            $requestVehicle->capacity = $request->capacity;
+            $requestVehicle->purpose = $request->purpose;
+            $requestVehicle->status = 'pending';
+            $requestVehicle->user_id = auth()->user()->id;
+            $requestVehicle->drivers_id = $vehicle->driver_id;
+            $requestVehicle->appointment = $request->appointment;
+            $requestVehicle->appointment_end = $request->appointment_end;
+
+            // Save the new RequestVehicle record
+            $requestVehicle->save();
+        }
+
 
         // Optionally, return a success response or redirect back
         return redirect()->route('all-requests.user')->with('message', 'Your request has been submitted');

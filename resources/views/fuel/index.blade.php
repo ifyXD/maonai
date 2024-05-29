@@ -217,8 +217,8 @@
                                         <div class="mb-1">
                                             <label for="status" class="form-label">Status</label>
                                             <select name="status" id="editstatus${fuel.id}" class="form-control" required>
-                                                <option value="unavailable">Unavailable</option>
-                                                <option value="available">Available</option>
+                                                <option ${fuel.status == 'unavailable' ? 'selected' : ''} value="unavailable">Unavailable</option>
+                                                <option ${fuel.status == 'available' ? 'selected' : ''} value="available">Available</option>
                                             </select>
                                         </div>
                                     </div>

@@ -138,86 +138,7 @@
                 url: '/admin/mechanicsdata',
                 success: function(data) {
                     // Assuming data is an array of mechanic objects
-                    $.each(data.mechanics, function(index, mechanic) {
-                        var key = index + 1;
-                        var ifdel = mechanic.isdel === 'deleted' ? 'is-deleted' : '';
-
-                        var action = mechanic.isdel === 'active' ?
-                            `<a href="#" class="editMechanic" data-id="${mechanic.id}" data-bs-toggle="modal" data-bs-target="#mechanicEdit${mechanic.id}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                                            </svg>
-                                                        </a>
-                                                        <a href="#" onclick="confirmDelete(${mechanic.id});" id="deleteMechanic">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-danger" viewBox="0 0 16 16">
-                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                                            </svg>
-                                                        </a>` :
-                            `<span class="text-danger">Deleted</span>`;
-                        // Assuming user has properties like id, name, email, etc.
-                        let row = `
-                                        <tr class="${ifdel}" id="trId${mechanic.id}">
-                                            <td>${key}</td>
-                                            <td>${mechanic.mechanics_name}</td>
-                                            <td>${mechanic.contact}</td>
-                                            <td>${mechanic.email}</td>
-                                            <td>${mechanic.description}</td>
-                                            <td>${mechanic.status}</td>
-                                            <td>${formatDate(mechanic.created_at)}</td>
-                                            <td>${formatDate(mechanic.updated_at)}</td>
-                                            <td>
-                                                ${action}
-                                                <div class="modal fade" id="mechanicEdit${mechanic.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Mechanics</h1>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <i class="fas fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body"> 
-                                                                <div class="mb-3">
-                                                                    <label for="editmechanics${mechanic.id}" class="form-label">Mechanics Name</label>
-                                                                    <input type="text" value="${mechanic.mechanics_name}" class="form-control" id="editmechanics${mechanic.id}" aria-describedby="emailHelp"> 
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="editcontact${mechanic.id}" class="form-label">Contact</label>
-                                                                    <input type="text" value="${mechanic.contact}" class="form-control" id="editcontact${mechanic.id}" aria-describedby="emailHelp"> 
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="editdemail${mechanic.id}" class="form-label">Email</label>
-                                                                    <input type="text" value="${mechanic.email}" class="form-control" id="editemail${mechanic.id}" aria-describedby="emailHelp"> 
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="editdescription${mechanic.id}" class="form-label">Description</label>
-                                                                    <input type="text" value="${mechanic.description}" class="form-control" id="editdescription${mechanic.id}" aria-describedby="emailHelp"> 
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="editstatus${mechanic.id}" class="form-label">Status</label>
-                                                                    <select name="status" id="editstatus${mechanic.id}" class="form-control" required>
-                                                                        <option value="pending" ${mechanic.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                                                        <option value="active" ${mechanic.status === 'active' ? 'selected' : ''}>Active</option>
-                                                                        <option value="inactive" ${mechanic.status === 'inactive' ? 'selected' : ''}>Inactive</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary" id="editSaveBtn" data-id="${mechanic.id}">Save</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> 
-                                            </td>
-                                        </tr>`;
-                        // Append the row to the 
-
-
-                        $('tbody').append(row);
-                    });
+                    $('tbody').html(data.html);
                     $('#dataTable').DataTable();
 
 
@@ -280,9 +201,11 @@
                     '_token': '{{ csrf_token() }}' // Add the CSRF token
                 },
                 success: function(data) {
-                    if (data.success) {
+                    if (data.success == 'success') {
                         $('#messageflash').text('Mechanic added successfully');
-                        $('#exampleModal').modal('hide'); // Close the modal
+                        // $('#exampleModal').modal('hide'); // Close the modal
+                        $('tbody').html(data.html); // Inject the generated HTML into the table body
+                        $('#dataTable').DataTable();
                         callback(true); // Invoke the callback with true indicating success
                     }
                 },

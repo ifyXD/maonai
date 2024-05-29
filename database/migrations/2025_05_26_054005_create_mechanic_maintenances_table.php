@@ -25,6 +25,7 @@ return new class extends Migration
                 ->on('mechanics')
                 ->onDelete('set null');
             $table->string('mechanic_name')->nullable();
+            $table->string('isdel')->nullable()->default('active');
             $table->timestamps();
         });
     }

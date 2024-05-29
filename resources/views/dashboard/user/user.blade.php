@@ -19,7 +19,7 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent px-5 py-4">
-                                <div class="small text-center"><a class="btn btn-block btn-primary" href="multi-tenant-create.html">Click</a></div>
+                                <div class="small text-center"><a class="btn btn-block btn-primary" href="{{route('create-request-vehicle.user')}}">Click</a></div>
                             </div>
                         </div>
                     </div>
