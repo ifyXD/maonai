@@ -201,4 +201,30 @@ class RequestVehicleController extends Controller
             ], 500);
         }
     }
+
+    public function getEvents()
+    {
+        $events =  requestVehicle::where('status', 'accept')
+            ->select('appointment', 'appointment_end')
+            ->get();
+
+        $formattedEvents = [];
+
+        foreach ($events as $event) {
+            $startDate = new \DateTime($event->appointment);
+            $endDate = new \DateTime($event->appointment_end);
+            $endDate = $endDate->modify('+1 day'); // To include the end date
+
+            while ($startDate < $endDate) {
+                $formattedEvents[] = [
+                    'title' => 'Not Available',
+                    'start' => $startDate->format('Y-m-d'),
+                    'allDay' => true
+                ];
+                $startDate->modify('+1 day');
+            }
+        }
+
+        return response()->json($formattedEvents);
+    }
 }
