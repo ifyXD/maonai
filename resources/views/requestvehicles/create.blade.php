@@ -1,4 +1,13 @@
 @extends('layouts.app')
+<style>
+    #calendar {
+        max-width: 900px;
+        /* Adjust the max-width as needed */
+        margin: 0 auto;
+        height: 600px;
+        /* Set a fixed height */
+    }
+</style>
 @section('content')
     <main class="mb-1">
         <header class="page-header page-header-dark bg-teal pb-10">
@@ -13,6 +22,7 @@
                                 @endphp
                                 {{ $my_id == null ? 'Create Request' : 'Update Request' }}
                             </h1>
+
                         </div>
                     </div>
                 </div>
@@ -24,6 +34,9 @@
                     <form method="post" action="{{ route('request-store.user') }}">
                         @csrf
                         <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <div id='calendar' class="w-75"></div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Username</label>
@@ -34,46 +47,33 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="type" class="form-label">Vehicle</label>
-                                    {{-- <select name="vehicle_id" id="vehicle_id" class="form-control">
-                                        <option value="" selected disabled>Select Vehicle</option>
-                                        @foreach ($vehicles as $vehicle)
-                                            @php
-                                                $vehicle_id = $myrequest->vehicle_id ?? null;
-                                                $isDisabled = isset($pendingOrAcceptedRequests[$vehicle->id]) && $vehicle->id != $vehicle_id;
-                                            @endphp
-                                            <option 
-                                                value="{{ $vehicle->id }}" 
-                                                data-platenumber="{{ $vehicle->platenumber }}" 
-                                                data-condition="{{ $vehicle->condition }}" 
-                                                {{ $vehicle->id == $vehicle_id ? 'selected' : '' }}
-                                                {{ $isDisabled ? 'disabled' : '' }}>
-                                                {{ $vehicle->type }} {{ $isDisabled ? '(Not Available)' : '' }}
-                                            </option>
-                                        @endforeach
-                                    </select> --}}
-
                                     <select name="vehicle_id" id="vehicle_id" class="form-control">
                                         <option value="" selected disabled>Select Vehicle</option>
                                         @foreach ($vehicles as $vehicle)
                                             @php
                                                 $vehicle_id = $myrequest->vehicle_id ?? null;
-                                                $hasPendingRequest = isset($pendingOrAcceptedRequests[$vehicle->id]) && $pendingOrAcceptedRequests[$vehicle->id]->where('user_id', $userId)->isNotEmpty();
-                                                $hasAcceptedRequestForOtherUsers = isset($acceptedRequestsForOtherUsers[$vehicle->id]);
+                                                $hasPendingRequest =
+                                                    isset($pendingOrAcceptedRequests[$vehicle->id]) &&
+                                                    $pendingOrAcceptedRequests[$vehicle->id]
+                                                        ->where('user_id', $userId)
+                                                        ->isNotEmpty();
+                                                $hasAcceptedRequestForOtherUsers = isset(
+                                                    $acceptedRequestsForOtherUsers[$vehicle->id],
+                                                );
                                                 $isDisabled = $hasPendingRequest || $hasAcceptedRequestForOtherUsers;
                                             @endphp
-                                            <option 
-                                                value="{{ $vehicle->id }}" 
-                                                data-platenumber="{{ $vehicle->platenumber }}" 
-                                                data-condition="{{ $vehicle->condition }}" 
+                                            <option value="{{ $vehicle->id }}"
+                                                data-platenumber="{{ $vehicle->platenumber }}"
+                                                data-condition="{{ $vehicle->condition }}"
                                                 {{ $vehicle->id == $vehicle_id ? 'selected' : '' }}
                                                 {{ $isDisabled ? 'disabled' : '' }}>
                                                 {{ $vehicle->type }} {{ $isDisabled ? '(Not Available)' : '' }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    
-                                    
-                                    
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -135,6 +135,35 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            var calendarEl = document.getElementById('calendar');
+
+            $.ajax({
+                url: '/user/request-events/',
+                method: 'GET',
+                success: function(events) {
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        events: events,
+                        dateClick: function(info) {
+                            // Check if the date is in the list of "Not Available" dates
+                            var isNotAvailable = events.some(event => event.start === info
+                                .dateStr);
+                            if (isNotAvailable) {
+                                alert('This date is not available.');
+                                return;
+                            }
+                            alert('Clicked on: ' + info.dateStr);
+                        }
+                    });
+                    calendar.render();
+                },
+                error: function(error) {
+                    console.error('There was a problem with the AJAX request:', error);
+                }
+            });
+
+
             // Get the current date and time
             const now = new Date();
             const year = now.getFullYear();
@@ -232,6 +261,38 @@
 
             // Reset the form after submission
             $('#createUserForm')[0].reset();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/user/request-events/',
+                method: 'GET',
+                success: function(events) {
+                    var unavailableDates = events.map(event => event.start);
+
+                    $('#appointment').on('change', function(event) {
+                        var selectedDate = new Date(event.target.value).toISOString().split(
+                            'T')[0];
+                        if (unavailableDates.includes(selectedDate)) {
+                            alert('This date is not available.');
+                            event.target.value = '';
+                        }
+                    });
+
+                    $('#appointment_end').on('change', function(event) {
+                        var selectedDate = new Date(event.target.value).toISOString().split(
+                            'T')[0];
+                        if (unavailableDates.includes(selectedDate)) {
+                            alert('This date is not available.');
+                            event.target.value = '';
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.error('There was a problem with the AJAX request:', error);
+                }
+            });
         });
     </script>
 @endpush

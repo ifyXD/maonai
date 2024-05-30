@@ -325,6 +325,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         //
 
+
+        Route::get('/request-events', [RequestVehicleController::class, 'getEvents']);
         Route::get('/create-request', [RequestVehicleController::class, 'store'])->name('create-request-vehicle.user');
         Route::post('/request-store', [RequestVehicleController::class, 'createRequest'])->name('request-store.user');
         Route::get('/all-requests', [RequestVehicleController::class, 'index'])->name('all-requests.user');
