@@ -62,9 +62,8 @@
                                 <th scope="col">Type</th>
                                 <th scope="col">Driver</th>
                                 <th scope="col">Condition</th>
-                                <th scope="col">Status</th>
-                                <th scope="col" class="date-header">Created at (UTC)</th>
-                                <th scope="col" class="date-header">Updated at (UTC)</th>
+                                <th scope="col">Action</th>
+                             
                             </tr>
                         </thead>
                     </table>
@@ -185,7 +184,6 @@ let row =
     
         <td id="statusId${vehicle.id}"> ${vehicle.status} </td>
         <td id="createdAtId${vehicle.id}">${formatDate(vehicle.created_at)}</td>
-        <td id="updatedAtId${vehicle.id}">${formatDate(vehicle.updated_at)}</td>
         <td>
             ${action}
             <div class="modal fade" id="vehicleEdit${vehicle.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('vehicle_id');
             $table->bigInteger('capacity');
-            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');  
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade')->nullable();
             $table->string('purpose');
             $table->enum('status', ['pending', 'accept', 'decline'])->default('pending');
             $table->unsignedBigInteger('user_id');

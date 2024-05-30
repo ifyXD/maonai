@@ -53,7 +53,7 @@
                     @if (auth()->check() && auth()->user()->role === 'user')
 
                         <div class="sidenav-menu-heading">UserDashboard</div>
-                        <a class="nav-link" href="{{url('contacts')}}">
+                        <a class="nav-link" href="{{url('dashboard')}}">
                             <div class="nav-link-icon"><i data-feather="filter"></i></div>
                             Dashboard
                         </a>
