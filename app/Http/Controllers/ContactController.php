@@ -17,6 +17,7 @@ class ContactController extends Controller
 
 
 
+
 /**
  * Update the status of the specified contact.
  *
@@ -193,24 +194,29 @@ public function update(Request $request, $id)
     // Validate request data
     $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:contacts,email,'.$id,
+        'email' => 'required|email', // Removed the unique constraint
         'department' => 'required|string|max:255',
         'request_type' => 'required|array',
-        'request_type.*' => 'in:repair,service,commission',
-        'other' => 'nullable|string|max:500',
+        'request_type.*' => 'in:Maintenance,Service,Commission,Construction,Transportation',
+        'content' => 'nullable|string|max:500',
     ]);
 
     // Find the contact by ID
     $contact = Contact::findOrFail($id);
 
-    // Update contact data
+    // Combine request type and content
+    $combinedContent = implode(', ', $request->request_type);
+    if ($request->filled('content')) {
+        $combinedContent .= ' - ' . $request->input('content');
+    }
+
+    // Update contact data instead of creating a new one
     $contact->name = $request->name;
     $contact->email = $request->email;
     $contact->department = $request->department;
-    $contact->content = implode(', ', $request->request_type); // Combine selected request types
-    if ($request->has('other')) {
-        $contact->content .= ' - : ' . $request->other; // Add 'other' field if provided
-    }
+    $contact->content = $combinedContent; // Assign combined content
+    $contact->status = 'pending'; // Set status to 'pending'
+    $contact->user_id = auth()->id(); // Set the user_id to the authenticated user's ID
     $contact->save();
 
     // Debugging: Check if the redirect_to parameter is present and its value
@@ -222,10 +228,10 @@ public function update(Request $request, $id)
         return redirect()->route('contacts.accept')->with('success', 'Contact updated successfully.');
     }
 
-
     // Debugging: Default redirect
     Log::info('Redirecting to contacts.index');
     return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
 }
+
 
 }

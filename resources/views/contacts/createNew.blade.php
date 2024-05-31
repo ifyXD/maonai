@@ -51,8 +51,9 @@
                                 </button>
                             </div>
                             @endif
-                            <form method="POST" action="{{ route('contacts.insert', ['userId' => $user->id]) }}">
+                            <form method="POST" action="{{ route('contacts.insertCurrentUser') }}">
                                 @csrf <!-- CSRF protection -->
+
                                  <!-- Form Row-->
                                  <div class="form-row">
                                     <!-- Form Group (contact name)-->

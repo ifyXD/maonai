@@ -30,10 +30,19 @@
                                 <input type="text" class="form-control" name="hours[]" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select class="form-control" name="role[]" required>
+                                <option value="technician">Technician</option>
+                                <option value="repairmen">Repairmen</option>
+                                <option value="carpenter">Carpenter</option>
+                                <option value="driver">Driver</option>
+                                <option value="employee">Employee</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-primary mb-3 float-right" id="addNewForm">Add New Form</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
