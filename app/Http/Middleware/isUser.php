@@ -17,7 +17,7 @@ class isUser
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && Auth::user()->role === 'admin') {
-            return redirect()->route('contacts');
+            return redirect()->route('admin.dashboard');
         } elseif (Auth::check() && Auth::user()->role === 'user') {
             return $next($request);
         } else {

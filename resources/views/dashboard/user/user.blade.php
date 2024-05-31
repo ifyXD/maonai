@@ -48,120 +48,69 @@
         </div>
     </div>
 </main>
-
-{{-- Script for Users JRMS & Its Table --}}
-
-<!-- DataTables CSS -->
-<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-
-<!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        var dataTable = $('#dataTable').DataTable();
-
-        // Search functionality
-        $('#search').on('keyup', function() {
-            var value = $(this).val().toLowerCase();
-            dataTable.search(value).draw();
-        });
-
-        // Pagination
-        $('#dataTable').on('draw.dt', function() {
-            var pageInfo = dataTable.page.info();
-            var currentPage = pageInfo.page + 1;
-            var totalPages = pageInfo.pages;
-
-            $('.dataTables_paginate .paginate_button').removeClass('disabled');
-
-            // Disable previous button if on first page
-            if (currentPage === 1) {
-                $('.dataTables_paginate .previous').addClass('disabled');
-            }
-
-            // Disable next button if on last page
-            if (currentPage === totalPages) {
-                $('.dataTables_paginate .next').addClass('disabled');
-            }
-        });
-
-        $('.dataTables_paginate .previous').on('click', function() {
-            dataTable.page('previous').draw('page');
-        });
-
-        $('.dataTables_paginate .next').on('click', function() {
-            dataTable.page('next').draw('page');
-        });
-    });
-</script>
-
-<div class="container mt-4">
-
-    <div class="card mb-4">
-        <div class="card-header">
-            <div>
-                <i data-feather="database" style="margin-right: 0.25em;"></i> Request
-            </div>
-        </div>
-                <!-- Display flash message -->
-            @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-
-        <div class="card-body">
-            <div class="datatable">
-                    <h4>User Information:</h4>
-                    <p><strong>Name: {{ ucfirst(Auth::user()->ufname) }} {{ Auth::user()->uname }} {{ Auth::user()->lname }}</strong></p>
-
-                    @if($contacts->isEmpty())
-                    <p>You have no contacts.</p>
-                @else
-                    <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
+<div class="card-body mb-3">
+    <div class="card mb-1">
+        <div class="container">
+            <div class="row justify-content-center mt-5 mb-5">
+                <div>
+                    <h1> List Vehicles:</h1>
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Nature of Work</th>
-                                <th class="text-center">Department</th>
-                                <th class="text-center">Remarks</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Plate Number</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Driver</th>
+                                <th scope="col">Condition</th>
+                                <th scope="col">Action</th>
+                             
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($contacts as $contact)
-                                <tr>
-                                    <td>{{ $contact->content }}</td>
-                                    <td class="text-center">{{ $contact->department }}</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm" style="width: 100px;
-                                            @if($contact->status == 'pending')
-                                                background-color: yellow;
-                                            @elseif($contact->status == 'accepted')
-                                                background-color: lightgreen;
-                                            @elseif($contact->status == 'declined')
-                                                background-color: red;
-                                                color: black;
-                                            @endif">
-                                            {{ ucwords($contact->status) }}
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
-                @endif
+                </div>
             </div>
         </div>
     </div>
-{{-- end of JRMS section --}}
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-12 mb-">
+            <div class="card">
+                <div class="card-header">Request Details</div>
+                <div class="card-body">
+                    <h4>User Information</h4>
+                    <p><strong>Name: {{ ucfirst(Auth::user()->ufname) }} {{ Auth::user()->uname }} {{ Auth::user()->lname }}</strong></p>
+                    <h4>Contact Request</h4>
+                    @if($contacts->isEmpty())
+                        <p>You have no contacts.</p>
+                    @else
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+
+                                    <th>Department</th>
+                                    <th>Content</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($contacts as $contact)
+                                    <tr>
+
+                                        <td>{{ $contact->department }}</td>
+                                        <td>{{ $contact->content }}</td>
+                                        <td>{{ $contact->status }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 @push('scripts')
