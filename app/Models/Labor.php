@@ -9,7 +9,7 @@ class Labor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['date', 'name', 'rate', 'hours', 'amount', 'contact_id'];
+    protected $fillable = ['date', 'name', 'rate', 'hours', 'amount', 'role', 'contact_id'];
 
     public function contact()
     {

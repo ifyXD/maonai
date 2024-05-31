@@ -136,8 +136,8 @@
                                     </div>
                                     <div class="row py-2">
                                         <div class="col-md-12">
-                                            <p><strong>Content:</strong></p>
-                                            <p class="font-weight-bold small text-muted d-none d-md-block">: "{{ $contact->content }}"</p>
+                                            <p><strong>Nature of Work:</strong></p>
+                                            <p class="font-weight-bold small text-muted d-none d-md-block" style="font-size: 1.00em; font-weight: bold; color: green !important; font-family: 'Bookman Old Style', serif;">: "{{ $contact->content }}"</p>
                                         </div>
                                     </div>
                                 </div>
@@ -193,6 +193,8 @@
                                     <thead class="border-bottom">
                                         <tr class="small text-uppercase text-muted">
                                             <th scope="col">Description</th>
+                                            <th class="text-center" scope="col">Role</th>
+
                                             <th class="text-center" scope="col">Hours</th>
                                             <th class="text-center" scope="col">Rate</th>
                                             <th class="text-center" scope="col">Amount</th>
@@ -207,6 +209,9 @@
                                                 <div class="font-weight-bold">{{ $labor->name }}</div>
                                                 <div class="small text-muted d-none d-md-block">{{ $labor->date }}</div>
                                             </td>
+                                            <td class="text-center align-middle font-weight-bold">{{ ucfirst($labor->role) }}</td>
+
+
                                             <td class="text-center align-middle font-weight-bold">{{ $labor->hours }}</td>
                                             <td class="text-center align-middle font-weight-bold">₱{{ $labor->rate }}</td>
                                             <td class="text-center align-middle font-weight-bold">₱{{ $labor->amount }}</td>

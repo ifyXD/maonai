@@ -53,13 +53,20 @@ class UserContactController extends Controller
         try {
             // Validate request data
             $request->validate([
-                'name' => 'required|string',
-                'email' => 'required|email|unique:contacts,email',
-                'department' => 'required|string',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email', // Removed the unique constraint
+                'department' => 'required|string|max:255',
                 'request_type' => 'required|array',
-                'request_type.*' => 'in:repair,service,commission',
-                'content' => 'nullable|string',
+                'request_type.*' => 'in:Maintenance,Service,Commission,Construction,Transportation',
+                'content' => 'nullable|string|max:500',
             ]);
+
+
+             // Combine request type and content
+                $combinedContent = implode(', ', $request->request_type);
+                if ($request->filled('content')) {
+                    $combinedContent .= ' - ' . $request->input('content');
+                }
 
             // Create new contact
             $contact = new Contact();
@@ -67,10 +74,8 @@ class UserContactController extends Controller
             $contact->name = $request->name;
             $contact->email = $request->email;
             $contact->department = $request->department;
-            $contact->content = implode(', ', $request->request_type); // Combine selected request types
-            if ($request->has('other')) {
-                $contact->content .= ' - : ' . $request->other; // Add 'other' field if provided
-            }
+            $contact->content = $combinedContent; // Assign combined content
+            $contact->status = 'pending'; // Set status to 'pending'
             $contact->save();
 
             // Flash success message
@@ -83,59 +88,64 @@ class UserContactController extends Controller
 
     }
 
-     /**
-     * Display the form for creating a new contact for the currently logged-in user.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function createForCurrentUser()
-    {
-        $user = auth()->user();
-        return view('contacts.create', compact('user'));
-    }
-
     /**
-     * Insert a new contact record associated with the currently logged-in user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function insertForCurrentUser(Request $request)
-    {
-        try {
-            // Validate request data
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:contacts,email',
-                'department' => 'required|string|max:255',
-                'request_type' => 'required|array',
-                'request_type.*' => 'in:repair,service,commission',
-                'content' => 'nullable|string|max:500',
-            ]);
+ * Display the form for creating a new contact for the currently logged-in user.
+ *
+ * @return \Illuminate\View\View
+ */
+public function createForCurrentUser()
+{
+    $user = auth()->user();
+    return view('contacts.createNew', compact('user'));
+}
 
-            // Get the currently logged-in user
-            $user = auth()->user();
+/**
+ * Insert a new contact record associated with the currently logged-in user.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return \Illuminate\Http\Response
+ */
+public function insertForCurrentUser(Request $request)
+{
+    try {
+        // Validate request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email', // Removed the unique constraint
+            'department' => 'required|string|max:255',
+            'request_type' => 'required|array',
+            'request_type.*' => 'in:Maintenance,Service,Commission,Construction,Transportation',
+            'content' => 'nullable|string|max:500',
+        ]);
 
-            // Create new contact
-            $contact = new Contact();
-            $contact->user_id = $user->id;
-            $contact->name = $request->name;
-            $contact->email = $request->email;
-            $contact->department = $request->department;
-            $contact->content = implode(', ', $request->request_type); // Combine selected request types
-            if ($request->has('content')) {
-                $contact->content .= ' - ' . $request->content; // Add 'content' field if provided
-            }
-            $contact->status = 'pending'; // Set status to 'pending'
-            $contact->save();
+        // Get the currently logged-in user
+        $user = auth()->user();
 
-            // Flash success message
-            return redirect()->route('contacts.create')->with('success', 'Contact created successfully.');
-        } catch (ValidationException $e) {
-            // Validation errors
-            return redirect()->back()->withInput()->withErrors($e->validator->errors());
+        // Combine request type and content
+        $combinedContent = implode(', ', $request->request_type);
+        if ($request->filled('content')) {
+            $combinedContent .= ' - ' . $request->input('content');
         }
+
+        // Create new contact
+        $contact = new Contact();
+        $contact->user_id = $user->id;
+        $contact->name = $request->name;
+        $contact->email = $request->email;
+        $contact->department = $request->department;
+        $contact->content = $combinedContent; // Assign combined content
+        $contact->status = 'pending'; // Set status to 'pending'
+        $contact->save();
+
+        // Flash success message
+        return redirect()->route('contacts.createNew')->with('success', 'Contact created successfully.');
+    } catch (ValidationException $e) {
+        // Validation errors
+        return redirect()->back()->withInput()->withErrors($e->validator->errors());
     }
+}
+
+
 
 
         public function showUserContacts()
@@ -143,7 +153,7 @@ class UserContactController extends Controller
         $user = Auth::user();
         $contacts = $user->contacts; // Assuming a one-to-many relationship is defined in the User model
 
-        return view('dashboard.user.user', compact('user', 'contacts'));
+        return view('user.user', compact('user', 'contacts'));
     }
 
 

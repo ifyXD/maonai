@@ -48,12 +48,12 @@ Route::post('/users/{userId}/contacts', [UserContactController::class, 'insert']
 // Route to display the index of users
 Route::get('/users', [UserContactController::class, 'index'])->name('users.index');
 
+
 // Route to display the form for creating a new contact for the currently logged-in user
-Route::get('/contacts/create', [UserContactController::class, 'createForCurrentUser'])->name('contacts.createCurrentUser');
+Route::get('/contacts/createNew', [UserContactController::class, 'createForCurrentUser'])->name('contacts.createNew');
 
 // Route to insert a new contact record associated with the currently logged-in user
-Route::post('/contacts', [UserContactController::class, 'insertForCurrentUser'])->name('contacts.insertCurrentUser');
-
+Route::post('/contacts/insert', [UserContactController::class, 'insertForCurrentUser'])->name('contacts.insertCurrentUser');
 
 //EDIT AND UPDATE NEW!!!
 // Define routes for editing and updating contacts

@@ -22,10 +22,9 @@ return new class extends Migration
             $table->decimal('rate', 10, 2);
             $table->float('hours');
             $table->decimal('amount', 10, 2);
+            $table->string('role'); // New field for role
             $table->timestamps();
         });
-
-
     }
 
     /**
